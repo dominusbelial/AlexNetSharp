@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/AlexNetSharp.Core/AlexNetSharp.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AlexNetSharp.Tests/AlexNetSharp.Tests.csproj" />
+  </Folder>
+</Solution>
