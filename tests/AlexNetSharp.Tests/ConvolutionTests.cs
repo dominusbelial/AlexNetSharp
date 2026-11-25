@@ -9,12 +9,17 @@ namespace AlexNetSharp.Tests;
 
 internal static class ConvolutionTests
 {
-    public static int RunAll(string repoRoot, string origRoot)
+    public static int RunAll(string repoRoot, string origRoot, bool fullScalar)
     {
-        int count = Fixtures(repoRoot);
-        count += NumericalGradients();
-        count += Contracts();
-        count += RealGeometry(origRoot);
+        int count = 0;
+        foreach (bool optimized in new[] { false, true })
+        {
+            ConvolutionAdapter.UseOptimized = optimized;
+            count += Fixtures(repoRoot);
+            count += NumericalGradients();
+            count += Contracts();
+            if (optimized || fullScalar) count += RealGeometry(origRoot);
+        }
         return count;
     }
 
@@ -36,7 +41,7 @@ internal static class ConvolutionTests
             var dy = Matrix(filters * width * width, cases, c["dy"]!);
             foreach (int partial in new[] { 0, Int(c, "partial_sum") })
             {
-                var conv = new ScalarConvolution(name, geometry, filters, partial);
+                var conv = new ConvolutionAdapter(name, geometry, filters, partial);
                 TestAssert.Equal(width, conv.ModulesX, name + " ceiling width");
                 var y = new FloatMatrix(dy.Rows, cases);
                 y.Fill(float.NaN);
@@ -118,7 +123,7 @@ internal static class ConvolutionTests
             foreach (int partial in new[] { 0, width })
                 foreach (bool gc in new[] { true, false })
                 {
-                    var conv = new ScalarConvolution("numeric", gs, filters, partial);
+                    var conv = new ConvolutionAdapter("numeric", gs, filters, partial);
                     double scale = gc ? 1 : 1.0 / cases;
                     double Loss() => Objective(gs, filters, cases, xd, wd, bd, dy) * scale;
                     for (int i = 0; i < gs.Length; i++)
@@ -201,8 +206,8 @@ internal static class ConvolutionTests
         x.Storage.Span[0] = 1e8f; x.Storage.Span[1] = 1;
         x.Storage.Span[2] = -1e8f; x.Storage.Span[3] = 1;
         var dy = new FloatMatrix(9, 1); dy.Fill(1);
-        var flat = new ScalarConvolution("flat", [new(3, 1, 1, 1)], 1);
-        var chunks = new ScalarConvolution("chunks", [new(3, 1, 1, 1)], 1, 3);
+        var flat = new ConvolutionAdapter("flat", [new(3, 1, 1, 1)], 1);
+        var chunks = new ConvolutionAdapter("chunks", [new(3, 1, 1, 1)], 1, 3);
         var a = new FloatMatrix(1, 1); var b = new FloatMatrix(1, 1);
         flat.BackwardWeights(0, x, dy, a, gradientCheck: true);
         chunks.BackwardWeights(0, x, dy, b, gradientCheck: true);
@@ -228,7 +233,7 @@ internal static class ConvolutionTests
         Near(3, a[0, 0], "scale full reduction", 0);
 
 
-        var conv = new ScalarConvolution("unshared", [new(3, 1, 1, 1)], 1, sharedBiases: false);
+        var conv = new ConvolutionAdapter("unshared", [new(3, 1, 1, 1)], 1, sharedBiases: false);
         var bias = new FloatMatrix(9, 1);
         for (int r = 0; r < 9; r++) bias[r, 0] = r;
         var w = new FloatMatrix(1, 1); w[0, 0] = 2;
@@ -238,9 +243,9 @@ internal static class ConvolutionTests
         conv.BackwardBiases(d3, bias);
         for (int r = 0; r < 9; r++) Near(1, bias[r, 0], "unshared db", 0);
 
-        Expect<NotSupportedException>(() => new ScalarConvolution("group-layer", [new(3, 2, 1, 1, Groups: 2)], 2), "group-layer");
-        Expect<NotSupportedException>(() => new ScalarConvolution("sparse-layer", [new(3, 2, 1, 1, RandSparse: true)], 2), "sparse-layer");
-        Expect<ArgumentException>(() => new ScalarConvolution("bad-partial", [new(3, 1, 1, 1)], 1, 2), "partialSum");
+        Expect<NotSupportedException>(() => new ConvolutionAdapter("group-layer", [new(3, 2, 1, 1, Groups: 2)], 2), "group-layer");
+        Expect<NotSupportedException>(() => new ConvolutionAdapter("sparse-layer", [new(3, 2, 1, 1, RandSparse: true)], 2), "sparse-layer");
+        Expect<ArgumentException>(() => new ConvolutionAdapter("bad-partial", [new(3, 1, 1, 1)], 1, 2), "partialSum");
         Expect<ArgumentException>(() => flat.ForwardInput(0, x, w, new FloatMatrix(1, 1), x), "storage");
         Expect<ArgumentException>(() => flat.BackwardInput(0, dy, w, dy), "storage");
         Expect<ArgumentException>(() => flat.BackwardWeights(0, x, dy, x), "canonical");
@@ -275,7 +280,7 @@ internal static class ConvolutionTests
         foreach (var layer in net.Layers.Where(l => l.Type == "conv"))
         {
             var shape = shapes[layer.Name];
-            var conv = ScalarConvolution.FromLayer(layer, shape);
+            var conv = ConvolutionAdapter.FromLayer(layer, shape);
             var p = LayerParameterBuffers.Allocate(shape);
             const int cases = 2;
             var rng = new Random(14500 + count);
@@ -340,11 +345,11 @@ internal static class ConvolutionTests
     {
         foreach (string name in new[] { "conv1a", "conv1b" })
         {
-            var conv = ScalarConvolution.FromLayer(net[name], shapes[name]);
+            var conv = ConvolutionAdapter.FromLayer(net[name], shapes[name]);
             var g = conv.Inputs[0];
             TestAssert.Equal(216, g.PaddingStart + (conv.ModulesX - 1) * g.Stride, "conv1 final start");
             TestAssert.SequenceEqual(Enumerable.Range(216, 11).ToArray(), Enumerable.Range(0, g.FilterSize).Select(k => g.PaddingStart + (conv.ModulesX - 1) * g.Stride + k).ToArray(), "conv1 samples 216..226");
-            // Actual scalar reads: encode x in channel 0, select each filter column separately.
+            // Actual convolution reads: encode x in channel 0, select each filter column separately.
             // At a valid y, final x window must read 216..223, then 0,0,0; repeat for y.
             var xs = new FloatMatrix(g.Channels * g.ImageSize * g.ImageSize, 1);
             for (int y = 0; y < g.ImageSize; y++) for (int x = 0; x < g.ImageSize; x++) xs[y * g.ImageSize + x, 0] = x + 1;

@@ -19,8 +19,9 @@ Early. Done so far:
 | ANX-3 | Shape inference with the original's ceiling arithmetic (224 → 55 with a partial boundary window) | [ANX-3](docs/reports/ANX-3_REPORT.md) |
 | ANX-4 | Tensor layouts, parameter buffers (60,965,224 parameters) and the original's overwrite-vs-accumulate gradient semantics | [ANX-4](docs/reports/ANX-4_REPORT.md) |
 | ANX-5 | Scalar reference convolution (forward, input/weight/bias gradients, `partialSum`), exact-rational fixtures, 3,824 finite-difference checks, conv1's partial edge window proven on real pixels | [ANX-5](docs/reports/ANX-5_REPORT.md) |
+| ANX-6 | Managed SIMD CPU convolution, bitwise scalar parity and thread determinism, bounded workspace, batch-128 benchmark | [ANX-6](docs/reports/ANX-6_REPORT.md) |
 
-Next: optimised convolution (must match the scalar reference), then pooling, normalisation and the fully connected layers, the trainer, and the web explorer.
+Next: pooling, normalisation and the fully connected layers, the trainer, and the web explorer.
 
 ## Layout
 
@@ -36,6 +37,22 @@ or a `local.env` file in the repo root containing `ALEXNET_ORIGINAL_SRC=<path>`)
 ```sh
 dotnet build
 dotnet run --project tests/AlexNetSharp.Tests
+```
+
+The default Debug suite runs the exact fixtures, numerical checks and contracts on both convolution engines,
+randomized bitwise parity/determinism, and optimized real-size checks. Full-size scalar assertions and elementwise
+parity for all ten 145 convolution layers are opt-in:
+
+```sh
+dotnet run -c Release --project tests/AlexNetSharp.Tests -- --full-scalar-parity
+```
+
+The convolution benchmark is separate from the default gate. It measures all ten layers at batch 128, compares
+scalar and optimized operations at batch 2, and prints training-run projections:
+
+```sh
+dotnet run -c Release --project tests/AlexNetSharp.Tests -- --benchmark-conv
+# Optional: --conv-threads 2 --conv-repeats 3 --conv-output .scratch/conv-benchmark.json
 ```
 
 ImageNet data is not part of this repository.

@@ -8,6 +8,8 @@ try
     var repoRoot = SpecVerifier.FindRepoRoot();
     var origRoot = SpecVerifier.ResolveOriginalSrcRoot(repoRoot);
 
+    if (args.Contains("--benchmark-conv")) return ConvolutionBenchmark.Run(origRoot, args);
+
     string ledgerPath = Path.Combine(repoRoot, "docs", "spec", "ledger.json");
     string manifestPath = Path.Combine(repoRoot, "docs", "spec", "experiment.json");
     string goldenPath = Path.Combine(repoRoot, "tests", "fixtures", "layers-145.parsed.json");
@@ -78,7 +80,8 @@ try
     var tensorSw = Stopwatch.StartNew();
     int tensorsPassed = TensorTests.RunAll(repoRoot, origRoot);
     tensorSw.Stop();
-    int convPassed = ConvolutionTests.RunAll(repoRoot, origRoot);
+    int convPassed = ConvolutionTests.RunAll(repoRoot, origRoot, args.Contains("--full-scalar-parity")) +
+        OptimizedConvolutionTests.RunAll(origRoot, args.Contains("--full-scalar-parity"));
     sw.Stop();
 
     Console.WriteLine(
