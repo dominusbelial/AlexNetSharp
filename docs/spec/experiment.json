@@ -1,0 +1,1331 @@
+{
+ "schema_version": 1,
+ "experiment": "layers-145 (two-tower AlexNet) on ILSVRC-2012, first recorded run",
+ "sources": {
+  "layer_def": "layers/layers-145.cfg",
+  "layer_params": "layers/layer-params-145.cfg",
+  "training_options": [
+   "convnet.py",
+   "convdata.py",
+   "convdata_jpeg.py",
+   "layer.py",
+   "src/weights.cu"
+  ]
+ },
+ "recorded_layer_rates": {
+  "conv1a": {
+   "epsW": [
+    0.0
+   ],
+   "epsB": 0.0,
+   "momW": [
+    0.9
+   ],
+   "momB": 0.9,
+   "wc": [
+    0.0005
+   ],
+   "wball": [
+    0.0
+   ],
+   "citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 1,
+    "token": "[conv1a]"
+   },
+   "epsW_citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 2,
+    "token": "epsW="
+   },
+   "note": "Final state of the file after the last recorded intervention, not a starting point."
+  },
+  "conv1b": {
+   "epsW": [
+    0.0
+   ],
+   "epsB": 0.0,
+   "momW": [
+    0.9
+   ],
+   "momB": 0.9,
+   "wc": [
+    0.0005
+   ],
+   "wball": [
+    0.0
+   ],
+   "citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 9,
+    "token": "[conv1b]"
+   },
+   "epsW_citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 10,
+    "token": "epsW="
+   },
+   "note": "Final state of the file after the last recorded intervention, not a starting point."
+  },
+  "conv2a": {
+   "epsW": [
+    1e-05
+   ],
+   "epsB": 0.02,
+   "momW": [
+    0.9
+   ],
+   "momB": 0.9,
+   "wc": [
+    0.0005
+   ],
+   "wball": [
+    0.0
+   ],
+   "citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 17,
+    "token": "[conv2a]"
+   },
+   "epsW_citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 18,
+    "token": "epsW="
+   },
+   "note": "Final state of the file after the last recorded intervention, not a starting point."
+  },
+  "conv2b": {
+   "epsW": [
+    1e-05
+   ],
+   "epsB": 0.02,
+   "momW": [
+    0.9
+   ],
+   "momB": 0.9,
+   "wc": [
+    0.0005
+   ],
+   "wball": [
+    0.0
+   ],
+   "citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 25,
+    "token": "[conv2b]"
+   },
+   "epsW_citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 26,
+    "token": "epsW="
+   },
+   "note": "Final state of the file after the last recorded intervention, not a starting point."
+  },
+  "conv3a": {
+   "epsW": [
+    1e-05,
+    1e-05
+   ],
+   "epsB": 0.02,
+   "momW": [
+    0.9,
+    0.9
+   ],
+   "momB": 0.9,
+   "wc": [
+    0.0005,
+    0.0005
+   ],
+   "wball": [
+    0.0,
+    0.0
+   ],
+   "citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 33,
+    "token": "[conv3a]"
+   },
+   "epsW_citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 34,
+    "token": "epsW="
+   },
+   "note": "Final state of the file after the last recorded intervention, not a starting point."
+  },
+  "conv3b": {
+   "epsW": [
+    1e-05,
+    1e-05
+   ],
+   "epsB": 0.02,
+   "momW": [
+    0.9,
+    0.9
+   ],
+   "momB": 0.9,
+   "wc": [
+    0.0005,
+    0.0005
+   ],
+   "wball": [
+    0.0,
+    0.0
+   ],
+   "citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 41,
+    "token": "[conv3b]"
+   },
+   "epsW_citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 42,
+    "token": "epsW="
+   },
+   "note": "Final state of the file after the last recorded intervention, not a starting point."
+  },
+  "conv4a": {
+   "epsW": [
+    1e-05
+   ],
+   "epsB": 0.02,
+   "momW": [
+    0.9
+   ],
+   "momB": 0.9,
+   "wc": [
+    0.0005
+   ],
+   "wball": [
+    0.0
+   ],
+   "citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 49,
+    "token": "[conv4a]"
+   },
+   "epsW_citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 50,
+    "token": "epsW="
+   },
+   "note": "Final state of the file after the last recorded intervention, not a starting point."
+  },
+  "conv4b": {
+   "epsW": [
+    1e-05
+   ],
+   "epsB": 0.02,
+   "momW": [
+    0.9
+   ],
+   "momB": 0.9,
+   "wc": [
+    0.0005
+   ],
+   "wball": [
+    0.0
+   ],
+   "citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 57,
+    "token": "[conv4b]"
+   },
+   "epsW_citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 58,
+    "token": "epsW="
+   },
+   "note": "Final state of the file after the last recorded intervention, not a starting point."
+  },
+  "conv5a": {
+   "epsW": [
+    1e-05
+   ],
+   "epsB": 0.02,
+   "momW": [
+    0.9
+   ],
+   "momB": 0.9,
+   "wc": [
+    0.0005
+   ],
+   "wball": [
+    0.0
+   ],
+   "citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 65,
+    "token": "[conv5a]"
+   },
+   "epsW_citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 66,
+    "token": "epsW="
+   },
+   "note": "Final state of the file after the last recorded intervention, not a starting point."
+  },
+  "conv5b": {
+   "epsW": [
+    1e-05
+   ],
+   "epsB": 0.02,
+   "momW": [
+    0.9
+   ],
+   "momB": 0.9,
+   "wc": [
+    0.0005
+   ],
+   "wball": [
+    0.0
+   ],
+   "citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 73,
+    "token": "[conv5b]"
+   },
+   "epsW_citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 74,
+    "token": "epsW="
+   },
+   "note": "Final state of the file after the last recorded intervention, not a starting point."
+  },
+  "fc2048a": {
+   "epsW": [
+    1e-05,
+    1e-05
+   ],
+   "epsB": 0.02,
+   "momW": [
+    0.9,
+    0.9
+   ],
+   "momB": 0.9,
+   "wc": [
+    0.0005,
+    0.0005
+   ],
+   "wball": [
+    0.0,
+    0.0
+   ],
+   "citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 81,
+    "token": "[fc2048a]"
+   },
+   "epsW_citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 82,
+    "token": "epsW="
+   },
+   "note": "Final state of the file after the last recorded intervention, not a starting point."
+  },
+  "fc2048b": {
+   "epsW": [
+    1e-05,
+    1e-05
+   ],
+   "epsB": 0.02,
+   "momW": [
+    0.9,
+    0.9
+   ],
+   "momB": 0.9,
+   "wc": [
+    0.0005,
+    0.0005
+   ],
+   "wball": [
+    0.0,
+    0.0
+   ],
+   "citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 89,
+    "token": "[fc2048b]"
+   },
+   "epsW_citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 90,
+    "token": "epsW="
+   },
+   "note": "Final state of the file after the last recorded intervention, not a starting point."
+  },
+  "fc2048ba": {
+   "epsW": [
+    1e-05,
+    1e-05
+   ],
+   "epsB": 0.02,
+   "momW": [
+    0.9,
+    0.9
+   ],
+   "momB": 0.9,
+   "wc": [
+    0.0005,
+    0.0005
+   ],
+   "wball": [
+    0.0,
+    0.0
+   ],
+   "citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 97,
+    "token": "[fc2048ba]"
+   },
+   "epsW_citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 98,
+    "token": "epsW="
+   },
+   "note": "Final state of the file after the last recorded intervention, not a starting point."
+  },
+  "fc2048bb": {
+   "epsW": [
+    1e-05,
+    1e-05
+   ],
+   "epsB": 0.02,
+   "momW": [
+    0.9,
+    0.9
+   ],
+   "momB": 0.9,
+   "wc": [
+    0.0005,
+    0.0005
+   ],
+   "wball": [
+    0.0,
+    0.0
+   ],
+   "citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 105,
+    "token": "[fc2048bb]"
+   },
+   "epsW_citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 106,
+    "token": "epsW="
+   },
+   "note": "Final state of the file after the last recorded intervention, not a starting point."
+  },
+  "fc1000": {
+   "epsW": [
+    1e-05,
+    1e-05
+   ],
+   "epsB": 0.02,
+   "momW": [
+    0.9,
+    0.9
+   ],
+   "momB": 0.9,
+   "wc": [
+    0.0005,
+    0.0005
+   ],
+   "wball": [
+    0.0,
+    0.0
+   ],
+   "citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 113,
+    "token": "[fc1000]"
+   },
+   "epsW_citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 114,
+    "token": "epsW="
+   },
+   "note": "Final state of the file after the last recorded intervention, not a starting point."
+  }
+ },
+ "other_recorded_params": {
+  "logprob": {
+   "coeff": 1,
+   "topk": 5,
+   "citations": [
+    {
+     "path": "layers/layer-params-145.cfg",
+     "line": 122,
+     "token": "coeff=1"
+    },
+    {
+     "path": "layers/layer-params-145.cfg",
+     "line": 123,
+     "token": "topk=5"
+    }
+   ]
+  },
+  "hs_dropout": {
+   "layers": [
+    "hs1a",
+    "hs2a",
+    "hs1b",
+    "hs2b"
+   ],
+   "enable": true,
+   "citations": [
+    {
+     "path": "layers/layer-params-145.cfg",
+     "line": 126,
+     "token": "enable=true"
+    },
+    {
+     "path": "layer.py",
+     "line": 696,
+     "token": "dic['enable'] = mcp.safe_get_bool(name, 'enable')"
+    }
+   ]
+  },
+  "rnorm": {
+   "layers": [
+    "rnorm1a",
+    "rnorm1b",
+    "rnorm2a",
+    "rnorm2b"
+   ],
+   "scale": 0.0001,
+   "pow": 0.75,
+   "minDiv": 2,
+   "citations": [
+    {
+     "path": "layers/layer-params-145.cfg",
+     "line": 138,
+     "token": "scale=0.0001"
+    },
+    {
+     "path": "layers/layer-params-145.cfg",
+     "line": 139,
+     "token": "pow=0.75"
+    },
+    {
+     "path": "layers/layer-params-145.cfg",
+     "line": 140,
+     "token": "minDiv=2"
+    }
+   ]
+  },
+  "cnorm": {
+   "layers": [
+    "cnorm2a",
+    "cnorm2b"
+   ],
+   "scale": 0.001,
+   "pow": 0.75,
+   "citations": [
+    {
+     "path": "layers/layer-params-145.cfg",
+     "line": 158,
+     "token": "scale=0.001"
+    },
+    {
+     "path": "layers/layer-params-145.cfg",
+     "line": 159,
+     "token": "pow=0.75"
+    }
+   ]
+  }
+ },
+ "rate_parsing": {
+  "per_input_lists": "epsW, momW, wc and wball are lists with one value per input (layer.py verify_num_params); epsB and momB are scalars.",
+  "schedule": "schedW/schedB default to 'default' (constant rate); the 145 files set no schedule, so every recorded change was a manual edit between restarts.",
+  "zero_rate_freezes": "Weights::update only runs when the base rate > 0, so epsW=0 freezes a layer completely: no momentum and no weight decay applied.",
+  "citations": [
+   {
+    "path": "layer.py",
+    "line": 728,
+    "token": "dic['epsW'] = mcp.safe_get_float_list(name, 'epsW')"
+   },
+   {
+    "path": "layer.py",
+    "line": 729,
+    "token": "dic['epsB'] = mcp.safe_get_float(name, 'epsB')"
+   },
+   {
+    "path": "layer.py",
+    "line": 734,
+    "token": "dic['wc'] = mcp.safe_get_float_list(name, 'wc', default=[0.0] * len(dic['inputs']))"
+   },
+   {
+    "path": "layer.py",
+    "line": 737,
+    "token": "self.verify_num_params(['epsW', 'momW', 'wc', 'wball'])"
+   },
+   {
+    "path": "layer.py",
+    "line": 739,
+    "token": "dic['schedW'] = self.parse_params(mcp, lrs_parsers, 'schedW', 'default', 'learning rate schedule')"
+   },
+   {
+    "path": "src/weights.cu",
+    "line": 148,
+    "token": "if (_srcWeights == NULL && _lrs->getBaseRate() > 0) {"
+   }
+  ]
+ },
+ "runs": [
+  {
+   "id": "run1",
+   "summary": "Fresh run, the closest match to the paper (3 rate drops, about 90 epochs)",
+   "start": {
+    "epsW": 0.01,
+    "color_noise": 0.1,
+    "evidence": "implied by the first transitions ('from 0.01', color noise 'from 0.1'); the start values are not written down directly"
+   },
+   "transitions": [
+    {
+     "epoch": 25,
+     "change": "epsW 0.01 -> 0.001 (all layers)",
+     "citation": {
+      "path": "layers/layer-params-145.cfg",
+      "line": 169,
+      "token": "epoch 25: set epsw to 0.001 from 0.01"
+     }
+    },
+    {
+     "epoch": 36,
+     "change": "paused for localization experiments, later resumed",
+     "citation": {
+      "path": "layers/layer-params-145.cfg",
+      "line": 170,
+      "token": "epoch 36: paused"
+     }
+    },
+    {
+     "epoch": 51,
+     "change": "epsW 0.001 -> 0.0001",
+     "citation": {
+      "path": "layers/layer-params-145.cfg",
+      "line": 174,
+      "token": "epoch 51: set epsw to 0.0001 from 0.001"
+     }
+    },
+    {
+     "epoch": 58,
+     "change": "paused for imgnet-20k experiments; moved host",
+     "citation": {
+      "path": "layers/layer-params-145.cfg",
+      "line": 175,
+      "token": "epoch 58: paused"
+     }
+    },
+    {
+     "epoch": 67,
+     "change": "conv1 epsW 0.0001 -> 0.00001; color noise 0.1 -> 0",
+     "citations": [
+      {
+       "path": "layers/layer-params-145.cfg",
+       "line": 177,
+       "token": "epoch 67: set epsw to 0.00001 from 0.0001 on conv1"
+      },
+      {
+       "path": "layers/layer-params-145.cfg",
+       "line": 178,
+       "token": "set color noise to 0 from 0.1"
+      }
+     ]
+    },
+    {
+     "epoch": 72,
+     "change": "conv1 epsW -> 0 (frozen)",
+     "citation": {
+      "path": "layers/layer-params-145.cfg",
+      "line": 179,
+      "token": "epoch 72: set epsw to 0 on conv1"
+     }
+    },
+    {
+     "epoch": 79,
+     "change": "epsW 0.0001 -> 0.00001 (remaining layers)",
+     "citation": {
+      "path": "layers/layer-params-145.cfg",
+      "line": 180,
+      "token": "epoch 79: set epsw to 0.00001 from 0.0001"
+     }
+    },
+    {
+     "epoch": 91,
+     "change": "stopped",
+     "citation": {
+      "path": "layers/layer-params-145.cfg",
+      "line": 181,
+      "token": "epoch 91: killed"
+     }
+    }
+   ],
+   "result": {
+    "logprob": 1.741473,
+    "top1_error": 0.40664,
+    "top5_error": 0.1821,
+    "views": "not stated (single-view likely; matches the paper's 1-CNN 40.7/18.2)",
+    "citation": {
+     "path": "layers/layer-params-145.cfg",
+     "line": 182,
+     "token": "logprob:  1.741473, 0.406640, 0.182100"
+    }
+   }
+  },
+  {
+   "id": "run1-continued",
+   "summary": "Continuation of run1's checkpoint with the rate pushed back up",
+   "start": {
+    "epsW": 0.001,
+    "conv1_epsW": 0.0,
+    "color_noise": 0.1,
+    "citations": [
+     {
+      "path": "layers/layer-params-145.cfg",
+      "line": 195,
+      "token": "start epsw 0.001 (still 0 on conv1)"
+     },
+     {
+      "path": "layers/layer-params-145.cfg",
+      "line": 196,
+      "token": "color noise put back to 0.1"
+     }
+    ]
+   },
+   "transitions": [
+    {
+     "epoch": 107,
+     "change": "epsW 0.001 -> 0.0001",
+     "citation": {
+      "path": "layers/layer-params-145.cfg",
+      "line": 198,
+      "token": "epoch 107: set epsw to 0.0001 from 0.001"
+     }
+    },
+    {
+     "epoch": 124,
+     "change": "epsW 0.0001 -> 0.00001; color noise 0.1 -> 0",
+     "citations": [
+      {
+       "path": "layers/layer-params-145.cfg",
+       "line": 199,
+       "token": "epoch 124: set epsw to 0.00001 from 0.0001"
+      },
+      {
+       "path": "layers/layer-params-145.cfg",
+       "line": 200,
+       "token": "set color noise to 0 from 0.1"
+      }
+     ]
+    },
+    {
+     "epoch": 135,
+     "change": "stopped",
+     "citation": {
+      "path": "layers/layer-params-145.cfg",
+      "line": 201,
+      "token": "epoch 135: killed"
+     }
+    }
+   ],
+   "result": {
+    "logprob": 1.725738,
+    "top1_error": 0.4025,
+    "top5_error": 0.17994,
+    "views": "multiview (10 views)",
+    "citations": [
+     {
+      "path": "layers/layer-params-145.cfg",
+      "line": 202,
+      "token": "multiview test:"
+     },
+     {
+      "path": "layers/layer-params-145.cfg",
+      "line": 203,
+      "token": "logprob:  1.725738, 0.402500, 0.179940"
+     }
+    ]
+   }
+  },
+  {
+   "id": "2012-full",
+   "summary": "Separate run on '2012-full' (probably a different training set); no result recorded",
+   "transitions": [
+    {
+     "epoch": 19,
+     "change": "epsW 0.01 -> 0.001",
+     "citation": {
+      "path": "layers/layer-params-145.cfg",
+      "line": 188,
+      "token": "epoch 19: set epsw to 0.001 from 0.01"
+     }
+    },
+    {
+     "epoch": 47,
+     "change": "epsW 0.001 -> 0.0001",
+     "citation": {
+      "path": "layers/layer-params-145.cfg",
+      "line": 189,
+      "token": "epoch 47: set epsw to 0.0001 from 0.001"
+     }
+    },
+    {
+     "epoch": 61,
+     "change": "moved to gpu (log ends)",
+     "citation": {
+      "path": "layers/layer-params-145.cfg",
+      "line": 190,
+      "token": "epoch 61: moved to gpu"
+     }
+    }
+   ],
+   "citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 184,
+    "token": "# on 2012-full:"
+   }
+  }
+ ],
+ "data_options": {
+  "minibatch_size": {
+   "value": 128,
+   "citation": {
+    "path": "convnet.py",
+    "line": 177,
+    "token": "\"Minibatch size\", default=128"
+   }
+  },
+  "crop_border": {
+   "default": 4,
+   "note": "Not recorded for this run; the paper's 224 from 256 implies 16. See ledger OQ-LEDGER-1.",
+   "citation": {
+    "path": "convnet.py",
+    "line": 182,
+    "token": "\"Cropped DP: crop border size\", default=4"
+   }
+  },
+  "inner_size": {
+   "rule": "img_size - 2*crop_border",
+   "citation": {
+    "path": "convdata_jpeg.py",
+    "line": 73,
+    "token": "self.inner_size = self.img_size - self.border_size*2"
+   }
+  },
+  "img_size": {
+   "rule": "sqrt(num_vis/3) from batches.meta (not in the release)",
+   "citation": {
+    "path": "convdata.py",
+    "line": 45,
+    "token": "self.img_size = int(sqrt(self.batch_meta['num_vis'] / self.num_colors))"
+   }
+  },
+  "mean_image": {
+   "rule": "per-pixel mean image from batches.meta['data_mean'], cropped to the centre window and subtracted; scalar mean only with --scalar-mean or no_crop",
+   "citations": [
+    {
+     "path": "convdata.py",
+     "line": 39,
+     "token": "self.data_mean = self.batch_meta['data_mean'].astype(n.single)"
+    },
+    {
+     "path": "convdata_jpeg.py",
+     "line": 95,
+     "token": "self.data_mean_crop = self.data_mean.reshape"
+    },
+    {
+     "path": "convdata_jpeg.py",
+     "line": 210,
+     "token": "data -= self.data_mean_crop"
+    }
+   ]
+  },
+  "train_crop": {
+   "rule": "one random offset in [0, 2*border] per axis and one 50% horizontal flip, shared by each chunk of 32 images",
+   "citations": [
+    {
+     "path": "convdata_jpeg.py",
+     "line": 77,
+     "token": "self.crop_chunk = 32"
+    },
+    {
+     "path": "convdata_jpeg.py",
+     "line": 239,
+     "token": "startY, startX = nr.randint(0,self.border_size*2 + 1), nr.randint(0,self.border_size*2 + 1)"
+    },
+    {
+     "path": "convdata_jpeg.py",
+     "line": 244,
+     "token": "if nr.randint(2) == 0:"
+    }
+   ]
+  },
+  "color_noise": {
+   "rule": "per image, noise = (randn(3) * PCA stdevs) . eigvecs^T, added times color_noise to every pixel of the mean-subtracted crop, then the whole crop is divided by (1 + color_noise). Training only.",
+   "values": "0.1 at start, 0 from epoch 67 (run1)",
+   "citations": [
+    {
+     "path": "convnet.py",
+     "line": 186,
+     "token": "\"Add PCA noise to color channels with given scale\", default=0.0"
+    },
+    {
+     "path": "convdata_jpeg.py",
+     "line": 65,
+     "token": "noise = n.dot(nr.randn(self.num_noise, 3).astype(n.single) * self.pca_stdevs.T, self.pca_vecs.T)"
+    },
+    {
+     "path": "convdata_jpeg.py",
+     "line": 177,
+     "token": "cropped += self.color_noise * self.color_noise_coeff"
+    },
+    {
+     "path": "convdata_jpeg.py",
+     "line": 179,
+     "token": "cropped /= (1.0 + self.color_noise_coeff)"
+    },
+    {
+     "path": "convdata.py",
+     "line": 40,
+     "token": "self.color_eig = self.batch_meta['color_pca'][1].astype(n.single)"
+    }
+   ]
+  },
+  "test_views": {
+   "rule": "single view = centre crop; multiview = 4 corners + centre, each also mirrored (10 views); probabilities averaged",
+   "citations": [
+    {
+     "path": "convdata_jpeg.py",
+     "line": 75,
+     "token": "self.num_views = 5*2"
+    },
+    {
+     "path": "convdata_jpeg.py",
+     "line": 226,
+     "token": "start_positions = [(0,0),  (0, self.border_size*2),"
+    },
+    {
+     "path": "convdata_jpeg.py",
+     "line": 235,
+     "token": "just take the center for now"
+    },
+    {
+     "path": "convnet.py",
+     "line": 181,
+     "token": "\"Cropped DP: test on multiple patches?\", default=0"
+    }
+   ]
+  },
+  "epochs": {
+   "rule": "num_epochs defaults to 50000: training runs until stopped by hand ('killed' in the log)",
+   "citation": {
+    "path": "convnet.py",
+    "line": 196,
+    "token": "op.options[\"num_epochs\"].default = 50000"
+   }
+  }
+ },
+ "proposed_fresh_run": {
+  "basis": "run1 (lines 165-182): it starts from scratch, has three rate drops and about 90 epochs, and its recorded result matches the paper's single-CNN 40.7% / 18.2%.",
+  "layer_rates": {
+   "conv1a": {
+    "epsW": [
+     0.01
+    ],
+    "epsB": 0.02,
+    "momW": [
+     0.9
+    ],
+    "momB": 0.9,
+    "wc": [
+     0.0005
+    ],
+    "wball": [
+     0.0
+    ]
+   },
+   "conv1b": {
+    "epsW": [
+     0.01
+    ],
+    "epsB": 0.02,
+    "momW": [
+     0.9
+    ],
+    "momB": 0.9,
+    "wc": [
+     0.0005
+    ],
+    "wball": [
+     0.0
+    ]
+   },
+   "conv2a": {
+    "epsW": [
+     0.01
+    ],
+    "epsB": 0.02,
+    "momW": [
+     0.9
+    ],
+    "momB": 0.9,
+    "wc": [
+     0.0005
+    ],
+    "wball": [
+     0.0
+    ]
+   },
+   "conv2b": {
+    "epsW": [
+     0.01
+    ],
+    "epsB": 0.02,
+    "momW": [
+     0.9
+    ],
+    "momB": 0.9,
+    "wc": [
+     0.0005
+    ],
+    "wball": [
+     0.0
+    ]
+   },
+   "conv3a": {
+    "epsW": [
+     0.01,
+     0.01
+    ],
+    "epsB": 0.02,
+    "momW": [
+     0.9,
+     0.9
+    ],
+    "momB": 0.9,
+    "wc": [
+     0.0005,
+     0.0005
+    ],
+    "wball": [
+     0.0,
+     0.0
+    ]
+   },
+   "conv3b": {
+    "epsW": [
+     0.01,
+     0.01
+    ],
+    "epsB": 0.02,
+    "momW": [
+     0.9,
+     0.9
+    ],
+    "momB": 0.9,
+    "wc": [
+     0.0005,
+     0.0005
+    ],
+    "wball": [
+     0.0,
+     0.0
+    ]
+   },
+   "conv4a": {
+    "epsW": [
+     0.01
+    ],
+    "epsB": 0.02,
+    "momW": [
+     0.9
+    ],
+    "momB": 0.9,
+    "wc": [
+     0.0005
+    ],
+    "wball": [
+     0.0
+    ]
+   },
+   "conv4b": {
+    "epsW": [
+     0.01
+    ],
+    "epsB": 0.02,
+    "momW": [
+     0.9
+    ],
+    "momB": 0.9,
+    "wc": [
+     0.0005
+    ],
+    "wball": [
+     0.0
+    ]
+   },
+   "conv5a": {
+    "epsW": [
+     0.01
+    ],
+    "epsB": 0.02,
+    "momW": [
+     0.9
+    ],
+    "momB": 0.9,
+    "wc": [
+     0.0005
+    ],
+    "wball": [
+     0.0
+    ]
+   },
+   "conv5b": {
+    "epsW": [
+     0.01
+    ],
+    "epsB": 0.02,
+    "momW": [
+     0.9
+    ],
+    "momB": 0.9,
+    "wc": [
+     0.0005
+    ],
+    "wball": [
+     0.0
+    ]
+   },
+   "fc2048a": {
+    "epsW": [
+     0.01,
+     0.01
+    ],
+    "epsB": 0.02,
+    "momW": [
+     0.9,
+     0.9
+    ],
+    "momB": 0.9,
+    "wc": [
+     0.0005,
+     0.0005
+    ],
+    "wball": [
+     0.0,
+     0.0
+    ]
+   },
+   "fc2048b": {
+    "epsW": [
+     0.01,
+     0.01
+    ],
+    "epsB": 0.02,
+    "momW": [
+     0.9,
+     0.9
+    ],
+    "momB": 0.9,
+    "wc": [
+     0.0005,
+     0.0005
+    ],
+    "wball": [
+     0.0,
+     0.0
+    ]
+   },
+   "fc2048ba": {
+    "epsW": [
+     0.01,
+     0.01
+    ],
+    "epsB": 0.02,
+    "momW": [
+     0.9,
+     0.9
+    ],
+    "momB": 0.9,
+    "wc": [
+     0.0005,
+     0.0005
+    ],
+    "wball": [
+     0.0,
+     0.0
+    ]
+   },
+   "fc2048bb": {
+    "epsW": [
+     0.01,
+     0.01
+    ],
+    "epsB": 0.02,
+    "momW": [
+     0.9,
+     0.9
+    ],
+    "momB": 0.9,
+    "wc": [
+     0.0005,
+     0.0005
+    ],
+    "wball": [
+     0.0,
+     0.0
+    ]
+   },
+   "fc1000": {
+    "epsW": [
+     0.01,
+     0.01
+    ],
+    "epsB": 0.02,
+    "momW": [
+     0.9,
+     0.9
+    ],
+    "momB": 0.9,
+    "wc": [
+     0.0005,
+     0.0005
+    ],
+    "wball": [
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "color_noise": 0.1,
+  "minibatch_size": 128,
+  "crop": "256 -> 224 (crop_border 16), pending OQ-LEDGER-1",
+  "schedule": [
+   {
+    "epoch": 25,
+    "set": "epsW 0.001 on all weighted layers"
+   },
+   {
+    "epoch": 51,
+    "set": "epsW 0.0001"
+   },
+   {
+    "epoch": 67,
+    "set": "conv1a/conv1b epsW 0.00001; color_noise 0",
+    "optional": true
+   },
+   {
+    "epoch": 72,
+    "set": "conv1a/conv1b epsW 0",
+    "optional": true
+   },
+   {
+    "epoch": 79,
+    "set": "epsW 0.00001"
+   },
+   {
+    "epoch": 91,
+    "set": "stop"
+   }
+  ],
+  "variants": {
+   "literal": "apply every run1 transition at its recorded epoch, including the optional conv1 and colour-noise steps",
+   "plateau": "paper procedure: divide epsW by 10 when validation error stops improving; record the epochs actually used"
+  },
+  "note": "The epoch numbers are the original's, made by hand when error plateaued; a fresh run with different data order may plateau elsewhere."
+ },
+ "uncertainties": [
+  {
+   "id": "OQ-EXP-1",
+   "topic": "Starting rates",
+   "detail": "Start epsW 0.01 and colour noise 0.1 are inferred from the first 'from' values, not written down. epsB is 0.02 in the file and no comment ever changes it; whether the bias rate was also scaled down is unknown.",
+   "citations": [
+    {
+     "path": "layers/layer-params-145.cfg",
+     "line": 169,
+     "token": "from 0.01"
+    },
+    {
+     "path": "layers/layer-params-145.cfg",
+     "line": 19,
+     "token": "epsB=0.02"
+    }
+   ]
+  },
+  {
+   "id": "OQ-EXP-2",
+   "topic": "Pauses and host moves",
+   "detail": "run1 paused at epochs 36 and 58 and moved hosts; RNG state, data order and any parameter changes during the pauses are not recorded.",
+   "citations": [
+    {
+     "path": "layers/layer-params-145.cfg",
+     "line": 170,
+     "token": "paused for localization experiments"
+    },
+    {
+     "path": "layers/layer-params-145.cfg",
+     "line": 176,
+     "token": "moved to guppy8"
+    }
+   ]
+  },
+  {
+   "id": "OQ-EXP-3",
+   "topic": "Views for the run1 result",
+   "detail": "Line 182 is not labelled; line 202 labels the later result as multiview. Assumed single-view.",
+   "citations": [
+    {
+     "path": "layers/layer-params-145.cfg",
+     "line": 182,
+     "token": "logprob:"
+    },
+    {
+     "path": "layers/layer-params-145.cfg",
+     "line": 202,
+     "token": "multiview test:"
+    }
+   ]
+  },
+  {
+   "id": "OQ-EXP-4",
+   "topic": "Missing framework modules",
+   "detail": "convnet.py imports gpumodel, options, data and util, which are not in the release; the epoch loop, test frequency, checkpoint and option-parser defaults beyond convnet.py are unknown.",
+   "citation": {
+    "path": "convnet.py",
+    "line": 7,
+    "token": "from gpumodel import *"
+   }
+  },
+  {
+   "id": "OQ-EXP-5",
+   "topic": "Dataset preparation",
+   "detail": "batches.meta (img_size, data_mean, color_pca, batch_size, label_offset) and the JPEG batch preparation script are not in the release; resize method, crop source size and PCA statistics must be reconstructed and recorded.",
+   "citation": {
+    "path": "convdata.py",
+    "line": 40,
+    "token": "self.batch_meta['color_pca']"
+   }
+  },
+  {
+   "id": "OQ-EXP-6",
+   "topic": "'2012-full'",
+   "detail": "Unclear whether this was train+val or another variant; it has no recorded result and is not the target.",
+   "citation": {
+    "path": "layers/layer-params-145.cfg",
+    "line": 184,
+    "token": "2012-full"
+   }
+  },
+  {
+   "id": "OQ-EXP-7",
+   "topic": "run4.sh",
+   "detail": "run4.sh resumes layers-120-4gpu checkpoints; context only, not part of this experiment.",
+   "citation": {
+    "path": "run4.sh",
+    "line": 3,
+    "token": "layers-120-4gpu"
+   }
+  }
+ ]
+}
