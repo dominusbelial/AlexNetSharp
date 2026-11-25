@@ -158,6 +158,24 @@ candidates and unused when `quantF=default`, `quantB=default`.)*
   `prod += (img == ma) * mg`. **If multiple pixels inside a pooling window tie for the maximum `ma`, every tied pixel
   receives the full upstream gradient `mg` (not divided by tie count, and not first-winner-only).**
 
+ANX-7 reverified details omitted by the original summary:
+- Max starts at **finite `-2e38f`**, not negative infinity, and calls `fmaxf`
+  (A:`include/cudaconv2/conv_util.cuh:84-94`). NaN inputs are ignored; an all-NaN,
+  empty or entirely-below-seed window returns the seed. Mixed signed zeros choose
+  positive zero; an all-negative-zero window retains negative zero. Numeric-NaN
+  behavior follows NVIDIA's [CUDA math API](https://docs.nvidia.com/cuda/archive/8.0/cuda-math-api/group__CUDA__MATH__SINGLE.html);
+  zero ordering follows [PTX max](https://docs.nvidia.com/cuda/pdf/ptx_isa_8.7.pdf).
+- Max undo multiplies the equality mask by the upstream value, rather than skipping
+  false matches (A:`src/cudaconv2/conv_util.cu:1555-1559`): NaN upstream contaminates
+  every pixel in its window, including non-winners (`0*NaN`). NaN inputs compare
+  unequal and receive zero for finite upstream. Overlaps sum in output y/x order.
+- Average sums real pixels and divides by **clipped area**, not `sizeX²`
+  (A:`include/cudaconv2/conv_util.cuh:71-80,161-186`); undo multiplies upstream by
+  the reciprocal clipped area (A:`src/cudaconv2/conv_util.cu:1430-1446`).
+- Backward scale zero with output scale one overwrites without reading the target;
+  otherwise the kernel writes `scaleTargets*target + scaleOutputs*sum`
+  (A:`src/cudaconv2/conv_util.cu:1566-1582,1898-1911`).
+
 ### 6. Spatial response normalisation (`rnorm` -> `convResponseNorm` / `convResponseNormUndo`)
 - Used by `[cnorm2a]` and `[cnorm2b]` (`type=rnorm`, `size=5`, configured `scale=0.001` -> parser divides by `size^2 = 25`
   to pass `_scale = 0.00004`, `_pow = 0.75`; `layer.py:1183`).

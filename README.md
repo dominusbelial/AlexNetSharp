@@ -20,8 +20,9 @@ Early. Done so far:
 | ANX-4 | Tensor layouts, parameter buffers (60,965,224 parameters) and the original's overwrite-vs-accumulate gradient semantics | [ANX-4](docs/reports/ANX-4_REPORT.md) |
 | ANX-5 | Scalar reference convolution (forward, input/weight/bias gradients, `partialSum`), exact-rational fixtures, 3,824 finite-difference checks, conv1's partial edge window proven on real pixels | [ANX-5](docs/reports/ANX-5_REPORT.md) |
 | ANX-6 | Managed SIMD CPU convolution, bitwise scalar parity and thread determinism, bounded workspace, batch-128 benchmark | [ANX-6](docs/reports/ANX-6_REPORT.md) |
+| ANX-7 | Scalar and SIMD max/average pooling and ReLU, edge/tie/NaN fixtures, numerical gradients and batch-128 timings | [ANX-7](docs/reports/ANX-7_REPORT.md) |
 
-Next: pooling, normalisation and the fully connected layers, the trainer, and the web explorer.
+Next: normalisation and the fully connected layers, the trainer, and the web explorer.
 
 ## Layout
 
@@ -53,6 +54,16 @@ scalar and optimized operations at batch 2, and prints training-run projections:
 ```sh
 dotnet run -c Release --project tests/AlexNetSharp.Tests -- --benchmark-conv
 # Optional: --conv-threads 2 --conv-repeats 3 --conv-output .scratch/conv-benchmark.json
+```
+
+Pooling and ReLU fixtures, numerical gradients, thread determinism and all six 145 pool
+shapes run in the default suite. The full mode additionally repeats real pool parity
+at every tested thread count. Batch-128 pool timings (including scalar comparisons
+and the four post-pool ReLUs) run separately:
+
+```sh
+dotnet run -c Release --project tests/AlexNetSharp.Tests -- --benchmark-pool
+# Optional: --pool-output .scratch/pool-benchmark.json
 ```
 
 ImageNet data is not part of this repository.
