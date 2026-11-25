@@ -118,9 +118,14 @@ All non-data layers also inherit `neuron=""` (`layer.py:374`), `gpu=inputLayers[
 `conv4b_neuron`, `pool3a_neuron`, `pool3b_neuron`, `fc2048a_neuron`, `fc2048b_neuron`, `fc2048ba_neuron`, `fc2048bb_neuron`.
 
 Total trainable parameters across the 15 weighted sections (22 weight matrices + 15 bias vectors):
-- Convolutional weights + biases: `2*(363*48 + 48) + 2*(1200*128 + 128) + 2*(2*1152*192 + 192) + 2*(1728*192 + 192) + 2*(1728*128 + 128) = 2,332,704`.
+- Convolutional weights + biases: `2*(363*48 + 48) + 2*(1200*128 + 128) + 2*(2*1152*192 + 192) + 2*(1728*192 + 192) + 2*(1728*128 + 128) = 2,334,080`.
 - Fully-connected weights + biases: `2*(2*4608*2048 + 2048) + 2*(2*2048*2048 + 2048) + (2*2048*1000 + 1000) = 58,631,144`.
-- **Grand total:** **`60,963,848` FP32 parameters** (`~232.56 MiB` per copy).
+- **Grand total:** **`60,965,224` FP32 parameters** (`~232.56 MiB` per copy).
+
+ANX-3 correction: the original displayed convolution subtotal omitted its 1,376 biases despite including them
+in the formula. Weight entries alone total 60,954,656; biases total 10,568 (`layer.py:883-884,1070-1073`).
+Every shape field for both 224 and 227 crops, including detached neurons and partial-window flags, is recorded
+in each layer's `shape.inference_by_inner_size` in `ledger.json` and machine checked.
 
 ---
 

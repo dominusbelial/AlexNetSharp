@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text.Json.Nodes;
 using AlexNetSharp.Tests;
 
 try
@@ -44,6 +45,8 @@ try
         LedgerAndManifestChecks.VerifyLedger(origRoot, ledgerPath, fileCache, cfgSections, errors);
 
     int linkedParams = SpecLinkChecks.VerifyParserAgainstLedger(origRoot, ledgerPath, errors);
+    int linkedShapes = ShapeSpecLinkChecks.Verify(ShapeTests.Parse145(origRoot),
+        JsonNode.Parse(File.ReadAllText(ledgerPath))!, errors);
 
     int weightedCount = 0;
     int manifestCitations = 0;
@@ -64,16 +67,19 @@ try
     Console.WriteLine(ledgerOnly
         ? $"SPEC CHECK PASSED (ledger-only): {secCount} sections, {typeCount} layer types, {linkedParams} parser params linked, {ledgerCitations} citations verified."
         : $"SPEC CHECK PASSED: {secCount} sections, {typeCount} layer types, {weightedCount} weighted layers, {linkedParams} parser params linked, {ledgerCitations + manifestCitations} total citations verified.");
+    Console.WriteLine($"SHAPE SPEC LINK PASSED: {linkedShapes} fields, 49 layers at each of 224 and 227.");
 
     if (ledgerOnly || specOnly)
         return 0;
 
     int goldenPassed = GoldenParseTests.RunAll(repoRoot, origRoot);
     int errorPassed = ConfigParserErrorTests.RunAll();
+    int shapesPassed = ShapeTests.RunAll(repoRoot, origRoot);
     sw.Stop();
 
     Console.WriteLine(
         $"CONFIG PARSER TESTS PASSED: {goldenPassed} golden/smoke tests + {errorPassed} error/INI rule tests ({goldenPassed + errorPassed} total) in {sw.ElapsedMilliseconds} ms.");
+    Console.WriteLine($"SHAPE TESTS PASSED: {shapesPassed} full-network, hand, boundary/error and ledger enforcement tests.");
     return 0;
 }
 catch (Exception ex)

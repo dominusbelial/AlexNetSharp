@@ -395,8 +395,8 @@ public static class NetworkConfigParser
         var effFilters = new int[n];
         for (int i = 0; i < n; i++)
             effFilters[i] = filters[i] * groups[i];
-        if (effFilters.Distinct().Count() != 1)
-            throw new LayerParsingException($"Layer '{name}': all inputs must produce equally-dimensioned output.", name);
+        // Output equality also depends on spatial dimensions. Check it in shape inference so
+        // the original diagnostic can include every CxHxW (layer.py:1011-1012, ANX-3).
 
         var defaultFc = new int[n];
         for (int i = 0; i < n; i++)
@@ -463,8 +463,8 @@ public static class NetworkConfigParser
         d.PoolKind = doc.SafeGet(name, "pool");
         d.RequiresParams = d.PoolKind == "rand";
 
-        NetworkConfigValidators.VerifyIntRange(name, d.PoolSizeX, "sizeX", 1, null);
-        NetworkConfigValidators.VerifyIntRange(name, d.PoolStride, "stride", 1, d.PoolSizeX);
+        // sizeX's original range includes imgSize; validate sizeX, then stride, in shapes
+        // to retain the original bounds and diagnostic order (layer.py:1148-1149).
         NetworkConfigValidators.VerifyIntRange(name, d.PoolOutputsX, "outputsX", 0, null);
         NetworkConfigValidators.VerifyIntRange(name, d.SingleChannels, "channels", 1, null);
         NetworkConfigValidators.VerifyStrIn(name, d.PoolKind, "pool", AllowedPoolKinds);
@@ -490,7 +490,7 @@ public static class NetworkConfigParser
         }
         else
         {
-            NetworkConfigValidators.VerifyIntRange(name, d.NormSize, "size", 1, null);
+            // Spatial size's original range is 1..imgSize, checked in shapes (layer.py:1207).
             if (d.SingleChannels > 3 && d.SingleChannels % 4 != 0)
             {
                 throw new LayerParsingException(

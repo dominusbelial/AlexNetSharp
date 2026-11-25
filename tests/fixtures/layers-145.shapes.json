@@ -1,0 +1,2731 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "inner_size": 224,
+      "classes": 1000,
+      "layers": [
+        {
+          "name": "data",
+          "type": "data",
+          "inputs": [],
+          "num_inputs": [],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 150528,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "labels",
+          "type": "data",
+          "inputs": [],
+          "num_inputs": [],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 1,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "conv1a",
+          "type": "conv",
+          "inputs": [
+            "data"
+          ],
+          "num_inputs": [
+            150528
+          ],
+          "img_size": [
+            224
+          ],
+          "channels": [
+            3
+          ],
+          "modules_x": 55,
+          "modules": 3025,
+          "outputs_x": null,
+          "outputs": 145200,
+          "filter_channels": [
+            3
+          ],
+          "filter_pixels": [
+            121
+          ],
+          "weights_shapes": [
+            [
+              363,
+              48
+            ]
+          ],
+          "biases_shape": [
+            48,
+            1
+          ],
+          "partial_boundary_window": [
+            true
+          ]
+        },
+        {
+          "name": "conv1b",
+          "type": "conv",
+          "inputs": [
+            "data"
+          ],
+          "num_inputs": [
+            150528
+          ],
+          "img_size": [
+            224
+          ],
+          "channels": [
+            3
+          ],
+          "modules_x": 55,
+          "modules": 3025,
+          "outputs_x": null,
+          "outputs": 145200,
+          "filter_channels": [
+            3
+          ],
+          "filter_pixels": [
+            121
+          ],
+          "weights_shapes": [
+            [
+              363,
+              48
+            ]
+          ],
+          "biases_shape": [
+            48,
+            1
+          ],
+          "partial_boundary_window": [
+            true
+          ]
+        },
+        {
+          "name": "rnorm1a",
+          "type": "cmrnorm",
+          "inputs": [
+            "conv1a"
+          ],
+          "num_inputs": [
+            145200
+          ],
+          "img_size": [
+            55
+          ],
+          "channels": [
+            48
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 145200,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "rnorm1b",
+          "type": "cmrnorm",
+          "inputs": [
+            "conv1b"
+          ],
+          "num_inputs": [
+            145200
+          ],
+          "img_size": [
+            55
+          ],
+          "channels": [
+            48
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 145200,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "pool1a",
+          "type": "pool",
+          "inputs": [
+            "rnorm1a"
+          ],
+          "num_inputs": [
+            145200
+          ],
+          "img_size": [
+            55
+          ],
+          "channels": [
+            48
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": 27,
+          "outputs": 34992,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "pool1b",
+          "type": "pool",
+          "inputs": [
+            "rnorm1b"
+          ],
+          "num_inputs": [
+            145200
+          ],
+          "img_size": [
+            55
+          ],
+          "channels": [
+            48
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": 27,
+          "outputs": 34992,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "conv2a",
+          "type": "conv",
+          "inputs": [
+            "pool1a_neuron"
+          ],
+          "num_inputs": [
+            34992
+          ],
+          "img_size": [
+            27
+          ],
+          "channels": [
+            48
+          ],
+          "modules_x": 27,
+          "modules": 729,
+          "outputs_x": null,
+          "outputs": 93312,
+          "filter_channels": [
+            48
+          ],
+          "filter_pixels": [
+            25
+          ],
+          "weights_shapes": [
+            [
+              1200,
+              128
+            ]
+          ],
+          "biases_shape": [
+            128,
+            1
+          ],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "conv2b",
+          "type": "conv",
+          "inputs": [
+            "pool1b_neuron"
+          ],
+          "num_inputs": [
+            34992
+          ],
+          "img_size": [
+            27
+          ],
+          "channels": [
+            48
+          ],
+          "modules_x": 27,
+          "modules": 729,
+          "outputs_x": null,
+          "outputs": 93312,
+          "filter_channels": [
+            48
+          ],
+          "filter_pixels": [
+            25
+          ],
+          "weights_shapes": [
+            [
+              1200,
+              128
+            ]
+          ],
+          "biases_shape": [
+            128,
+            1
+          ],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "rnorm2a",
+          "type": "cmrnorm",
+          "inputs": [
+            "conv2a_neuron"
+          ],
+          "num_inputs": [
+            93312
+          ],
+          "img_size": [
+            27
+          ],
+          "channels": [
+            128
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 93312,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "rnorm2b",
+          "type": "cmrnorm",
+          "inputs": [
+            "conv2b_neuron"
+          ],
+          "num_inputs": [
+            93312
+          ],
+          "img_size": [
+            27
+          ],
+          "channels": [
+            128
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 93312,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "cnorm2a",
+          "type": "rnorm",
+          "inputs": [
+            "rnorm2a"
+          ],
+          "num_inputs": [
+            93312
+          ],
+          "img_size": [
+            27
+          ],
+          "channels": [
+            128
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 93312,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "cnorm2b",
+          "type": "rnorm",
+          "inputs": [
+            "rnorm2b"
+          ],
+          "num_inputs": [
+            93312
+          ],
+          "img_size": [
+            27
+          ],
+          "channels": [
+            128
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 93312,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "pool2a",
+          "type": "pool",
+          "inputs": [
+            "cnorm2a"
+          ],
+          "num_inputs": [
+            93312
+          ],
+          "img_size": [
+            27
+          ],
+          "channels": [
+            128
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": 13,
+          "outputs": 21632,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "pool2b",
+          "type": "pool",
+          "inputs": [
+            "cnorm2b"
+          ],
+          "num_inputs": [
+            93312
+          ],
+          "img_size": [
+            27
+          ],
+          "channels": [
+            128
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": 13,
+          "outputs": 21632,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "conv3a",
+          "type": "conv",
+          "inputs": [
+            "pool2a",
+            "pool2b"
+          ],
+          "num_inputs": [
+            21632,
+            21632
+          ],
+          "img_size": [
+            13,
+            13
+          ],
+          "channels": [
+            128,
+            128
+          ],
+          "modules_x": 13,
+          "modules": 169,
+          "outputs_x": null,
+          "outputs": 32448,
+          "filter_channels": [
+            128,
+            128
+          ],
+          "filter_pixels": [
+            9,
+            9
+          ],
+          "weights_shapes": [
+            [
+              1152,
+              192
+            ],
+            [
+              1152,
+              192
+            ]
+          ],
+          "biases_shape": [
+            192,
+            1
+          ],
+          "partial_boundary_window": [
+            false,
+            false
+          ]
+        },
+        {
+          "name": "conv3b",
+          "type": "conv",
+          "inputs": [
+            "pool2a",
+            "pool2b"
+          ],
+          "num_inputs": [
+            21632,
+            21632
+          ],
+          "img_size": [
+            13,
+            13
+          ],
+          "channels": [
+            128,
+            128
+          ],
+          "modules_x": 13,
+          "modules": 169,
+          "outputs_x": null,
+          "outputs": 32448,
+          "filter_channels": [
+            128,
+            128
+          ],
+          "filter_pixels": [
+            9,
+            9
+          ],
+          "weights_shapes": [
+            [
+              1152,
+              192
+            ],
+            [
+              1152,
+              192
+            ]
+          ],
+          "biases_shape": [
+            192,
+            1
+          ],
+          "partial_boundary_window": [
+            false,
+            false
+          ]
+        },
+        {
+          "name": "conv4a",
+          "type": "conv",
+          "inputs": [
+            "conv3a_neuron"
+          ],
+          "num_inputs": [
+            32448
+          ],
+          "img_size": [
+            13
+          ],
+          "channels": [
+            192
+          ],
+          "modules_x": 13,
+          "modules": 169,
+          "outputs_x": null,
+          "outputs": 32448,
+          "filter_channels": [
+            192
+          ],
+          "filter_pixels": [
+            9
+          ],
+          "weights_shapes": [
+            [
+              1728,
+              192
+            ]
+          ],
+          "biases_shape": [
+            192,
+            1
+          ],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "conv4b",
+          "type": "conv",
+          "inputs": [
+            "conv3b_neuron"
+          ],
+          "num_inputs": [
+            32448
+          ],
+          "img_size": [
+            13
+          ],
+          "channels": [
+            192
+          ],
+          "modules_x": 13,
+          "modules": 169,
+          "outputs_x": null,
+          "outputs": 32448,
+          "filter_channels": [
+            192
+          ],
+          "filter_pixels": [
+            9
+          ],
+          "weights_shapes": [
+            [
+              1728,
+              192
+            ]
+          ],
+          "biases_shape": [
+            192,
+            1
+          ],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "conv5a",
+          "type": "conv",
+          "inputs": [
+            "conv4a_neuron"
+          ],
+          "num_inputs": [
+            32448
+          ],
+          "img_size": [
+            13
+          ],
+          "channels": [
+            192
+          ],
+          "modules_x": 13,
+          "modules": 169,
+          "outputs_x": null,
+          "outputs": 21632,
+          "filter_channels": [
+            192
+          ],
+          "filter_pixels": [
+            9
+          ],
+          "weights_shapes": [
+            [
+              1728,
+              128
+            ]
+          ],
+          "biases_shape": [
+            128,
+            1
+          ],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "conv5b",
+          "type": "conv",
+          "inputs": [
+            "conv4b_neuron"
+          ],
+          "num_inputs": [
+            32448
+          ],
+          "img_size": [
+            13
+          ],
+          "channels": [
+            192
+          ],
+          "modules_x": 13,
+          "modules": 169,
+          "outputs_x": null,
+          "outputs": 21632,
+          "filter_channels": [
+            192
+          ],
+          "filter_pixels": [
+            9
+          ],
+          "weights_shapes": [
+            [
+              1728,
+              128
+            ]
+          ],
+          "biases_shape": [
+            128,
+            1
+          ],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "pool3a",
+          "type": "pool",
+          "inputs": [
+            "conv5a"
+          ],
+          "num_inputs": [
+            21632
+          ],
+          "img_size": [
+            13
+          ],
+          "channels": [
+            128
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": 6,
+          "outputs": 4608,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "pool3b",
+          "type": "pool",
+          "inputs": [
+            "conv5b"
+          ],
+          "num_inputs": [
+            21632
+          ],
+          "img_size": [
+            13
+          ],
+          "channels": [
+            128
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": 6,
+          "outputs": 4608,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "fc2048a",
+          "type": "fc",
+          "inputs": [
+            "pool3a_neuron",
+            "pool3b_neuron"
+          ],
+          "num_inputs": [
+            4608,
+            4608
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [
+            [
+              4608,
+              2048
+            ],
+            [
+              4608,
+              2048
+            ]
+          ],
+          "biases_shape": [
+            1,
+            2048
+          ],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "fc2048b",
+          "type": "fc",
+          "inputs": [
+            "pool3a_neuron",
+            "pool3b_neuron"
+          ],
+          "num_inputs": [
+            4608,
+            4608
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [
+            [
+              4608,
+              2048
+            ],
+            [
+              4608,
+              2048
+            ]
+          ],
+          "biases_shape": [
+            1,
+            2048
+          ],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "hs1a",
+          "type": "hs",
+          "inputs": [
+            "fc2048a_neuron"
+          ],
+          "num_inputs": [
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "hs1b",
+          "type": "hs",
+          "inputs": [
+            "fc2048b_neuron"
+          ],
+          "num_inputs": [
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "fc2048ba",
+          "type": "fc",
+          "inputs": [
+            "hs1a",
+            "hs1b"
+          ],
+          "num_inputs": [
+            2048,
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [
+            [
+              2048,
+              2048
+            ],
+            [
+              2048,
+              2048
+            ]
+          ],
+          "biases_shape": [
+            1,
+            2048
+          ],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "fc2048bb",
+          "type": "fc",
+          "inputs": [
+            "hs1b",
+            "hs1a"
+          ],
+          "num_inputs": [
+            2048,
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [
+            [
+              2048,
+              2048
+            ],
+            [
+              2048,
+              2048
+            ]
+          ],
+          "biases_shape": [
+            1,
+            2048
+          ],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "hs2a",
+          "type": "hs",
+          "inputs": [
+            "fc2048ba_neuron"
+          ],
+          "num_inputs": [
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "hs2b",
+          "type": "hs",
+          "inputs": [
+            "fc2048bb_neuron"
+          ],
+          "num_inputs": [
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "fc1000",
+          "type": "fc",
+          "inputs": [
+            "hs2a",
+            "hs2b"
+          ],
+          "num_inputs": [
+            2048,
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 1000,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [
+            [
+              2048,
+              1000
+            ],
+            [
+              2048,
+              1000
+            ]
+          ],
+          "biases_shape": [
+            1,
+            1000
+          ],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "probs",
+          "type": "softmax",
+          "inputs": [
+            "fc1000"
+          ],
+          "num_inputs": [
+            1000
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 1000,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "logprob",
+          "type": "cost.logreg",
+          "inputs": [
+            "labels",
+            "probs"
+          ],
+          "num_inputs": [
+            1,
+            1000
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 0,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "pool1a_neuron",
+          "type": "neuron",
+          "inputs": [
+            "pool1a"
+          ],
+          "num_inputs": [
+            34992
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 34992,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "pool1b_neuron",
+          "type": "neuron",
+          "inputs": [
+            "pool1b"
+          ],
+          "num_inputs": [
+            34992
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 34992,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "conv2a_neuron",
+          "type": "neuron",
+          "inputs": [
+            "conv2a"
+          ],
+          "num_inputs": [
+            93312
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 93312,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "conv2b_neuron",
+          "type": "neuron",
+          "inputs": [
+            "conv2b"
+          ],
+          "num_inputs": [
+            93312
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 93312,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "conv3a_neuron",
+          "type": "neuron",
+          "inputs": [
+            "conv3a"
+          ],
+          "num_inputs": [
+            32448
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 32448,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "conv3b_neuron",
+          "type": "neuron",
+          "inputs": [
+            "conv3b"
+          ],
+          "num_inputs": [
+            32448
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 32448,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "conv4a_neuron",
+          "type": "neuron",
+          "inputs": [
+            "conv4a"
+          ],
+          "num_inputs": [
+            32448
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 32448,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "conv4b_neuron",
+          "type": "neuron",
+          "inputs": [
+            "conv4b"
+          ],
+          "num_inputs": [
+            32448
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 32448,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "pool3a_neuron",
+          "type": "neuron",
+          "inputs": [
+            "pool3a"
+          ],
+          "num_inputs": [
+            4608
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 4608,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "pool3b_neuron",
+          "type": "neuron",
+          "inputs": [
+            "pool3b"
+          ],
+          "num_inputs": [
+            4608
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 4608,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "fc2048a_neuron",
+          "type": "neuron",
+          "inputs": [
+            "fc2048a"
+          ],
+          "num_inputs": [
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "fc2048b_neuron",
+          "type": "neuron",
+          "inputs": [
+            "fc2048b"
+          ],
+          "num_inputs": [
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "fc2048ba_neuron",
+          "type": "neuron",
+          "inputs": [
+            "fc2048ba"
+          ],
+          "num_inputs": [
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "fc2048bb_neuron",
+          "type": "neuron",
+          "inputs": [
+            "fc2048bb"
+          ],
+          "num_inputs": [
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        }
+      ],
+      "weight_parameter_count": 60954656,
+      "bias_parameter_count": 10568
+    },
+    {
+      "inner_size": 227,
+      "classes": 1000,
+      "layers": [
+        {
+          "name": "data",
+          "type": "data",
+          "inputs": [],
+          "num_inputs": [],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 154587,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "labels",
+          "type": "data",
+          "inputs": [],
+          "num_inputs": [],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 1,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "conv1a",
+          "type": "conv",
+          "inputs": [
+            "data"
+          ],
+          "num_inputs": [
+            154587
+          ],
+          "img_size": [
+            227
+          ],
+          "channels": [
+            3
+          ],
+          "modules_x": 55,
+          "modules": 3025,
+          "outputs_x": null,
+          "outputs": 145200,
+          "filter_channels": [
+            3
+          ],
+          "filter_pixels": [
+            121
+          ],
+          "weights_shapes": [
+            [
+              363,
+              48
+            ]
+          ],
+          "biases_shape": [
+            48,
+            1
+          ],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "conv1b",
+          "type": "conv",
+          "inputs": [
+            "data"
+          ],
+          "num_inputs": [
+            154587
+          ],
+          "img_size": [
+            227
+          ],
+          "channels": [
+            3
+          ],
+          "modules_x": 55,
+          "modules": 3025,
+          "outputs_x": null,
+          "outputs": 145200,
+          "filter_channels": [
+            3
+          ],
+          "filter_pixels": [
+            121
+          ],
+          "weights_shapes": [
+            [
+              363,
+              48
+            ]
+          ],
+          "biases_shape": [
+            48,
+            1
+          ],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "rnorm1a",
+          "type": "cmrnorm",
+          "inputs": [
+            "conv1a"
+          ],
+          "num_inputs": [
+            145200
+          ],
+          "img_size": [
+            55
+          ],
+          "channels": [
+            48
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 145200,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "rnorm1b",
+          "type": "cmrnorm",
+          "inputs": [
+            "conv1b"
+          ],
+          "num_inputs": [
+            145200
+          ],
+          "img_size": [
+            55
+          ],
+          "channels": [
+            48
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 145200,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "pool1a",
+          "type": "pool",
+          "inputs": [
+            "rnorm1a"
+          ],
+          "num_inputs": [
+            145200
+          ],
+          "img_size": [
+            55
+          ],
+          "channels": [
+            48
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": 27,
+          "outputs": 34992,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "pool1b",
+          "type": "pool",
+          "inputs": [
+            "rnorm1b"
+          ],
+          "num_inputs": [
+            145200
+          ],
+          "img_size": [
+            55
+          ],
+          "channels": [
+            48
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": 27,
+          "outputs": 34992,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "conv2a",
+          "type": "conv",
+          "inputs": [
+            "pool1a_neuron"
+          ],
+          "num_inputs": [
+            34992
+          ],
+          "img_size": [
+            27
+          ],
+          "channels": [
+            48
+          ],
+          "modules_x": 27,
+          "modules": 729,
+          "outputs_x": null,
+          "outputs": 93312,
+          "filter_channels": [
+            48
+          ],
+          "filter_pixels": [
+            25
+          ],
+          "weights_shapes": [
+            [
+              1200,
+              128
+            ]
+          ],
+          "biases_shape": [
+            128,
+            1
+          ],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "conv2b",
+          "type": "conv",
+          "inputs": [
+            "pool1b_neuron"
+          ],
+          "num_inputs": [
+            34992
+          ],
+          "img_size": [
+            27
+          ],
+          "channels": [
+            48
+          ],
+          "modules_x": 27,
+          "modules": 729,
+          "outputs_x": null,
+          "outputs": 93312,
+          "filter_channels": [
+            48
+          ],
+          "filter_pixels": [
+            25
+          ],
+          "weights_shapes": [
+            [
+              1200,
+              128
+            ]
+          ],
+          "biases_shape": [
+            128,
+            1
+          ],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "rnorm2a",
+          "type": "cmrnorm",
+          "inputs": [
+            "conv2a_neuron"
+          ],
+          "num_inputs": [
+            93312
+          ],
+          "img_size": [
+            27
+          ],
+          "channels": [
+            128
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 93312,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "rnorm2b",
+          "type": "cmrnorm",
+          "inputs": [
+            "conv2b_neuron"
+          ],
+          "num_inputs": [
+            93312
+          ],
+          "img_size": [
+            27
+          ],
+          "channels": [
+            128
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 93312,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "cnorm2a",
+          "type": "rnorm",
+          "inputs": [
+            "rnorm2a"
+          ],
+          "num_inputs": [
+            93312
+          ],
+          "img_size": [
+            27
+          ],
+          "channels": [
+            128
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 93312,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "cnorm2b",
+          "type": "rnorm",
+          "inputs": [
+            "rnorm2b"
+          ],
+          "num_inputs": [
+            93312
+          ],
+          "img_size": [
+            27
+          ],
+          "channels": [
+            128
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 93312,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "pool2a",
+          "type": "pool",
+          "inputs": [
+            "cnorm2a"
+          ],
+          "num_inputs": [
+            93312
+          ],
+          "img_size": [
+            27
+          ],
+          "channels": [
+            128
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": 13,
+          "outputs": 21632,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "pool2b",
+          "type": "pool",
+          "inputs": [
+            "cnorm2b"
+          ],
+          "num_inputs": [
+            93312
+          ],
+          "img_size": [
+            27
+          ],
+          "channels": [
+            128
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": 13,
+          "outputs": 21632,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "conv3a",
+          "type": "conv",
+          "inputs": [
+            "pool2a",
+            "pool2b"
+          ],
+          "num_inputs": [
+            21632,
+            21632
+          ],
+          "img_size": [
+            13,
+            13
+          ],
+          "channels": [
+            128,
+            128
+          ],
+          "modules_x": 13,
+          "modules": 169,
+          "outputs_x": null,
+          "outputs": 32448,
+          "filter_channels": [
+            128,
+            128
+          ],
+          "filter_pixels": [
+            9,
+            9
+          ],
+          "weights_shapes": [
+            [
+              1152,
+              192
+            ],
+            [
+              1152,
+              192
+            ]
+          ],
+          "biases_shape": [
+            192,
+            1
+          ],
+          "partial_boundary_window": [
+            false,
+            false
+          ]
+        },
+        {
+          "name": "conv3b",
+          "type": "conv",
+          "inputs": [
+            "pool2a",
+            "pool2b"
+          ],
+          "num_inputs": [
+            21632,
+            21632
+          ],
+          "img_size": [
+            13,
+            13
+          ],
+          "channels": [
+            128,
+            128
+          ],
+          "modules_x": 13,
+          "modules": 169,
+          "outputs_x": null,
+          "outputs": 32448,
+          "filter_channels": [
+            128,
+            128
+          ],
+          "filter_pixels": [
+            9,
+            9
+          ],
+          "weights_shapes": [
+            [
+              1152,
+              192
+            ],
+            [
+              1152,
+              192
+            ]
+          ],
+          "biases_shape": [
+            192,
+            1
+          ],
+          "partial_boundary_window": [
+            false,
+            false
+          ]
+        },
+        {
+          "name": "conv4a",
+          "type": "conv",
+          "inputs": [
+            "conv3a_neuron"
+          ],
+          "num_inputs": [
+            32448
+          ],
+          "img_size": [
+            13
+          ],
+          "channels": [
+            192
+          ],
+          "modules_x": 13,
+          "modules": 169,
+          "outputs_x": null,
+          "outputs": 32448,
+          "filter_channels": [
+            192
+          ],
+          "filter_pixels": [
+            9
+          ],
+          "weights_shapes": [
+            [
+              1728,
+              192
+            ]
+          ],
+          "biases_shape": [
+            192,
+            1
+          ],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "conv4b",
+          "type": "conv",
+          "inputs": [
+            "conv3b_neuron"
+          ],
+          "num_inputs": [
+            32448
+          ],
+          "img_size": [
+            13
+          ],
+          "channels": [
+            192
+          ],
+          "modules_x": 13,
+          "modules": 169,
+          "outputs_x": null,
+          "outputs": 32448,
+          "filter_channels": [
+            192
+          ],
+          "filter_pixels": [
+            9
+          ],
+          "weights_shapes": [
+            [
+              1728,
+              192
+            ]
+          ],
+          "biases_shape": [
+            192,
+            1
+          ],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "conv5a",
+          "type": "conv",
+          "inputs": [
+            "conv4a_neuron"
+          ],
+          "num_inputs": [
+            32448
+          ],
+          "img_size": [
+            13
+          ],
+          "channels": [
+            192
+          ],
+          "modules_x": 13,
+          "modules": 169,
+          "outputs_x": null,
+          "outputs": 21632,
+          "filter_channels": [
+            192
+          ],
+          "filter_pixels": [
+            9
+          ],
+          "weights_shapes": [
+            [
+              1728,
+              128
+            ]
+          ],
+          "biases_shape": [
+            128,
+            1
+          ],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "conv5b",
+          "type": "conv",
+          "inputs": [
+            "conv4b_neuron"
+          ],
+          "num_inputs": [
+            32448
+          ],
+          "img_size": [
+            13
+          ],
+          "channels": [
+            192
+          ],
+          "modules_x": 13,
+          "modules": 169,
+          "outputs_x": null,
+          "outputs": 21632,
+          "filter_channels": [
+            192
+          ],
+          "filter_pixels": [
+            9
+          ],
+          "weights_shapes": [
+            [
+              1728,
+              128
+            ]
+          ],
+          "biases_shape": [
+            128,
+            1
+          ],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "pool3a",
+          "type": "pool",
+          "inputs": [
+            "conv5a"
+          ],
+          "num_inputs": [
+            21632
+          ],
+          "img_size": [
+            13
+          ],
+          "channels": [
+            128
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": 6,
+          "outputs": 4608,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "pool3b",
+          "type": "pool",
+          "inputs": [
+            "conv5b"
+          ],
+          "num_inputs": [
+            21632
+          ],
+          "img_size": [
+            13
+          ],
+          "channels": [
+            128
+          ],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": 6,
+          "outputs": 4608,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": [
+            false
+          ]
+        },
+        {
+          "name": "fc2048a",
+          "type": "fc",
+          "inputs": [
+            "pool3a_neuron",
+            "pool3b_neuron"
+          ],
+          "num_inputs": [
+            4608,
+            4608
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [
+            [
+              4608,
+              2048
+            ],
+            [
+              4608,
+              2048
+            ]
+          ],
+          "biases_shape": [
+            1,
+            2048
+          ],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "fc2048b",
+          "type": "fc",
+          "inputs": [
+            "pool3a_neuron",
+            "pool3b_neuron"
+          ],
+          "num_inputs": [
+            4608,
+            4608
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [
+            [
+              4608,
+              2048
+            ],
+            [
+              4608,
+              2048
+            ]
+          ],
+          "biases_shape": [
+            1,
+            2048
+          ],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "hs1a",
+          "type": "hs",
+          "inputs": [
+            "fc2048a_neuron"
+          ],
+          "num_inputs": [
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "hs1b",
+          "type": "hs",
+          "inputs": [
+            "fc2048b_neuron"
+          ],
+          "num_inputs": [
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "fc2048ba",
+          "type": "fc",
+          "inputs": [
+            "hs1a",
+            "hs1b"
+          ],
+          "num_inputs": [
+            2048,
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [
+            [
+              2048,
+              2048
+            ],
+            [
+              2048,
+              2048
+            ]
+          ],
+          "biases_shape": [
+            1,
+            2048
+          ],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "fc2048bb",
+          "type": "fc",
+          "inputs": [
+            "hs1b",
+            "hs1a"
+          ],
+          "num_inputs": [
+            2048,
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [
+            [
+              2048,
+              2048
+            ],
+            [
+              2048,
+              2048
+            ]
+          ],
+          "biases_shape": [
+            1,
+            2048
+          ],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "hs2a",
+          "type": "hs",
+          "inputs": [
+            "fc2048ba_neuron"
+          ],
+          "num_inputs": [
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "hs2b",
+          "type": "hs",
+          "inputs": [
+            "fc2048bb_neuron"
+          ],
+          "num_inputs": [
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "fc1000",
+          "type": "fc",
+          "inputs": [
+            "hs2a",
+            "hs2b"
+          ],
+          "num_inputs": [
+            2048,
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 1000,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [
+            [
+              2048,
+              1000
+            ],
+            [
+              2048,
+              1000
+            ]
+          ],
+          "biases_shape": [
+            1,
+            1000
+          ],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "probs",
+          "type": "softmax",
+          "inputs": [
+            "fc1000"
+          ],
+          "num_inputs": [
+            1000
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 1000,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "logprob",
+          "type": "cost.logreg",
+          "inputs": [
+            "labels",
+            "probs"
+          ],
+          "num_inputs": [
+            1,
+            1000
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 0,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "pool1a_neuron",
+          "type": "neuron",
+          "inputs": [
+            "pool1a"
+          ],
+          "num_inputs": [
+            34992
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 34992,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "pool1b_neuron",
+          "type": "neuron",
+          "inputs": [
+            "pool1b"
+          ],
+          "num_inputs": [
+            34992
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 34992,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "conv2a_neuron",
+          "type": "neuron",
+          "inputs": [
+            "conv2a"
+          ],
+          "num_inputs": [
+            93312
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 93312,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "conv2b_neuron",
+          "type": "neuron",
+          "inputs": [
+            "conv2b"
+          ],
+          "num_inputs": [
+            93312
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 93312,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "conv3a_neuron",
+          "type": "neuron",
+          "inputs": [
+            "conv3a"
+          ],
+          "num_inputs": [
+            32448
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 32448,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "conv3b_neuron",
+          "type": "neuron",
+          "inputs": [
+            "conv3b"
+          ],
+          "num_inputs": [
+            32448
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 32448,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "conv4a_neuron",
+          "type": "neuron",
+          "inputs": [
+            "conv4a"
+          ],
+          "num_inputs": [
+            32448
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 32448,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "conv4b_neuron",
+          "type": "neuron",
+          "inputs": [
+            "conv4b"
+          ],
+          "num_inputs": [
+            32448
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 32448,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "pool3a_neuron",
+          "type": "neuron",
+          "inputs": [
+            "pool3a"
+          ],
+          "num_inputs": [
+            4608
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 4608,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "pool3b_neuron",
+          "type": "neuron",
+          "inputs": [
+            "pool3b"
+          ],
+          "num_inputs": [
+            4608
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 4608,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "fc2048a_neuron",
+          "type": "neuron",
+          "inputs": [
+            "fc2048a"
+          ],
+          "num_inputs": [
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "fc2048b_neuron",
+          "type": "neuron",
+          "inputs": [
+            "fc2048b"
+          ],
+          "num_inputs": [
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "fc2048ba_neuron",
+          "type": "neuron",
+          "inputs": [
+            "fc2048ba"
+          ],
+          "num_inputs": [
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        },
+        {
+          "name": "fc2048bb_neuron",
+          "type": "neuron",
+          "inputs": [
+            "fc2048bb"
+          ],
+          "num_inputs": [
+            2048
+          ],
+          "img_size": [],
+          "channels": [],
+          "modules_x": null,
+          "modules": null,
+          "outputs_x": null,
+          "outputs": 2048,
+          "filter_channels": [],
+          "filter_pixels": [],
+          "weights_shapes": [],
+          "biases_shape": [],
+          "partial_boundary_window": []
+        }
+      ],
+      "weight_parameter_count": 60954656,
+      "bias_parameter_count": 10568
+    }
+  ]
+}

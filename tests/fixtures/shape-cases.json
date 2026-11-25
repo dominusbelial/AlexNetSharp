@@ -1,0 +1,1181 @@
+{
+  "cases": [
+    {
+      "id": "conv-ceil-differs-from-floor",
+      "citation": "layer.py:1004",
+      "data_dimensions": {
+        "0": 108,
+        "1": 1
+      },
+      "classes": 144,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=3\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "expected": {
+        "img_size": [
+          6
+        ],
+        "modules_x": 3,
+        "modules": 9,
+        "outputs": 144,
+        "filter_channels": [
+          3
+        ],
+        "filter_pixels": [
+          9
+        ],
+        "weights_shapes": [
+          [
+            27,
+            16
+          ]
+        ],
+        "partial_boundary_window": [
+          true
+        ]
+      }
+    },
+    {
+      "id": "conv-ceil-equals-floor",
+      "citation": "layer.py:1004",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 64,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=3\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "expected": {
+        "img_size": [
+          5
+        ],
+        "modules_x": 2,
+        "outputs": 64,
+        "partial_boundary_window": [
+          false
+        ]
+      }
+    },
+    {
+      "id": "conv-padding-already-negated",
+      "citation": "layer.py:1004,1041",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 144,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=3\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\npadding=1\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "expected": {
+        "modules_x": 3,
+        "outputs": 144,
+        "partial_boundary_window": [
+          false
+        ]
+      }
+    },
+    {
+      "id": "conv-padding-and-partial",
+      "citation": "layer.py:1004",
+      "data_dimensions": {
+        "0": 108,
+        "1": 1
+      },
+      "classes": 256,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=3\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\npadding=1\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "expected": {
+        "modules_x": 4,
+        "outputs": 256,
+        "partial_boundary_window": [
+          true
+        ]
+      }
+    },
+    {
+      "id": "conv-stride-one",
+      "citation": "layer.py:1004",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 144,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=3\nfilters=16\nfilterSize=3\nstride=1\ninitW=0.01\npartialSum=0\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "expected": {
+        "modules_x": 3,
+        "outputs": 144,
+        "partial_boundary_window": [
+          false
+        ]
+      }
+    },
+    {
+      "id": "conv-filter-equals-padded-image",
+      "citation": "layer.py:1004",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 16,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=3\nfilters=16\nfilterSize=7\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\npadding=1\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "expected": {
+        "modules_x": 1,
+        "outputs": 16
+      }
+    },
+    {
+      "id": "conv-unshared-biases",
+      "citation": "layer.py:1070-1073",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 64,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=3\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\nsharedBiases=false\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "expected": {
+        "biases_shape": [
+          64,
+          1
+        ],
+        "outputs": 64
+      }
+    },
+    {
+      "id": "conv-valid-partialsum",
+      "citation": "layer.py:1066-1067",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 64,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=3\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=4\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "expected": {
+        "modules": 4,
+        "outputs": 64
+      }
+    },
+    {
+      "id": "conv-nonsquare",
+      "citation": "layer.py:1020-1021",
+      "data_dimensions": {
+        "0": 72,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=3\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target[0]': has 72 dimensional input, not interpretable as square 3-channel images"
+    },
+    {
+      "id": "conv-zero-image-size",
+      "citation": "layer.py:1001",
+      "data_dimensions": {
+        "0": 2,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=3\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target[0]': parameter 'imgSize' must be greater than or equal to 1"
+    },
+    {
+      "id": "conv-filter-too-large",
+      "citation": "layer.py:1024-1025",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=3\nfilters=16\nfilterSize=8\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\npadding=1\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target[0]': filter size (8) greater than image size + 2 * padding (7)"
+    },
+    {
+      "id": "conv-partialsum-does-not-divide",
+      "citation": "layer.py:1066-1067",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=3\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=3\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target': convolutional layer produces 2x2=4 outputs per filter, but given partialSum parameter (3) does not divide this number"
+    },
+    {
+      "id": "conv-range-stride",
+      "citation": "layer.py:992-996",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=3\nfilters=16\nfilterSize=3\nstride=0\ninitW=0.01\npartialSum=0\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target[0]': parameter 'stride' must be greater than or equal to 1"
+    },
+    {
+      "id": "conv-range-filterSize",
+      "citation": "layer.py:992-996",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=3\nfilters=16\nfilterSize=0\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target[0]': parameter 'filterSize' must be greater than or equal to 1"
+    },
+    {
+      "id": "conv-range-channels",
+      "citation": "layer.py:992-996",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=0\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target[0]': parameter 'channels' must be greater than or equal to 1"
+    },
+    {
+      "id": "conv-range-groups",
+      "citation": "layer.py:992-996",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=3\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\ngroups=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target[0]': parameter 'groups' must be greater than or equal to 1"
+    },
+    {
+      "id": "conv-negative-padding",
+      "citation": "layer.py:994",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=3\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\npadding=-1\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target[0]': parameter 'padding' must be greater than or equal to 0"
+    },
+    {
+      "id": "conv-channels-mod-four",
+      "citation": "layer.py:1022-1023",
+      "data_dimensions": {
+        "0": 125,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=5\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target[0]': number of channels must be smaller than 4 or divisible by 4"
+    },
+    {
+      "id": "conv-channels-groups",
+      "citation": "layer.py:1036",
+      "data_dimensions": {
+        "0": 300,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=12\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\ngroups=2\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target[0]': parameter 'channels' must be divisible by '4 * groups'"
+    },
+    {
+      "id": "conv-filters-mod-sixteen",
+      "citation": "layer.py:1039",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=3\nfilters=15\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target[0]': parameter 'filters * groups' must be divisible by 16"
+    },
+    {
+      "id": "conv-group-filters-mod-sixteen",
+      "citation": "layer.py:1002,1039",
+      "data_dimensions": {
+        "0": 200,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=8\nfilters=8\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\ngroups=2\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target[0]': parameter 'filters * groups' must be divisible by 32"
+    },
+    {
+      "id": "conv-grouped-valid",
+      "citation": "layer.py:1002,1006,1036-1039",
+      "data_dimensions": {
+        "0": 200,
+        "1": 1
+      },
+      "classes": 128,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=8\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\ngroups=2\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "expected": {
+        "filter_channels": [
+          4
+        ],
+        "weights_shapes": [
+          [
+            36,
+            32
+          ]
+        ],
+        "outputs": 128
+      }
+    },
+    {
+      "id": "conv-sparse-groups-one",
+      "citation": "layer.py:1028-1029",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=3\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\nrandSparse=true\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target[0]': number of groups must be greater than 1 when using random sparse connectivity"
+    },
+    {
+      "id": "conv-sparse-channel-divisor",
+      "citation": "layer.py:1030",
+      "data_dimensions": {
+        "0": 300,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=12\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\ngroups=2\nrandSparse=true\nfilterChannels=8\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target[0]': parameter 'channels' must be divisible by 'filterChannels'"
+    },
+    {
+      "id": "conv-sparse-filter-channels-four",
+      "citation": "layer.py:1031",
+      "data_dimensions": {
+        "0": 300,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=12\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\ngroups=2\nrandSparse=true\nfilterChannels=6\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target[0]': parameter 'filterChannels' must be divisible by 4"
+    },
+    {
+      "id": "conv-sparse-oversampling",
+      "citation": "layer.py:1032",
+      "data_dimensions": {
+        "0": 300,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=12\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\ngroups=2\nrandSparse=true\nfilterChannels=4\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target[0]': parameter 'groups * filterChannels' must be divisible by 'channels'"
+    },
+    {
+      "id": "conv-sparse-valid",
+      "citation": "layer.py:1007-1009,1030-1032",
+      "data_dimensions": {
+        "0": 400,
+        "1": 1
+      },
+      "classes": 256,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=16\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\ngroups=4\nrandSparse=true\nfilterChannels=8\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "expected": {
+        "filter_channels": [
+          8
+        ],
+        "weights_shapes": [
+          [
+            72,
+            64
+          ]
+        ],
+        "outputs": 256
+      }
+    },
+    {
+      "id": "pool-ceil-partial",
+      "citation": "layer.py:1164-1165",
+      "data_dimensions": {
+        "0": 108,
+        "1": 1
+      },
+      "classes": 27,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=pool\ninputs=data\nchannels=3\nsizeX=3\nstride=2\npool=max\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "expected": {
+        "img_size": [
+          6
+        ],
+        "outputs_x": 3,
+        "outputs": 27,
+        "partial_boundary_window": [
+          true
+        ]
+      }
+    },
+    {
+      "id": "pool-floor-agrees",
+      "citation": "layer.py:1164-1165",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 12,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=pool\ninputs=data\nchannels=3\nsizeX=3\nstride=2\npool=max\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "expected": {
+        "outputs_x": 2,
+        "outputs": 12,
+        "partial_boundary_window": [
+          false
+        ]
+      }
+    },
+    {
+      "id": "pool-nonzero-start",
+      "citation": "layer.py:1139,1164",
+      "data_dimensions": {
+        "0": 147,
+        "1": 1
+      },
+      "classes": 27,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=pool\ninputs=data\nchannels=3\nsizeX=3\nstride=2\npool=max\ngpu=0\nstart=1\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "expected": {
+        "outputs_x": 3,
+        "outputs": 27,
+        "partial_boundary_window": [
+          true
+        ]
+      }
+    },
+    {
+      "id": "pool-negative-start",
+      "citation": "layer.py:1139,1164",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 27,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=pool\ninputs=data\nchannels=3\nsizeX=3\nstride=2\npool=max\ngpu=0\nstart=-1\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "expected": {
+        "outputs_x": 3,
+        "outputs": 27,
+        "partial_boundary_window": [
+          true
+        ]
+      }
+    },
+    {
+      "id": "pool-explicit-outputs",
+      "citation": "layer.py:1163-1165",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 3,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=pool\ninputs=data\nchannels=3\nsizeX=3\nstride=2\npool=max\ngpu=0\noutputsX=1\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "expected": {
+        "outputs_x": 1,
+        "outputs": 3,
+        "partial_boundary_window": [
+          false
+        ]
+      }
+    },
+    {
+      "id": "pool-explicit-past-boundary",
+      "citation": "layer.py:1163-1165",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 75,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=pool\ninputs=data\nchannels=3\nsizeX=3\nstride=2\npool=max\ngpu=0\noutputsX=5\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "expected": {
+        "outputs_x": 5,
+        "outputs": 75,
+        "partial_boundary_window": [
+          true
+        ]
+      }
+    },
+    {
+      "id": "pool-start-past-image-squares-negative-width",
+      "citation": "layer.py:1163-1165",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 27,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=pool\ninputs=data\nchannels=3\nsizeX=3\nstride=2\npool=max\ngpu=0\nstart=10\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "expected": {
+        "outputs_x": -3,
+        "outputs": 27,
+        "partial_boundary_window": [
+          false
+        ]
+      }
+    },
+    {
+      "id": "pool-invalid-sizeX-0",
+      "citation": "layer.py:1148-1161",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=pool\ninputs=data\nchannels=3\nsizeX=0\nstride=2\npool=max\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "error": "Layer 'target': parameter 'sizeX' must be in the range 1-5"
+    },
+    {
+      "id": "pool-invalid-sizeX-6",
+      "citation": "layer.py:1148-1161",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=pool\ninputs=data\nchannels=3\nsizeX=6\nstride=2\npool=max\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "error": "Layer 'target': parameter 'sizeX' must be in the range 1-5"
+    },
+    {
+      "id": "pool-invalid-stride-0",
+      "citation": "layer.py:1148-1161",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=pool\ninputs=data\nchannels=3\nsizeX=3\nstride=0\npool=max\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "error": "Layer 'target': parameter 'stride' must be in the range 1-3"
+    },
+    {
+      "id": "pool-invalid-stride-4",
+      "citation": "layer.py:1148-1161",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=pool\ninputs=data\nchannels=3\nsizeX=3\nstride=4\npool=max\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "error": "Layer 'target': parameter 'stride' must be in the range 1-3"
+    },
+    {
+      "id": "pool-invalid-outputsX--1",
+      "citation": "layer.py:1148-1161",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=pool\ninputs=data\nchannels=3\nsizeX=3\nstride=2\npool=max\ngpu=0\noutputsX=-1\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "error": "Layer 'target': parameter 'outputsX' must be greater than or equal to 0"
+    },
+    {
+      "id": "pool-invalid-channels-0",
+      "citation": "layer.py:1148-1161",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=pool\ninputs=data\nchannels=0\nsizeX=3\nstride=2\npool=max\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "error": "Layer 'target': parameter 'channels' must be greater than or equal to 1"
+    },
+    {
+      "id": "pool-invalid-pool-bogus",
+      "citation": "layer.py:1148-1161",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=pool\ninputs=data\nchannels=3\nsizeX=3\nstride=2\npool=bogus\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "error": "Layer 'target': parameter 'pool' must be one of 'max', 'maxabs', 'avg', 'rand'"
+    },
+    {
+      "id": "pool-nonsquare",
+      "citation": "layer.py:390-391",
+      "data_dimensions": {
+        "0": 72,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=pool\ninputs=data\nchannels=3\nsizeX=3\nstride=2\npool=max\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "error": "Layer 'target': has 72 dimensional input, not interpretable as 3-channel images"
+    },
+    {
+      "id": "pool-kind-maxabs",
+      "citation": "layer.py:1160-1165",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 12,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=pool\ninputs=data\nchannels=3\nsizeX=3\nstride=2\npool=maxabs\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "expected": {
+        "outputs_x": 2,
+        "outputs": 12
+      }
+    },
+    {
+      "id": "pool-kind-avg",
+      "citation": "layer.py:1160-1165",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 12,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=pool\ninputs=data\nchannels=3\nsizeX=3\nstride=2\npool=avg\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "expected": {
+        "outputs_x": 2,
+        "outputs": 12
+      }
+    },
+    {
+      "id": "pool-kind-rand",
+      "citation": "layer.py:1160-1165",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 12,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=pool\ninputs=data\nchannels=3\nsizeX=3\nstride=2\npool=rand\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\ndoMax=false\n[loss]\ncoeff=1\n",
+      "expected": {
+        "outputs_x": 2,
+        "outputs": 12
+      }
+    },
+    {
+      "id": "rnorm-preserves",
+      "citation": "layer.py:1214",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 75,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=rnorm\ninputs=data\nchannels=3\nsize=3\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nscale=0.001\npow=0.75\n[loss]\ncoeff=1\n",
+      "expected": {
+        "img_size": [
+          5
+        ],
+        "channels": [
+          3
+        ],
+        "outputs": 75
+      }
+    },
+    {
+      "id": "rnorm-upper-size",
+      "citation": "layer.py:1207",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=rnorm\ninputs=data\nchannels=3\nsize=6\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nscale=0.001\npow=0.75\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target': parameter 'size' must be in the range 1-5"
+    },
+    {
+      "id": "rnorm-lower-size",
+      "citation": "layer.py:1207",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=rnorm\ninputs=data\nchannels=3\nsize=0\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nscale=0.001\npow=0.75\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target': parameter 'size' must be in the range 1-5"
+    },
+    {
+      "id": "rnorm-channel-four",
+      "citation": "layer.py:1209-1210",
+      "data_dimensions": {
+        "0": 125,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=rnorm\ninputs=data\nchannels=5\nsize=3\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nscale=0.001\npow=0.75\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target': number of channels must be smaller than 4 or divisible by 4"
+    },
+    {
+      "id": "rnorm-channels-range",
+      "citation": "layer.py:1200",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=rnorm\ninputs=data\nchannels=0\nsize=3\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nscale=0.001\npow=0.75\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target': parameter 'channels' must be greater than or equal to 1"
+    },
+    {
+      "id": "rnorm-nonsquare",
+      "citation": "layer.py:390-391",
+      "data_dimensions": {
+        "0": 72,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=rnorm\ninputs=data\nchannels=3\nsize=3\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nscale=0.001\npow=0.75\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target': has 72 dimensional input, not interpretable as 3-channel images"
+    },
+    {
+      "id": "cmrnorm-channels-range",
+      "citation": "layer.py:1200",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=cmrnorm\ninputs=data\nchannels=0\nsize=2\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nscale=0.001\npow=0.75\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target': parameter 'channels' must be greater than or equal to 1"
+    },
+    {
+      "id": "cmrnorm-nonsquare",
+      "citation": "layer.py:390-391",
+      "data_dimensions": {
+        "0": 384,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=cmrnorm\ninputs=data\nchannels=16\nsize=2\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nscale=0.001\npow=0.75\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target': has 384 dimensional input, not interpretable as 16-channel images"
+    },
+    {
+      "id": "cmrnorm-preserves",
+      "citation": "layer.py:1214",
+      "data_dimensions": {
+        "0": 400,
+        "1": 1
+      },
+      "classes": 400,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=cmrnorm\ninputs=data\nchannels=16\nsize=2\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nscale=0.001\npow=0.75\n[loss]\ncoeff=1\n",
+      "expected": {
+        "img_size": [
+          5
+        ],
+        "channels": [
+          16
+        ],
+        "outputs": 400
+      }
+    },
+    {
+      "id": "cmrnorm-blocked-preserves",
+      "citation": "layer.py:1193,1214",
+      "data_dimensions": {
+        "0": 400,
+        "1": 1
+      },
+      "classes": 400,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=cmrnorm\ninputs=data\nchannels=16\nsize=2\ngpu=0\nblocked=true\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nscale=0.001\npow=0.75\n[loss]\ncoeff=1\n",
+      "expected": {
+        "outputs": 400
+      }
+    },
+    {
+      "id": "cmrnorm-size-1",
+      "citation": "layer.py:1202",
+      "data_dimensions": {
+        "0": 400,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=cmrnorm\ninputs=data\nchannels=16\nsize=1\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nscale=0.001\npow=0.75\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target': parameter 'size' must be in the range 2-16"
+    },
+    {
+      "id": "cmrnorm-size-17",
+      "citation": "layer.py:1202",
+      "data_dimensions": {
+        "0": 400,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=cmrnorm\ninputs=data\nchannels=16\nsize=17\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nscale=0.001\npow=0.75\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target': parameter 'size' must be in the range 2-16"
+    },
+    {
+      "id": "cmrnorm-channel-sixteen",
+      "citation": "layer.py:1203-1204",
+      "data_dimensions": {
+        "0": 300,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=cmrnorm\ninputs=data\nchannels=12\nsize=2\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nscale=0.001\npow=0.75\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target': number of channels must be divisible by 16 when using crossMap"
+    },
+    {
+      "id": "fc-output-range",
+      "citation": "layer.py:882",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=fc\ninputs=data\noutputs=0\ninitW=0.01\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target': parameter 'outputs' must be greater than or equal to 1"
+    },
+    {
+      "id": "fc-matrix-dimensions",
+      "citation": "layer.py:883-884",
+      "data_dimensions": {
+        "0": 11,
+        "1": 1
+      },
+      "classes": 7,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=fc\ninputs=data\noutputs=7\ninitW=0.01\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "expected": {
+        "outputs": 7,
+        "weights_shapes": [
+          [
+            11,
+            7
+          ]
+        ],
+        "biases_shape": [
+          1,
+          7
+        ]
+      }
+    },
+    {
+      "id": "neuron-preserves",
+      "citation": "layer.py:649",
+      "data_dimensions": {
+        "0": 7,
+        "1": 1
+      },
+      "classes": 7,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=neuron\ninputs=data\nneuron=relu\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "expected": {
+        "outputs": 7,
+        "num_inputs": [
+          7
+        ]
+      }
+    },
+    {
+      "id": "hs-preserves",
+      "citation": "layer.py:705",
+      "data_dimensions": {
+        "0": 7,
+        "1": 1
+      },
+      "classes": 7,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=hs\ninputs=data\nkeep=0.5\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nenable=true\n[loss]\ncoeff=1\n",
+      "expected": {
+        "outputs": 7,
+        "num_inputs": [
+          7
+        ]
+      }
+    },
+    {
+      "id": "softmax-preserves",
+      "citation": "layer.py:1110",
+      "data_dimensions": {
+        "0": 7,
+        "1": 1
+      },
+      "classes": 7,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=softmax\ninputs=data\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "expected": {
+        "outputs": 7,
+        "num_inputs": [
+          7
+        ]
+      }
+    },
+    {
+      "id": "pool-gradient-consumer-even-if-frozen",
+      "citation": "layer.py:293,314,395-398,830,1158-1159",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[pre]\ntype=fc\ninputs=data\noutputs=75\ninitW=0.01\ngpu=0\n[target]\ntype=pool\ninputs=pre\nchannels=3\nsizeX=3\nstride=2\npool=max\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[pre]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target[0]': parameter 'channels' must be divisible by 16"
+    },
+    {
+      "id": "cost-labels-not-scalar",
+      "citation": "layer.py:1263-1270",
+      "data_dimensions": {
+        "0": 1000,
+        "1": 2
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[probs]\ntype=softmax\ninputs=data\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "error": "Layer 'loss': dimensionality of first input must be 1"
+    },
+    {
+      "id": "cost-class-count",
+      "citation": "layer.py:1263-1270",
+      "data_dimensions": {
+        "0": 1000,
+        "1": 1
+      },
+      "classes": 999,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[probs]\ntype=softmax\ninputs=data\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "error": "Layer 'loss': softmax input 'probs' must produce 999 outputs, because that is the number of classes in the dataset"
+    },
+    {
+      "id": "cost-probs-not-softmax",
+      "citation": "layer.py:1263-1270",
+      "data_dimensions": {
+        "0": 1000,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[probs]\ntype=hs\nkeep=0.5\ninputs=data\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n[probs]\nenable=true\n",
+      "error": "Layer 'loss': second input must be softmax layer"
+    },
+    {
+      "id": "zero-output-input",
+      "citation": "layer.py:368-369",
+      "data_dimensions": {
+        "0": 0,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[probs]\ntype=softmax\ninputs=data\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[loss]\ncoeff=1\n",
+      "error": "Layer 'probs': input layer 'data' does not produce any output"
+    },
+    {
+      "id": "conv-input-spatial-mismatch",
+      "citation": "layer.py:1011-1012",
+      "data_dimensions": {
+        "0": 75,
+        "1": 147
+      },
+      "classes": 144,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data,labels\nchannels=3,3\nfilters=16,16\nfilterSize=3,3\nstride=2,2\ninitW=0.01,0.01\npartialSum=0\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0,0\nepsB=0\nmomW=0.9,0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target': all inputs must produce equally-dimensioned output. Dimensions are: 16x2x2, 16x3x3."
+    },
+    {
+      "id": "fc-weight-sharing-shape-mismatch",
+      "citation": "layer.py:802-804",
+      "data_dimensions": {
+        "0": 11,
+        "1": 1
+      },
+      "classes": 1000,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[pre]\ntype=fc\ninputs=data\noutputs=7\ninitW=0.01\ngpu=0\n[target]\ntype=fc\ninputs=pre\noutputs=7\ninitW=0.01\nweightSource=pre\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[pre]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target': weight sharing source matrix 'pre' has shape 11x7; should be 7x7."
+    },
+    {
+      "id": "conv-input-filter-mismatch",
+      "citation": "layer.py:1011-1012",
+      "data_dimensions": {
+        "0": 75,
+        "1": 75
+      },
+      "classes": 144,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data,labels\nchannels=3,3\nfilters=16,32\nfilterSize=3,3\nstride=2,2\ninitW=0.01,0.01\npartialSum=0\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0,0\nepsB=0\nmomW=0.9,0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target': all inputs must produce equally-dimensioned output. Dimensions are: 16x2x2, 32x2x2."
+    },
+    {
+      "id": "conv-sparse-default-filter-channels",
+      "citation": "layer.py:1002,1006,1036-1039",
+      "data_dimensions": {
+        "0": 200,
+        "1": 1
+      },
+      "classes": 128,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=8\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\ngroups=2\nrandSparse=true\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "expected": {
+        "filter_channels": [
+          4
+        ],
+        "weights_shapes": [
+          [
+            36,
+            32
+          ]
+        ],
+        "outputs": 128
+      }
+    },
+    {
+      "id": "conv-python2-small-input-predicate",
+      "citation": "layer.py:1004",
+      "data_dimensions": {
+        "0": 4,
+        "1": 1
+      },
+      "classes": 16,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=3\nfilters=16\nfilterSize=1\nstride=1\ninitW=0.01\npartialSum=0\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "expected": {
+        "img_size": [
+          1
+        ],
+        "outputs": 16,
+        "filter_channels": [
+          3
+        ]
+      }
+    },
+    {
+      "id": "rnorm-python2-small-input-predicate",
+      "citation": "layer.py:1214",
+      "data_dimensions": {
+        "0": 4,
+        "1": 1
+      },
+      "classes": 3,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=rnorm\ninputs=data\nchannels=3\nsize=1\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nscale=0.001\npow=0.75\n[loss]\ncoeff=1\n",
+      "expected": {
+        "img_size": [
+          1
+        ],
+        "outputs": 3
+      }
+    },
+    {
+      "id": "pool-gradient-consumer-valid",
+      "citation": "layer.py:293,314,395-398,830,1158-1159",
+      "data_dimensions": {
+        "0": 75,
+        "1": 1
+      },
+      "classes": 64,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[pre]\ntype=fc\ninputs=data\noutputs=256\ninitW=0.01\ngpu=0\n[target]\ntype=pool\ninputs=pre\nchannels=16\nsizeX=3\nstride=2\npool=max\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[pre]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "expected": {
+        "img_size": [
+          4
+        ],
+        "outputs_x": 2,
+        "outputs": 64,
+        "partial_boundary_window": [
+          true
+        ]
+      }
+    },
+    {
+      "id": "hs-keep-is-not-range-checked",
+      "citation": "layer.py:705",
+      "data_dimensions": {
+        "0": 7,
+        "1": 1
+      },
+      "classes": 7,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=hs\ninputs=data\nkeep=2\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nenable=true\n[loss]\ncoeff=1\n",
+      "expected": {
+        "outputs": 7,
+        "num_inputs": [
+          7
+        ]
+      }
+    },
+    {
+      "id": "conv-list-cardinality",
+      "citation": "layer.py:333-336",
+      "data_dimensions": {
+        "0": 108,
+        "1": 1
+      },
+      "classes": 144,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=conv\ninputs=data\nchannels=3,3\nfilters=16\nfilterSize=3\nstride=2\ninitW=0.01\npartialSum=0\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=labels,probs\n",
+      "param_cfg": "[target]\nepsW=0\nepsB=0\nmomW=0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "error": "Layer 'target': channels list length does not match number of inputs"
+    },
+    {
+      "id": "fc-asymmetric-input-order",
+      "citation": "layer.py:883-884",
+      "data_dimensions": {
+        "0": 11,
+        "1": 7,
+        "2": 1
+      },
+      "classes": 5,
+      "layer_cfg": "[data]\ntype=data\ndataIdx=0\n[scalar]\ntype=data\ndataIdx=2\n[labels]\ntype=data\ndataIdx=1\n[target]\ntype=fc\ninputs=labels,data\noutputs=5\ninitW=0.01,0.01\ngpu=0\n[probs]\ntype=softmax\ninputs=target\n[loss]\ntype=cost.logreg\ninputs=scalar,probs\n",
+      "param_cfg": "[target]\nepsW=0,0\nepsB=0\nmomW=0.9,0.9\nmomB=0.9\n[loss]\ncoeff=1\n",
+      "expected": {
+        "inputs": [
+          "labels",
+          "data"
+        ],
+        "num_inputs": [
+          7,
+          11
+        ],
+        "outputs": 5,
+        "weights_shapes": [
+          [
+            7,
+            5
+          ],
+          [
+            11,
+            5
+          ]
+        ]
+      }
+    }
+  ]
+}
