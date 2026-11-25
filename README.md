@@ -17,8 +17,9 @@ Early. Done so far:
 | ANX-1 | Specification ledger (35 layer sections, 445 machine-checked citations), experiment manifest, cuda-convnet version evidence | [ANX-1](docs/reports/ANX-1_REPORT.md) |
 | ANX-2 | Config parser with the original's defaults and error messages; golden parse of the 145 network | [ANX-2](docs/reports/ANX-2_REPORT.md) |
 | ANX-3 | Shape inference with the original's ceiling arithmetic (224 → 55 with a partial boundary window) | [ANX-3](docs/reports/ANX-3_REPORT.md) |
+| ANX-4 | Tensor layouts, parameter buffers (60,965,224 parameters) and the original's overwrite-vs-accumulate gradient semantics | [ANX-4](docs/reports/ANX-4_REPORT.md) |
 
-Next: tensor layouts, then each layer type against hand-computed goldens, the trainer, and the web explorer.
+Next: each layer type against hand-computed goldens (convolution first), the trainer, and the web explorer.
 
 ## Layout
 
