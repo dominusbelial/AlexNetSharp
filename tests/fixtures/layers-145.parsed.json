@@ -1,0 +1,1796 @@
+{
+  "schemaVersion": 1,
+  "layerCount": 49,
+  "declaredLayerCount": 35,
+  "detachedNeuronLayerCount": 14,
+  "layers": [
+    {
+      "name": "data",
+      "type": "data",
+      "declaredInputs": [],
+      "inputs": [],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": false,
+      "parameters": {
+        "dataIdx": 0,
+        "gpu": -1,
+        "quantB": "default",
+        "quantF": "default"
+      }
+    },
+    {
+      "name": "labels",
+      "type": "data",
+      "declaredInputs": [],
+      "inputs": [],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": false,
+      "parameters": {
+        "dataIdx": 1,
+        "gpu": -1,
+        "quantB": "default",
+        "quantF": "default"
+      }
+    },
+    {
+      "name": "conv1a",
+      "type": "conv",
+      "declaredInputs": [
+        "data"
+      ],
+      "inputs": [
+        "data"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": true,
+      "parameters": {
+        "channels": [
+          3
+        ],
+        "epsB": 0,
+        "epsW": [
+          0
+        ],
+        "filterSize": [
+          11
+        ],
+        "filters": [
+          48
+        ],
+        "gpu": 0,
+        "groups": [
+          1
+        ],
+        "initB": 0,
+        "initBFunc": "",
+        "initCFunc": "",
+        "initW": [
+          0.01
+        ],
+        "initWFunc": "",
+        "momB": 0.9,
+        "momW": [
+          0.9
+        ],
+        "neuron": "",
+        "padding": [
+          0
+        ],
+        "partialSum": 5,
+        "quantB": "default",
+        "quantF": "default",
+        "randSparse": [
+          false
+        ],
+        "schedB": "default",
+        "schedW": "default",
+        "sharedBiases": true,
+        "stride": [
+          4
+        ],
+        "superEps": 0,
+        "superMom": 0,
+        "wball": [
+          0
+        ],
+        "wc": [
+          0.0005
+        ],
+        "wcNormMax": [
+          0
+        ],
+        "wcNormMin": [
+          0
+        ],
+        "weightSource": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "conv1b",
+      "type": "conv",
+      "declaredInputs": [
+        "data"
+      ],
+      "inputs": [
+        "data"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": true,
+      "parameters": {
+        "channels": [
+          3
+        ],
+        "epsB": 0,
+        "epsW": [
+          0
+        ],
+        "filterSize": [
+          11
+        ],
+        "filters": [
+          48
+        ],
+        "gpu": 1,
+        "groups": [
+          1
+        ],
+        "initB": 0,
+        "initBFunc": "",
+        "initCFunc": "",
+        "initW": [
+          0.01
+        ],
+        "initWFunc": "",
+        "momB": 0.9,
+        "momW": [
+          0.9
+        ],
+        "neuron": "",
+        "padding": [
+          0
+        ],
+        "partialSum": 5,
+        "quantB": "default",
+        "quantF": "default",
+        "randSparse": [
+          false
+        ],
+        "schedB": "default",
+        "schedW": "default",
+        "sharedBiases": true,
+        "stride": [
+          4
+        ],
+        "superEps": 0,
+        "superMom": 0,
+        "wball": [
+          0
+        ],
+        "wc": [
+          0.0005
+        ],
+        "wcNormMax": [
+          0
+        ],
+        "wcNormMin": [
+          0
+        ],
+        "weightSource": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "rnorm1a",
+      "type": "cmrnorm",
+      "declaredInputs": [
+        "conv1a"
+      ],
+      "inputs": [
+        "conv1a"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": true,
+      "parameters": {
+        "blocked": false,
+        "channels": 48,
+        "gpu": 0,
+        "minDiv": 2,
+        "neuron": "",
+        "pow": 0.75,
+        "quantB": "default",
+        "quantF": "default",
+        "scale": 2E-05,
+        "size": 5
+      }
+    },
+    {
+      "name": "rnorm1b",
+      "type": "cmrnorm",
+      "declaredInputs": [
+        "conv1b"
+      ],
+      "inputs": [
+        "conv1b"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": true,
+      "parameters": {
+        "blocked": false,
+        "channels": 48,
+        "gpu": 1,
+        "minDiv": 2,
+        "neuron": "",
+        "pow": 0.75,
+        "quantB": "default",
+        "quantF": "default",
+        "scale": 2E-05,
+        "size": 5
+      }
+    },
+    {
+      "name": "pool1a",
+      "type": "pool",
+      "declaredInputs": [
+        "rnorm1a"
+      ],
+      "inputs": [
+        "rnorm1a"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": "pool1a_neuron",
+      "requiresParams": false,
+      "parameters": {
+        "channels": 48,
+        "gpu": 0,
+        "neuron": "relu",
+        "outputsX": 0,
+        "pool": "max",
+        "quantB": "default",
+        "quantF": "default",
+        "sizeX": 3,
+        "start": 0,
+        "stride": 2
+      }
+    },
+    {
+      "name": "pool1b",
+      "type": "pool",
+      "declaredInputs": [
+        "rnorm1b"
+      ],
+      "inputs": [
+        "rnorm1b"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": "pool1b_neuron",
+      "requiresParams": false,
+      "parameters": {
+        "channels": 48,
+        "gpu": 1,
+        "neuron": "relu",
+        "outputsX": 0,
+        "pool": "max",
+        "quantB": "default",
+        "quantF": "default",
+        "sizeX": 3,
+        "start": 0,
+        "stride": 2
+      }
+    },
+    {
+      "name": "conv2a",
+      "type": "conv",
+      "declaredInputs": [
+        "pool1a"
+      ],
+      "inputs": [
+        "pool1a_neuron"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": "conv2a_neuron",
+      "requiresParams": true,
+      "parameters": {
+        "channels": [
+          48
+        ],
+        "epsB": 0.02,
+        "epsW": [
+          1E-05
+        ],
+        "filterSize": [
+          5
+        ],
+        "filters": [
+          128
+        ],
+        "gpu": 0,
+        "groups": [
+          1
+        ],
+        "initB": 1,
+        "initBFunc": "",
+        "initCFunc": "",
+        "initW": [
+          0.01
+        ],
+        "initWFunc": "",
+        "momB": 0.9,
+        "momW": [
+          0.9
+        ],
+        "neuron": "relu",
+        "padding": [
+          -2
+        ],
+        "partialSum": 3,
+        "quantB": "default",
+        "quantF": "default",
+        "randSparse": [
+          false
+        ],
+        "schedB": "default",
+        "schedW": "default",
+        "sharedBiases": true,
+        "stride": [
+          1
+        ],
+        "superEps": 0,
+        "superMom": 0,
+        "wball": [
+          0
+        ],
+        "wc": [
+          0.0005
+        ],
+        "wcNormMax": [
+          0
+        ],
+        "wcNormMin": [
+          0
+        ],
+        "weightSource": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "conv2b",
+      "type": "conv",
+      "declaredInputs": [
+        "pool1b"
+      ],
+      "inputs": [
+        "pool1b_neuron"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": "conv2b_neuron",
+      "requiresParams": true,
+      "parameters": {
+        "channels": [
+          48
+        ],
+        "epsB": 0.02,
+        "epsW": [
+          1E-05
+        ],
+        "filterSize": [
+          5
+        ],
+        "filters": [
+          128
+        ],
+        "gpu": 1,
+        "groups": [
+          1
+        ],
+        "initB": 1,
+        "initBFunc": "",
+        "initCFunc": "",
+        "initW": [
+          0.01
+        ],
+        "initWFunc": "",
+        "momB": 0.9,
+        "momW": [
+          0.9
+        ],
+        "neuron": "relu",
+        "padding": [
+          -2
+        ],
+        "partialSum": 3,
+        "quantB": "default",
+        "quantF": "default",
+        "randSparse": [
+          false
+        ],
+        "schedB": "default",
+        "schedW": "default",
+        "sharedBiases": true,
+        "stride": [
+          1
+        ],
+        "superEps": 0,
+        "superMom": 0,
+        "wball": [
+          0
+        ],
+        "wc": [
+          0.0005
+        ],
+        "wcNormMax": [
+          0
+        ],
+        "wcNormMin": [
+          0
+        ],
+        "weightSource": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "rnorm2a",
+      "type": "cmrnorm",
+      "declaredInputs": [
+        "conv2a"
+      ],
+      "inputs": [
+        "conv2a_neuron"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": true,
+      "parameters": {
+        "blocked": false,
+        "channels": 128,
+        "gpu": 0,
+        "minDiv": 2,
+        "neuron": "",
+        "pow": 0.75,
+        "quantB": "default",
+        "quantF": "default",
+        "scale": 2E-05,
+        "size": 5
+      }
+    },
+    {
+      "name": "rnorm2b",
+      "type": "cmrnorm",
+      "declaredInputs": [
+        "conv2b"
+      ],
+      "inputs": [
+        "conv2b_neuron"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": true,
+      "parameters": {
+        "blocked": false,
+        "channels": 128,
+        "gpu": 1,
+        "minDiv": 2,
+        "neuron": "",
+        "pow": 0.75,
+        "quantB": "default",
+        "quantF": "default",
+        "scale": 2E-05,
+        "size": 5
+      }
+    },
+    {
+      "name": "cnorm2a",
+      "type": "rnorm",
+      "declaredInputs": [
+        "rnorm2a"
+      ],
+      "inputs": [
+        "rnorm2a"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": true,
+      "parameters": {
+        "blocked": false,
+        "channels": 128,
+        "gpu": 0,
+        "neuron": "",
+        "pow": 0.75,
+        "quantB": "default",
+        "quantF": "default",
+        "scale": 4E-05,
+        "size": 5
+      }
+    },
+    {
+      "name": "cnorm2b",
+      "type": "rnorm",
+      "declaredInputs": [
+        "rnorm2b"
+      ],
+      "inputs": [
+        "rnorm2b"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": true,
+      "parameters": {
+        "blocked": false,
+        "channels": 128,
+        "gpu": 1,
+        "neuron": "",
+        "pow": 0.75,
+        "quantB": "default",
+        "quantF": "default",
+        "scale": 4E-05,
+        "size": 5
+      }
+    },
+    {
+      "name": "pool2a",
+      "type": "pool",
+      "declaredInputs": [
+        "cnorm2a"
+      ],
+      "inputs": [
+        "cnorm2a"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": false,
+      "parameters": {
+        "channels": 128,
+        "gpu": 0,
+        "neuron": "",
+        "outputsX": 0,
+        "pool": "max",
+        "quantB": "default",
+        "quantF": "default",
+        "sizeX": 3,
+        "start": 0,
+        "stride": 2
+      }
+    },
+    {
+      "name": "pool2b",
+      "type": "pool",
+      "declaredInputs": [
+        "cnorm2b"
+      ],
+      "inputs": [
+        "cnorm2b"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": false,
+      "parameters": {
+        "channels": 128,
+        "gpu": 1,
+        "neuron": "",
+        "outputsX": 0,
+        "pool": "max",
+        "quantB": "default",
+        "quantF": "default",
+        "sizeX": 3,
+        "start": 0,
+        "stride": 2
+      }
+    },
+    {
+      "name": "conv3a",
+      "type": "conv",
+      "declaredInputs": [
+        "pool2a",
+        "pool2b"
+      ],
+      "inputs": [
+        "pool2a",
+        "pool2b"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": "conv3a_neuron",
+      "requiresParams": true,
+      "parameters": {
+        "channels": [
+          128,
+          128
+        ],
+        "epsB": 0.02,
+        "epsW": [
+          1E-05,
+          1E-05
+        ],
+        "filterSize": [
+          3,
+          3
+        ],
+        "filters": [
+          192,
+          192
+        ],
+        "gpu": 0,
+        "groups": [
+          1,
+          1
+        ],
+        "initB": 0,
+        "initBFunc": "",
+        "initCFunc": "",
+        "initW": [
+          0.03,
+          0.03
+        ],
+        "initWFunc": "",
+        "momB": 0.9,
+        "momW": [
+          0.9,
+          0.9
+        ],
+        "neuron": "relu",
+        "padding": [
+          -1,
+          -1
+        ],
+        "partialSum": 13,
+        "quantB": "default",
+        "quantF": "default",
+        "randSparse": [
+          false,
+          false
+        ],
+        "schedB": "default",
+        "schedW": "default",
+        "sharedBiases": true,
+        "stride": [
+          1,
+          1
+        ],
+        "superEps": 0,
+        "superMom": 0,
+        "wball": [
+          0,
+          0
+        ],
+        "wc": [
+          0.0005,
+          0.0005
+        ],
+        "wcNormMax": [
+          0,
+          0
+        ],
+        "wcNormMin": [
+          0,
+          0
+        ],
+        "weightSource": [
+          "",
+          ""
+        ]
+      }
+    },
+    {
+      "name": "conv3b",
+      "type": "conv",
+      "declaredInputs": [
+        "pool2a",
+        "pool2b"
+      ],
+      "inputs": [
+        "pool2a",
+        "pool2b"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": "conv3b_neuron",
+      "requiresParams": true,
+      "parameters": {
+        "channels": [
+          128,
+          128
+        ],
+        "epsB": 0.02,
+        "epsW": [
+          1E-05,
+          1E-05
+        ],
+        "filterSize": [
+          3,
+          3
+        ],
+        "filters": [
+          192,
+          192
+        ],
+        "gpu": 1,
+        "groups": [
+          1,
+          1
+        ],
+        "initB": 0,
+        "initBFunc": "",
+        "initCFunc": "",
+        "initW": [
+          0.03,
+          0.03
+        ],
+        "initWFunc": "",
+        "momB": 0.9,
+        "momW": [
+          0.9,
+          0.9
+        ],
+        "neuron": "relu",
+        "padding": [
+          -1,
+          -1
+        ],
+        "partialSum": 13,
+        "quantB": "default",
+        "quantF": "default",
+        "randSparse": [
+          false,
+          false
+        ],
+        "schedB": "default",
+        "schedW": "default",
+        "sharedBiases": true,
+        "stride": [
+          1,
+          1
+        ],
+        "superEps": 0,
+        "superMom": 0,
+        "wball": [
+          0,
+          0
+        ],
+        "wc": [
+          0.0005,
+          0.0005
+        ],
+        "wcNormMax": [
+          0,
+          0
+        ],
+        "wcNormMin": [
+          0,
+          0
+        ],
+        "weightSource": [
+          "",
+          ""
+        ]
+      }
+    },
+    {
+      "name": "conv4a",
+      "type": "conv",
+      "declaredInputs": [
+        "conv3a"
+      ],
+      "inputs": [
+        "conv3a_neuron"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": "conv4a_neuron",
+      "requiresParams": true,
+      "parameters": {
+        "channels": [
+          192
+        ],
+        "epsB": 0.02,
+        "epsW": [
+          1E-05
+        ],
+        "filterSize": [
+          3
+        ],
+        "filters": [
+          192
+        ],
+        "gpu": 0,
+        "groups": [
+          1
+        ],
+        "initB": 1,
+        "initBFunc": "",
+        "initCFunc": "",
+        "initW": [
+          0.03
+        ],
+        "initWFunc": "",
+        "momB": 0.9,
+        "momW": [
+          0.9
+        ],
+        "neuron": "relu",
+        "padding": [
+          -1
+        ],
+        "partialSum": 13,
+        "quantB": "default",
+        "quantF": "default",
+        "randSparse": [
+          false
+        ],
+        "schedB": "default",
+        "schedW": "default",
+        "sharedBiases": true,
+        "stride": [
+          1
+        ],
+        "superEps": 0,
+        "superMom": 0,
+        "wball": [
+          0
+        ],
+        "wc": [
+          0.0005
+        ],
+        "wcNormMax": [
+          0
+        ],
+        "wcNormMin": [
+          0
+        ],
+        "weightSource": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "conv4b",
+      "type": "conv",
+      "declaredInputs": [
+        "conv3b"
+      ],
+      "inputs": [
+        "conv3b_neuron"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": "conv4b_neuron",
+      "requiresParams": true,
+      "parameters": {
+        "channels": [
+          192
+        ],
+        "epsB": 0.02,
+        "epsW": [
+          1E-05
+        ],
+        "filterSize": [
+          3
+        ],
+        "filters": [
+          192
+        ],
+        "gpu": 1,
+        "groups": [
+          1
+        ],
+        "initB": 1,
+        "initBFunc": "",
+        "initCFunc": "",
+        "initW": [
+          0.03
+        ],
+        "initWFunc": "",
+        "momB": 0.9,
+        "momW": [
+          0.9
+        ],
+        "neuron": "relu",
+        "padding": [
+          -1
+        ],
+        "partialSum": 13,
+        "quantB": "default",
+        "quantF": "default",
+        "randSparse": [
+          false
+        ],
+        "schedB": "default",
+        "schedW": "default",
+        "sharedBiases": true,
+        "stride": [
+          1
+        ],
+        "superEps": 0,
+        "superMom": 0,
+        "wball": [
+          0
+        ],
+        "wc": [
+          0.0005
+        ],
+        "wcNormMax": [
+          0
+        ],
+        "wcNormMin": [
+          0
+        ],
+        "weightSource": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "conv5a",
+      "type": "conv",
+      "declaredInputs": [
+        "conv4a"
+      ],
+      "inputs": [
+        "conv4a_neuron"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": true,
+      "parameters": {
+        "channels": [
+          192
+        ],
+        "epsB": 0.02,
+        "epsW": [
+          1E-05
+        ],
+        "filterSize": [
+          3
+        ],
+        "filters": [
+          128
+        ],
+        "gpu": 0,
+        "groups": [
+          1
+        ],
+        "initB": 1,
+        "initBFunc": "",
+        "initCFunc": "",
+        "initW": [
+          0.03
+        ],
+        "initWFunc": "",
+        "momB": 0.9,
+        "momW": [
+          0.9
+        ],
+        "neuron": "",
+        "padding": [
+          -1
+        ],
+        "partialSum": 13,
+        "quantB": "default",
+        "quantF": "default",
+        "randSparse": [
+          false
+        ],
+        "schedB": "default",
+        "schedW": "default",
+        "sharedBiases": true,
+        "stride": [
+          1
+        ],
+        "superEps": 0,
+        "superMom": 0,
+        "wball": [
+          0
+        ],
+        "wc": [
+          0.0005
+        ],
+        "wcNormMax": [
+          0
+        ],
+        "wcNormMin": [
+          0
+        ],
+        "weightSource": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "conv5b",
+      "type": "conv",
+      "declaredInputs": [
+        "conv4b"
+      ],
+      "inputs": [
+        "conv4b_neuron"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": true,
+      "parameters": {
+        "channels": [
+          192
+        ],
+        "epsB": 0.02,
+        "epsW": [
+          1E-05
+        ],
+        "filterSize": [
+          3
+        ],
+        "filters": [
+          128
+        ],
+        "gpu": 1,
+        "groups": [
+          1
+        ],
+        "initB": 1,
+        "initBFunc": "",
+        "initCFunc": "",
+        "initW": [
+          0.03
+        ],
+        "initWFunc": "",
+        "momB": 0.9,
+        "momW": [
+          0.9
+        ],
+        "neuron": "",
+        "padding": [
+          -1
+        ],
+        "partialSum": 13,
+        "quantB": "default",
+        "quantF": "default",
+        "randSparse": [
+          false
+        ],
+        "schedB": "default",
+        "schedW": "default",
+        "sharedBiases": true,
+        "stride": [
+          1
+        ],
+        "superEps": 0,
+        "superMom": 0,
+        "wball": [
+          0
+        ],
+        "wc": [
+          0.0005
+        ],
+        "wcNormMax": [
+          0
+        ],
+        "wcNormMin": [
+          0
+        ],
+        "weightSource": [
+          ""
+        ]
+      }
+    },
+    {
+      "name": "pool3a",
+      "type": "pool",
+      "declaredInputs": [
+        "conv5a"
+      ],
+      "inputs": [
+        "conv5a"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": "pool3a_neuron",
+      "requiresParams": false,
+      "parameters": {
+        "channels": 128,
+        "gpu": 0,
+        "neuron": "relu",
+        "outputsX": 0,
+        "pool": "max",
+        "quantB": "default",
+        "quantF": "default",
+        "sizeX": 3,
+        "start": 0,
+        "stride": 2
+      }
+    },
+    {
+      "name": "pool3b",
+      "type": "pool",
+      "declaredInputs": [
+        "conv5b"
+      ],
+      "inputs": [
+        "conv5b"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": "pool3b_neuron",
+      "requiresParams": false,
+      "parameters": {
+        "channels": 128,
+        "gpu": 1,
+        "neuron": "relu",
+        "outputsX": 0,
+        "pool": "max",
+        "quantB": "default",
+        "quantF": "default",
+        "sizeX": 3,
+        "start": 0,
+        "stride": 2
+      }
+    },
+    {
+      "name": "fc2048a",
+      "type": "fc",
+      "declaredInputs": [
+        "pool3a",
+        "pool3b"
+      ],
+      "inputs": [
+        "pool3a_neuron",
+        "pool3b_neuron"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": "fc2048a_neuron",
+      "requiresParams": true,
+      "parameters": {
+        "epsB": 0.02,
+        "epsW": [
+          1E-05,
+          1E-05
+        ],
+        "gpu": 0,
+        "initB": 1,
+        "initBFunc": "",
+        "initW": [
+          0.01,
+          0.01
+        ],
+        "initWFunc": "",
+        "momB": 0.9,
+        "momW": [
+          0.9,
+          0.9
+        ],
+        "neuron": "relu",
+        "outputs": 2048,
+        "quantB": "default",
+        "quantF": "default",
+        "schedB": "default",
+        "schedW": "default",
+        "superEps": 0,
+        "superMom": 0,
+        "wball": [
+          0,
+          0
+        ],
+        "wc": [
+          0.0005,
+          0.0005
+        ],
+        "weightSource": [
+          "",
+          ""
+        ]
+      }
+    },
+    {
+      "name": "fc2048b",
+      "type": "fc",
+      "declaredInputs": [
+        "pool3a",
+        "pool3b"
+      ],
+      "inputs": [
+        "pool3a_neuron",
+        "pool3b_neuron"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": "fc2048b_neuron",
+      "requiresParams": true,
+      "parameters": {
+        "epsB": 0.02,
+        "epsW": [
+          1E-05,
+          1E-05
+        ],
+        "gpu": 1,
+        "initB": 1,
+        "initBFunc": "",
+        "initW": [
+          0.01,
+          0.01
+        ],
+        "initWFunc": "",
+        "momB": 0.9,
+        "momW": [
+          0.9,
+          0.9
+        ],
+        "neuron": "relu",
+        "outputs": 2048,
+        "quantB": "default",
+        "quantF": "default",
+        "schedB": "default",
+        "schedW": "default",
+        "superEps": 0,
+        "superMom": 0,
+        "wball": [
+          0,
+          0
+        ],
+        "wc": [
+          0.0005,
+          0.0005
+        ],
+        "weightSource": [
+          "",
+          ""
+        ]
+      }
+    },
+    {
+      "name": "hs1a",
+      "type": "hs",
+      "declaredInputs": [
+        "fc2048a"
+      ],
+      "inputs": [
+        "fc2048a_neuron"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": true,
+      "parameters": {
+        "enable": true,
+        "gpu": 0,
+        "keep": 0.5,
+        "neuron": "",
+        "quantB": "default",
+        "quantF": "default"
+      }
+    },
+    {
+      "name": "hs1b",
+      "type": "hs",
+      "declaredInputs": [
+        "fc2048b"
+      ],
+      "inputs": [
+        "fc2048b_neuron"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": true,
+      "parameters": {
+        "enable": true,
+        "gpu": 1,
+        "keep": 0.5,
+        "neuron": "",
+        "quantB": "default",
+        "quantF": "default"
+      }
+    },
+    {
+      "name": "fc2048ba",
+      "type": "fc",
+      "declaredInputs": [
+        "hs1a",
+        "hs1b"
+      ],
+      "inputs": [
+        "hs1a",
+        "hs1b"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": "fc2048ba_neuron",
+      "requiresParams": true,
+      "parameters": {
+        "epsB": 0.02,
+        "epsW": [
+          1E-05,
+          1E-05
+        ],
+        "gpu": 0,
+        "initB": 1,
+        "initBFunc": "",
+        "initW": [
+          0.01,
+          0.01
+        ],
+        "initWFunc": "",
+        "momB": 0.9,
+        "momW": [
+          0.9,
+          0.9
+        ],
+        "neuron": "relu",
+        "outputs": 2048,
+        "quantB": "default",
+        "quantF": "default",
+        "schedB": "default",
+        "schedW": "default",
+        "superEps": 0,
+        "superMom": 0,
+        "wball": [
+          0,
+          0
+        ],
+        "wc": [
+          0.0005,
+          0.0005
+        ],
+        "weightSource": [
+          "",
+          ""
+        ]
+      }
+    },
+    {
+      "name": "fc2048bb",
+      "type": "fc",
+      "declaredInputs": [
+        "hs1b",
+        "hs1a"
+      ],
+      "inputs": [
+        "hs1b",
+        "hs1a"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": "fc2048bb_neuron",
+      "requiresParams": true,
+      "parameters": {
+        "epsB": 0.02,
+        "epsW": [
+          1E-05,
+          1E-05
+        ],
+        "gpu": 1,
+        "initB": 1,
+        "initBFunc": "",
+        "initW": [
+          0.01,
+          0.01
+        ],
+        "initWFunc": "",
+        "momB": 0.9,
+        "momW": [
+          0.9,
+          0.9
+        ],
+        "neuron": "relu",
+        "outputs": 2048,
+        "quantB": "default",
+        "quantF": "default",
+        "schedB": "default",
+        "schedW": "default",
+        "superEps": 0,
+        "superMom": 0,
+        "wball": [
+          0,
+          0
+        ],
+        "wc": [
+          0.0005,
+          0.0005
+        ],
+        "weightSource": [
+          "",
+          ""
+        ]
+      }
+    },
+    {
+      "name": "hs2a",
+      "type": "hs",
+      "declaredInputs": [
+        "fc2048ba"
+      ],
+      "inputs": [
+        "fc2048ba_neuron"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": true,
+      "parameters": {
+        "enable": true,
+        "gpu": 0,
+        "keep": 0.5,
+        "neuron": "",
+        "quantB": "default",
+        "quantF": "default"
+      }
+    },
+    {
+      "name": "hs2b",
+      "type": "hs",
+      "declaredInputs": [
+        "fc2048bb"
+      ],
+      "inputs": [
+        "fc2048bb_neuron"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": true,
+      "parameters": {
+        "enable": true,
+        "gpu": 1,
+        "keep": 0.5,
+        "neuron": "",
+        "quantB": "default",
+        "quantF": "default"
+      }
+    },
+    {
+      "name": "fc1000",
+      "type": "fc",
+      "declaredInputs": [
+        "hs2a",
+        "hs2b"
+      ],
+      "inputs": [
+        "hs2a",
+        "hs2b"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": true,
+      "parameters": {
+        "epsB": 0.02,
+        "epsW": [
+          1E-05,
+          1E-05
+        ],
+        "gpu": 0,
+        "initB": 0,
+        "initBFunc": "",
+        "initW": [
+          0.01,
+          0.01
+        ],
+        "initWFunc": "",
+        "momB": 0.9,
+        "momW": [
+          0.9,
+          0.9
+        ],
+        "neuron": "",
+        "outputs": 1000,
+        "quantB": "default",
+        "quantF": "default",
+        "schedB": "default",
+        "schedW": "default",
+        "superEps": 0,
+        "superMom": 0,
+        "wball": [
+          0,
+          0
+        ],
+        "wc": [
+          0.0005,
+          0.0005
+        ],
+        "weightSource": [
+          "",
+          ""
+        ]
+      }
+    },
+    {
+      "name": "probs",
+      "type": "softmax",
+      "declaredInputs": [
+        "fc1000"
+      ],
+      "inputs": [
+        "fc1000"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": false,
+      "parameters": {
+        "gpu": 0,
+        "neuron": "",
+        "quantB": "default",
+        "quantF": "default"
+      }
+    },
+    {
+      "name": "logprob",
+      "type": "cost.logreg",
+      "declaredInputs": [
+        "labels",
+        "probs"
+      ],
+      "inputs": [
+        "labels",
+        "probs"
+      ],
+      "sourceLayer": null,
+      "detachedNeuronLayer": null,
+      "requiresParams": true,
+      "parameters": {
+        "coeff": 1,
+        "gpu": 0,
+        "quantB": "default",
+        "quantF": "default",
+        "topk": 5
+      }
+    },
+    {
+      "name": "pool1a_neuron",
+      "type": "neuron",
+      "declaredInputs": [
+        "pool1a"
+      ],
+      "inputs": [
+        "pool1a"
+      ],
+      "sourceLayer": "pool1a",
+      "detachedNeuronLayer": null,
+      "requiresParams": false,
+      "parameters": {
+        "gpu": 0,
+        "neuron": "relu",
+        "quantB": "default",
+        "quantF": "default"
+      }
+    },
+    {
+      "name": "pool1b_neuron",
+      "type": "neuron",
+      "declaredInputs": [
+        "pool1b"
+      ],
+      "inputs": [
+        "pool1b"
+      ],
+      "sourceLayer": "pool1b",
+      "detachedNeuronLayer": null,
+      "requiresParams": false,
+      "parameters": {
+        "gpu": 1,
+        "neuron": "relu",
+        "quantB": "default",
+        "quantF": "default"
+      }
+    },
+    {
+      "name": "conv2a_neuron",
+      "type": "neuron",
+      "declaredInputs": [
+        "conv2a"
+      ],
+      "inputs": [
+        "conv2a"
+      ],
+      "sourceLayer": "conv2a",
+      "detachedNeuronLayer": null,
+      "requiresParams": false,
+      "parameters": {
+        "gpu": 0,
+        "neuron": "relu",
+        "quantB": "default",
+        "quantF": "default"
+      }
+    },
+    {
+      "name": "conv2b_neuron",
+      "type": "neuron",
+      "declaredInputs": [
+        "conv2b"
+      ],
+      "inputs": [
+        "conv2b"
+      ],
+      "sourceLayer": "conv2b",
+      "detachedNeuronLayer": null,
+      "requiresParams": false,
+      "parameters": {
+        "gpu": 1,
+        "neuron": "relu",
+        "quantB": "default",
+        "quantF": "default"
+      }
+    },
+    {
+      "name": "conv3a_neuron",
+      "type": "neuron",
+      "declaredInputs": [
+        "conv3a"
+      ],
+      "inputs": [
+        "conv3a"
+      ],
+      "sourceLayer": "conv3a",
+      "detachedNeuronLayer": null,
+      "requiresParams": false,
+      "parameters": {
+        "gpu": 0,
+        "neuron": "relu",
+        "quantB": "default",
+        "quantF": "default"
+      }
+    },
+    {
+      "name": "conv3b_neuron",
+      "type": "neuron",
+      "declaredInputs": [
+        "conv3b"
+      ],
+      "inputs": [
+        "conv3b"
+      ],
+      "sourceLayer": "conv3b",
+      "detachedNeuronLayer": null,
+      "requiresParams": false,
+      "parameters": {
+        "gpu": 1,
+        "neuron": "relu",
+        "quantB": "default",
+        "quantF": "default"
+      }
+    },
+    {
+      "name": "conv4a_neuron",
+      "type": "neuron",
+      "declaredInputs": [
+        "conv4a"
+      ],
+      "inputs": [
+        "conv4a"
+      ],
+      "sourceLayer": "conv4a",
+      "detachedNeuronLayer": null,
+      "requiresParams": false,
+      "parameters": {
+        "gpu": 0,
+        "neuron": "relu",
+        "quantB": "default",
+        "quantF": "default"
+      }
+    },
+    {
+      "name": "conv4b_neuron",
+      "type": "neuron",
+      "declaredInputs": [
+        "conv4b"
+      ],
+      "inputs": [
+        "conv4b"
+      ],
+      "sourceLayer": "conv4b",
+      "detachedNeuronLayer": null,
+      "requiresParams": false,
+      "parameters": {
+        "gpu": 1,
+        "neuron": "relu",
+        "quantB": "default",
+        "quantF": "default"
+      }
+    },
+    {
+      "name": "pool3a_neuron",
+      "type": "neuron",
+      "declaredInputs": [
+        "pool3a"
+      ],
+      "inputs": [
+        "pool3a"
+      ],
+      "sourceLayer": "pool3a",
+      "detachedNeuronLayer": null,
+      "requiresParams": false,
+      "parameters": {
+        "gpu": 0,
+        "neuron": "relu",
+        "quantB": "default",
+        "quantF": "default"
+      }
+    },
+    {
+      "name": "pool3b_neuron",
+      "type": "neuron",
+      "declaredInputs": [
+        "pool3b"
+      ],
+      "inputs": [
+        "pool3b"
+      ],
+      "sourceLayer": "pool3b",
+      "detachedNeuronLayer": null,
+      "requiresParams": false,
+      "parameters": {
+        "gpu": 1,
+        "neuron": "relu",
+        "quantB": "default",
+        "quantF": "default"
+      }
+    },
+    {
+      "name": "fc2048a_neuron",
+      "type": "neuron",
+      "declaredInputs": [
+        "fc2048a"
+      ],
+      "inputs": [
+        "fc2048a"
+      ],
+      "sourceLayer": "fc2048a",
+      "detachedNeuronLayer": null,
+      "requiresParams": false,
+      "parameters": {
+        "gpu": 0,
+        "neuron": "relu",
+        "quantB": "default",
+        "quantF": "default"
+      }
+    },
+    {
+      "name": "fc2048b_neuron",
+      "type": "neuron",
+      "declaredInputs": [
+        "fc2048b"
+      ],
+      "inputs": [
+        "fc2048b"
+      ],
+      "sourceLayer": "fc2048b",
+      "detachedNeuronLayer": null,
+      "requiresParams": false,
+      "parameters": {
+        "gpu": 1,
+        "neuron": "relu",
+        "quantB": "default",
+        "quantF": "default"
+      }
+    },
+    {
+      "name": "fc2048ba_neuron",
+      "type": "neuron",
+      "declaredInputs": [
+        "fc2048ba"
+      ],
+      "inputs": [
+        "fc2048ba"
+      ],
+      "sourceLayer": "fc2048ba",
+      "detachedNeuronLayer": null,
+      "requiresParams": false,
+      "parameters": {
+        "gpu": 0,
+        "neuron": "relu",
+        "quantB": "default",
+        "quantF": "default"
+      }
+    },
+    {
+      "name": "fc2048bb_neuron",
+      "type": "neuron",
+      "declaredInputs": [
+        "fc2048bb"
+      ],
+      "inputs": [
+        "fc2048bb"
+      ],
+      "sourceLayer": "fc2048bb",
+      "detachedNeuronLayer": null,
+      "requiresParams": false,
+      "parameters": {
+        "gpu": 1,
+        "neuron": "relu",
+        "quantB": "default",
+        "quantF": "default"
+      }
+    }
+  ]
+}
