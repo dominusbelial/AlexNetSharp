@@ -485,3 +485,8 @@ $RECYCLE.BIN/
 /data/
 /checkpoints/
 /.scratch/
+
+# Local machine settings and scratch
+local.env
+.scratch/
+*_BRIEF.md

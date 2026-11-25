@@ -83,7 +83,7 @@ backprop → update. Explanations are data (`content/explain/*.md`) with citatio
 
 ## Data (not in git)
 
-- `data/` — ImageNet ILSVRC-2012 (≈150 GB JPEGs; Domingo downloads with his own account). A 256×256 uint8 cache would
+- `data/` — ImageNet ILSVRC-2012 (≈150 GB JPEGs; downloaded separately with your own ImageNet account, never committed). A 256×256 uint8 cache would
   be ≈236 GB; keep the JPEGs, optionally a documented resized-JPEG cache, stream with bounded buffers.
 - A fixed, stratified **100-class subset** for integration, curves and throughput (1000 outputs kept, or a labelled
   100-output variant).
