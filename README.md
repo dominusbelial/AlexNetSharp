@@ -21,8 +21,9 @@ Early. Done so far:
 | ANX-5 | Scalar reference convolution (forward, input/weight/bias gradients, `partialSum`), exact-rational fixtures, 3,824 finite-difference checks, conv1's partial edge window proven on real pixels | [ANX-5](docs/reports/ANX-5_REPORT.md) |
 | ANX-6 | Managed SIMD CPU convolution, bitwise scalar parity and thread determinism, bounded workspace, batch-128 benchmark | [ANX-6](docs/reports/ANX-6_REPORT.md) |
 | ANX-7 | Scalar and SIMD max/average pooling and ReLU, edge/tie/NaN fixtures, numerical gradients and batch-128 timings | [ANX-7](docs/reports/ANX-7_REPORT.md) |
+| ANX-8 | Scalar and SIMD spatial/cross-map response normalisation, cached-denominator gradients, independent float64 fixtures, numerical checks and batch-128 timings | [ANX-8](docs/reports/ANX-8_REPORT.md) |
 
-Next: normalisation and the fully connected layers, the trainer, and the web explorer.
+Next: fully connected layers, the trainer, and the web explorer.
 
 ## Layout
 
@@ -64,6 +65,16 @@ and the four post-pool ReLUs) run separately:
 ```sh
 dotnet run -c Release --project tests/AlexNetSharp.Tests -- --benchmark-pool
 # Optional: --pool-output .scratch/pool-benchmark.json
+```
+
+Normalisation checks include both kernels, clamped odd/even windows, blocked
+cross-map groups, special values, numerical gradients and all six 145 geometries
+at N=3. Full scalar parity additionally checks N=17 (SIMD lanes and tail) at
+1, 2 and all worker counts. Batch-128 timings are informational and opt-in:
+
+```sh
+dotnet run -c Release --project tests/AlexNetSharp.Tests -- --benchmark-norm
+# Optional: --norm-output .scratch/norm-benchmark.json
 ```
 
 ImageNet data is not part of this repository.

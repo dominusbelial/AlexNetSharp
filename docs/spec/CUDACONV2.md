@@ -48,7 +48,7 @@ chronologically and structurally between Candidate A (25 July 2012) and Candidat
 
 **Consequence for `layers-145.cfg`:** Every kernel exercised by `layers-145.cfg` (`convFilterActs`, `convWeightActs`,
 `convImgActs`, `convLocalPool<MaxPooler>`, `convLocalMaxUndo`, `convResponseNorm`, `convResponseNormUndo`,
-`convResponseNormCrossMap`, `convResponseNormCrossMapUndo`) is completely determined with zero ambiguity: Candidate A
+`convResponseNormCrossMap`, `convResponseNormCrossMapUndo`) has a source-based reconstruction (the missing September kernel itself is not available): Candidate A
 supplies the exact convolution, pooling, spatial-norm, and cross-map-norm backward semantics, while Candidate B's
 `kFCNorm` (`cudaconv3/src/conv_util.cu:1161-1210`) confirms how `minDiv` enters the cross-map denominator
 (`denom = minDiv + addScale * sum`).
@@ -179,25 +179,62 @@ ANX-7 reverified details omitted by the original summary:
 ### 6. Spatial response normalisation (`rnorm` -> `convResponseNorm` / `convResponseNormUndo`)
 - Used by `[cnorm2a]` and `[cnorm2b]` (`type=rnorm`, `size=5`, configured `scale=0.001` -> parser divides by `size^2 = 25`
   to pass `_scale = 0.00004`, `_pow = 0.75`; `layer.py:1183`).
-- Forward (`src/cudaconv2/conv_util.cu:758-795, 947-1014, 2064`): within each channel independently, sums `x[c, y', x']^2`
+- Forward (A:`src/cudaconv2/conv_util.cu:758-804, 842-889, 947-1014, 2064-2065`): within each channel independently, sums `x[c, y', x']^2`
   over `y' in [max(0, y - sizeX/2), min(imgSize, y - sizeX/2 + sizeX))` and `x' in [max(0, x - sizeX/2), min(imgSize, x - sizeX/2 + sizeX))`
   (integer division `sizeX/2`, so `size=5` gives `[y-2, y+3)` clamped to `[0, imgSize)`), sets
   `denom = 1.0f + addScale * sum`, and outputs `y = x * denom^(-powScale)` (`minDiv` is **not** used by `type=rnorm`; the
   additive constant is `1.0f`).
-- Backward (`src/cudaconv2/conv_util.cu:1831-1850, 2228`): for input `(c, y, x)`,
+- Backward (A:`src/cudaconv2/conv_util.cu:1593-1605, 1643-1691, 1769-1849, 2228-2255`): for input `(c, y, x)`,
   `dx[c, y, x] = outGrad[c, y, x] * denom[c, y, x]^(-powScale) + x[c, y, x] * sum_{(y',x') : (y,x) in W(y',x')} (-2 * addScale * powScale * acts[c, y', x'] * outGrad[c, y', x'] / denom[c, y', x'])`.
 
 ### 7. Cross-map response normalisation (`cmrnorm` -> `convResponseNormCrossMap` / `convResponseNormCrossMapUndo`)
 - Used by `[rnorm1a]`, `[rnorm1b]`, `[rnorm2a]`, `[rnorm2b]` (`type=cmrnorm`, `size=5`, `blocked=False` default,
   configured `scale=0.0001` -> parser divides by `size = 5` to pass `_scale = 0.00002`, `_pow = 0.75`, `_minDiv = 2.0`;
   `layer.py:1183-1193`, `layers/layer-params-145.cfg:137-155`).
-- Forward (`cudaconv3/src/conv_util.cu:1190-1208` + `src/cudaconv2/conv_util.cu:2767-2786`): at each spatial pixel
+- Forward (A:`src/cudaconv2/conv_util.cu:1039-1086, 2742-2781, 2892-2893`; B:`cudaconv3/src/conv_util.cu:1190-1208` for the added `minDiv` only): at each spatial pixel
   `(y, x)` and channel `c`:
   - `startF = blocked ? (c / sizeF) * sizeF : -sizeF / 2 + c` (integer division `sizeF / 2`, so for `sizeF=5, blocked=false`, `startF = c - 2`);
   - `loopStartF = blocked ? startF : max(0, startF)`, `loopEndF = min(numFilters, startF + sizeF)`;
   - `denom[c, y, x] = minDiv + addScale * sum_{f = loopStartF}^{loopEndF - 1} x[f, y, x]^2` (**note `minDiv = 2.0` in `layers-145`, not `1.0`!**);
   - `acts[c, y, x] = x[c, y, x] * denom[c, y, x]^(-powScale)`.
-- Backward (`src/cudaconv2/conv_util.cu:2801-2889`): uses cached `_denoms` (which already includes `minDiv`). First sets
-  `tmp[f] = -2 * addScale * powScale * acts[f] * outGrad[f] / denom[f]`, then for each channel `c` sums `tmp[f]` over
+- Backward (A:`src/cudaconv2/conv_util.cu:1113-1175, 1593-1605, 2801-2889`): uses cached `_denoms` (which already includes `minDiv`). First sets
+  `coefficient = (-2 * addScale) * powScale`, then `tmp[f] = (coefficient * outGrad[f]) * acts[f] / denom[f]`, then for each channel `c` sums `tmp[f]` over
   all channels `f` whose forward window included `c` (for `blocked=false` and odd `sizeF=5`, `f in [max(0, c - (sizeF - 1)/2), min(numFilters, c + sizeF/2 + 1))`; in general `f` such that `c in [loopStartF(f), loopEndF(f))`):
   `dx[c] = outGrad[c] * denom[c]^(-powScale) + x[c] * sum_{f : c in W(f)} tmp[f]`.
+
+
+ANX-8 reverified §6–7 against the archive bytes:
+
+- The old §7 cudaconv3 citation is **relevant corroboration**, not the primary
+  cached-denominator kernel. Candidate A's actual cross-map forward is `kFCNorm`
+  at A:`src/cudaconv2/conv_util.cu:1039-1086`; `:2767-2786` was host dispatch,
+  not the summation body. A uses `1 + addScale*sum` at `:1084`. The original
+  passes `minDiv` (`src/layer.cu:1589`); B explicitly uses it at
+  B:`cudaconv3/src/conv_util.cu:1206`, with the older denominator-bearing call
+  preserved in its comments at `:2890,2898-2899`. Substituting that additive
+  constant is the stated reconstruction, not a claim that A has September's ABI.
+- Both backward wrappers run `kRNormUndoPrelims`, **overwriting saved acts**
+  (A:`src/cudaconv2/conv_util.cu:2226-2255,2799-2828`). It computes
+  `tmp = ((-2*addScale)*powScale * outGrad) * acts / cachedDenom` in that
+  multiplication order. The gather sums ascending channel, or ascending y then x.
+  Spatial reverse bounds are `[p + size/2 - size + 1, p + size/2 + 1)`,
+  clipped independently to the image (`:1643-1646`); cross-map uses the analogous
+  channel interval (`:1142-1144`). Even windows therefore have different forward
+  and reverse starts. Blocked cross-map uses the channel's fixed group of `size`,
+  clipped at the last channel (`:1068-1070,1142-1144`). Spatial ignores `blocked`.
+- The final expression is `input*sum + outGrad*pow(cachedDenom,-powScale)`.
+  The zero-target/unit-output branch skips old targets; the other branch adds
+  `scaleTargets*old + scaleOutput*gradient` (`:1160-1175,1684-1707`). Original
+  layers always pass `scaleOutput=1` (`src/layer.cu:1573,1593`).
+- A explicitly calls `__powf` in forward and backward, and `__fdividef` in the
+  preliminaries (`:804,889,1013,1086,1163,1601,1690`). The CPU port uses
+  `MathF.Pow`, ordinary float32 division and separate multiply/add operations.
+  It preserves saved acts using separate workspace; it does not emulate CUDA's
+  destructive buffer reuse or claim CUDA-bitwise parity. CPU scalar/optimized
+  bit parity is required. No batch averaging is applied to activity gradients.
+- NaN participates in square/sum/multiply; it contaminates the entire containing
+  forward window and the reverse windows reached through backward intermediates.
+  Infinities yield infinite denominators; finite inputs times the zero inverse
+  power give signed zero, while infinity times zero gives NaN. Float32 square
+  overflow is retained. Zero inputs have unit (spatial) or `minDiv` (cross-map)
+  denominator; signed zero output is preserved for finite positive denominators.

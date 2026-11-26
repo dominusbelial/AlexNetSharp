@@ -50,7 +50,7 @@ All non-data layers also inherit `neuron=""` (`layer.py:374`), `gpu=inputLayers[
 | `data` | 0 | `dataIdx` | `gpu=-1` (`:223`), `quantF="default"`, `quantB="default"` (`:177-178`) | **Fwd:** Copies host minibatch `dataIdx` (`0` images, `1` labels) to consumer GPUs (`startFprop`). **Bwd:** None (`isGradProducer() == false`). | `layer.py:1092-1102`, `src/layer.cu:1167-1266` |
 | `conv` | `>= 1` | `inputs`, `channels`, `filters`, `filterSize`, `initW`, `partialSum`; `epsW`, `epsB`, `momW`, `momB` | `padding=[0]*N` (negated at `:1041`), `stride=[1]*N`, `groups=[1]*N`, `randSparse=[False]*N`, `initB=0`, `initWFunc=""`, `initBFunc=""`, `initCFunc=""`, `weightSource=['']*N`, `sharedBiases=True` (`:1064`), `wc=[0.0]*N`, `wball=[0.0]*N`, `wcNormMin=[0.0]*N`, `wcNormMax=[0.0]*N`, `superEps=0.0`, `superMom=0.0`, `schedW="default"`, `schedB="default"` | **Fwd:** Sums `convFilterActs` across inputs onto `modulesX^2` (`1+ceil((2*pad+img-filt)/stride)`) with zero-padded out-of-bounds pixels; adds `sharedBiases`. **Bwd:** Bias sum (`1/numCases`), `convWeightActs` reduced over `modules/partialSum` (`1/numCases`), `convImgActs` to gradConsumers. | `layer.py:974-1076`, `src/layer.cu:815-897` |
 | `cmrnorm` | 1 | `inputs`, `channels`, `size`; `scale`, `pow` | `blocked=False` (`:1193`), `minDiv=1.0` (`:1186`); divides `scale /= size` (`:1183`) | **Fwd:** Cross-channel window `[max(0, c-size/2), min(C, c-size/2+size))` (when `!blocked`): `denom = minDiv + (scale/size)*sum_f x_f^2`, `y = x * denom^(-pow)`. **Bwd:** `convResponseNormCrossMapUndo` using cached `_denoms`. | `layer.py:1170-1216`, `src/layer.cu:1583-1594` |
-| `rnorm` | 1 | `inputs`, `channels`, `size`; `scale`, `pow` | `blocked=False` (`:1193`); divides `scale /= size**2` (`:1183`); no `minDiv` | **Fwd:** Within-channel clamped `size x size` spatial window: `denom = 1.0 + (scale/size^2)*sum x^2`, `y = x * denom^(-pow)`. **Bwd:** `convResponseNormUndo` using cached `_denoms`. | `layer.py:1170-1216`, `src/layer.cu:1560-1574` |
+| `rnorm` | 1 | `inputs`, `channels`, `size`; `scale`, `pow` | `blocked=False` (`:1193`, parsed but unused spatially); divides `scale /= size**2` (`:1183`); no `minDiv` | **Fwd:** Within-channel clamped `size x size` spatial window: `denom = 1.0 + (scale/size^2)*sum x^2`, `y = x * denom^(-pow)`. **Bwd:** `convResponseNormUndo` using cached `_denoms`. | `layer.py:1170-1216`, `src/layer.cu:1560-1574` |
 | `pool` | 1 | `inputs`, `pool`, `channels`, `sizeX`, `stride` | `start=0` (`:1139`), `outputsX=0` -> `ceil((imgSize-start-sizeX)/stride)+1` (`:1164`), `doMax=False` (only if `pool=='rand'`) | **Fwd (`max`):** Clamped window numeric max, finite seed `-2e38f`, NaNs ignored (`convLocalPool<MaxPooler>`); average divides by clipped count. **Bwd (`max`):** `convLocalMaxUndo` routes full upstream gradient to every input pixel matching window max (`img == ma`, including all ties). | `layer.py:1125-1168`, `src/layer.cu:1273-1334`; A:`include/cudaconv2/conv_util.cuh:71-94,161-186`, A:`src/cudaconv2/conv_util.cu:1555-1559` |
 | `fc` | `>= 1` | `inputs`, `outputs`, `initW` (quirk `:832`); `epsW`, `epsB`, `momW`, `momB` | `initB=0` (`:833`), `initWFunc=""`, `initBFunc=""`, `weightSource=['']*N`, `wc=[0.0]*N`, `wball=[0.0]*N`, `superEps=0.0`, `superMom=0.0`, `schedW="default"`, `schedB="default"` | **Fwd:** Sums `X[i] * W[i]` in declared input order (`W[i]` F-order `numInputs[i] x outputs`), adds `1 x outputs` bias row once. **Bwd:** `dX[i] += dY * W[i]^T`, `db = (1/numCases)*sum dY`, `_weightsInc[i] = momW*V + (epsW/numCases)*(X[i]^T * dY)`. | `layer.py:873-886`, `src/layer.cu:634-675`, `src/convnet.cu:444` |
 | `hs` | 1 | `inputs`, `keep`; `enable` | None beyond base `LayerWithInputParser` | **Fwd:** Unscaled binary mask `(u < keep) * x` when `enable && PASS_TRAIN`; `keep * x` otherwise. **Bwd:** Same `_sexMask` in `PASS_TRAIN`, or `keep` otherwise. | `layer.py:689-709`, `src/layer.cu:1121-1153` |
@@ -67,6 +67,19 @@ gradient evaluation (`include/neuron.cuh:67-68,148-157`). Fresh 145 parsing does
 key contains `'inputs'`, so the guard counts zero and both sharing targets remain
 -1 (`layer.py:154-156,338-354`). This preserves max-pool outputs for backward and
 is distinct from the primitive's in-place capability. No parser fix is applied.
+
+ANX-8 norm clarification (candidate citations/provenance in `CUDACONV2.md` §6–7):
+both backward routines consume cached denominators and **overwrite saved acts** in
+CUDA's preliminaries (A:`src/cudaconv2/conv_util.cu:1601,2255,2828`). The port
+preserves them with separate scratch storage. Window sums visit ascending channel
+or y,x; reverse windows start at `p + size/2 - size + 1` and end before
+`p + size/2 + 1`, so even sizes require the adjoint offset. Blocked cross-map uses
+fixed groups of `size`, clipping the final group. Spatial `blocked` is ignored
+(`src/layer.cu:1560-1573`). Candidate A uses `__powf`/`__fdividef`; this port uses
+`MathF.Pow` and float32 division and proves CPU scalar/optimized bit parity.
+Candidate A hardcodes cross-map base 1 (`:1084`); the original's `minDiv` argument
+and Candidate B's `:1206` jointly support the configured base 2. The previous
+cudaconv3 forward citation remains relevant only for that later addition.
 
 ## 3. Section-by-Section Ledger (`layers/layers-145.cfg`)
 
