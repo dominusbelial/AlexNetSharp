@@ -1,0 +1,10 @@
+{
+  "manifest.json": {
+    "bytes": 60809,
+    "sha256": "24c6f87cf1f16f5f89a1ba81fd560b6b8b556e27a75babb5ed3e805f37c5f53b"
+  },
+  "activations.bin": {
+    "bytes": 8175044,
+    "sha256": "d873f8203592228b5fbe3d2df5c4bd2f4393afebb5a17ecbe0b6befac6a2a22e"
+  }
+}

@@ -9,9 +9,9 @@
   "layout": "channel,y,x",
   "mode": "eval",
   "image": {
-    "file": "content/samples/synthetic.ppm",
-    "sha256": "98e3e9e92a2021df678d470be63dde205f39b3605e1ef62336abed17738418ad",
-    "provenance": "Synthetic colour study; content/samples/PROVENANCE.md",
+    "file": "content/samples/labrador.jpg",
+    "sha256": "8e04f295a5a2e907dfe9924b5e2dbee594c0942e8ecca7556fd8d64aa1818777",
+    "provenance": "Dktue, Portrait of a labrador retriever; content/samples/PROVENANCE.md",
     "license": "CC0-1.0",
     "preprocessing": "not the ANX-12 pipeline; short side 256 nearest-neighbour, centre crop 224, RGB constant mean subtraction",
     "mean": [
@@ -47,17 +47,17 @@
       "stride": 1,
       "start": 0,
       "statistics": {
-        "min": -107,
-        "max": 136,
-        "mean": 15.99234693877551,
-        "standardDeviation": 80.24794130873623,
+        "min": -123,
+        "max": 151,
+        "mean": -31.89866337159864,
+        "standardDeviation": 61.407016989623685,
         "count": 150528
       },
       "activations": {
         "file": "activations.bin",
         "offset": 0,
         "count": 150528,
-        "sha256": "d6ec1937ac1cbcfbc0e1511a54c685c960f5e54f22c3daea132dba3a0caf7243"
+        "sha256": "c770127f1afa8760b7039eb04b2285eadb951f588490172ceafe3fa74c337010"
       }
     },
     {
@@ -152,17 +152,17 @@
       "stride": 4,
       "start": 0,
       "statistics": {
-        "min": -72.9363,
-        "max": 62.696712,
-        "mean": 0.0742045949147655,
-        "standardDeviation": 15.496657036279155,
+        "min": -54.000458,
+        "max": 51.119625,
+        "mean": -0.003607207912016537,
+        "standardDeviation": 11.425689326606275,
         "count": 145200
       },
       "activations": {
         "file": "activations.bin",
         "offset": 602116,
         "count": 145200,
-        "sha256": "e38a7e5696b414ff29fee440892abe4375d84ec1f9dcbaa9a0fa85a72bf40fb1"
+        "sha256": "2c079004c4e1a6d9dc2ea0b1e9a4ba6e1ef5d359ede56a89c8535b725d0bfcff"
       }
     },
     {
@@ -219,17 +219,17 @@
       "stride": 4,
       "start": 0,
       "statistics": {
-        "min": -65.23949,
-        "max": 65.453964,
-        "mean": 0.25616960643380804,
-        "standardDeviation": 15.025720959931602,
+        "min": -52.16198,
+        "max": 48.277668,
+        "mean": -0.8404652634529575,
+        "standardDeviation": 12.088869795081116,
         "count": 145200
       },
       "activations": {
         "file": "activations.bin",
         "offset": 1182916,
         "count": 145200,
-        "sha256": "223db1cf39e2f9560b995a76500df028686c48e81beeca9176fad7963043ef34"
+        "sha256": "55780cd8fb3878174ae991b3fc52b6e7eabd47372cd98ab0df38cc0e8a0714fd"
       }
     },
     {
@@ -265,17 +265,17 @@
       "stride": 1,
       "start": 0,
       "statistics": {
-        "min": -41.295708,
-        "max": 35.750443,
-        "mean": 0.04227857926885947,
-        "standardDeviation": 9.092187361119196,
+        "min": -30.936491,
+        "max": 29.611258,
+        "mean": -0.0021333044636755276,
+        "standardDeviation": 6.745396160252268,
         "count": 145200
       },
       "activations": {
         "file": "activations.bin",
         "offset": 1763716,
         "count": 145200,
-        "sha256": "f2d831b0a2e4dbd289e0fcc8ddc06f336a4877573f40b956f5675691113753fb"
+        "sha256": "1dd795dbefad432f3532cd9ec70d20903a2121ab4f79d351afa35edbe6851358"
       }
     },
     {
@@ -311,17 +311,17 @@
       "stride": 1,
       "start": 0,
       "statistics": {
-        "min": -37.310753,
-        "max": 37.28754,
-        "mean": 0.1492271296843381,
-        "standardDeviation": 8.825673608370074,
+        "min": -30.095676,
+        "max": 27.932892,
+        "mean": -0.49313544105620455,
+        "standardDeviation": 7.11853367721848,
         "count": 145200
       },
       "activations": {
         "file": "activations.bin",
         "offset": 2344516,
         "count": 145200,
-        "sha256": "1d9edf0436da9d7329c93bf7e26e7002dd8c5ab9950f49f514c257a9cc4391f3"
+        "sha256": "a9b13614a7ce0a868f7114747de3611e1e9d937dd75a4d211f8f8b8139441d34"
       }
     },
     {
@@ -357,17 +357,17 @@
       "stride": 2,
       "start": 0,
       "statistics": {
-        "min": -27.807732,
-        "max": 35.750443,
-        "mean": 5.549634376104722,
-        "standardDeviation": 8.505558003339724,
+        "min": -18.613527,
+        "max": 29.611258,
+        "mean": 4.378518759568486,
+        "standardDeviation": 6.487911812866067,
         "count": 34992
       },
       "activations": {
         "file": "activations.bin",
         "offset": 2925316,
         "count": 34992,
-        "sha256": "7c2d23ab3fdc2ef481c45236c6fc54f5e8063e5239e4eb50408955c6a4c15a28"
+        "sha256": "847d3edae7fc824ed06a2565108947d57513a833dc0ce26f62b8138d04915bd6"
       }
     },
     {
@@ -403,17 +403,17 @@
       "stride": 2,
       "start": 0,
       "statistics": {
-        "min": -27.051138,
-        "max": 37.28754,
-        "mean": 5.4099863128535155,
-        "standardDeviation": 8.223115750865771,
+        "min": -26.980942,
+        "max": 27.932892,
+        "mean": 3.875062944067595,
+        "standardDeviation": 6.909347592295484,
         "count": 34992
       },
       "activations": {
         "file": "activations.bin",
         "offset": 3065284,
         "count": 34992,
-        "sha256": "97c835e317f6785b8279bf28b76e28c8aecd1be00247b0b72d7973ddcd0262f0"
+        "sha256": "4701e2762bd66ce6711ec112c3a871b7b4f9390b2d09ee59db966088c93ae1b8"
       }
     },
     {
@@ -470,17 +470,17 @@
       "stride": 1,
       "start": -2,
       "statistics": {
-        "min": -11.6574745,
-        "max": 13.090599,
-        "mean": 0.9033803344271126,
-        "standardDeviation": 3.145418185171253,
+        "min": -9.893263,
+        "max": 10.338659,
+        "mean": 1.0671910985369129,
+        "standardDeviation": 2.4530357831000815,
         "count": 93312
       },
       "activations": {
         "file": "activations.bin",
         "offset": 3205252,
         "count": 93312,
-        "sha256": "271e1198b092f71e25fe0a23ddc1abfbce47d18d3816b9553d79aacd7f6e1397"
+        "sha256": "c9a2bef635c5bed2dbd517909becfc662f7b435e108437d801a0bc60e93ba690"
       }
     },
     {
@@ -537,17 +537,17 @@
       "stride": 1,
       "start": -2,
       "statistics": {
-        "min": -10.198497,
-        "max": 12.353167,
-        "mean": 0.9510735218459165,
-        "standardDeviation": 2.8480606732504565,
+        "min": -10.081475,
+        "max": 10.763285,
+        "mean": 0.9179450020389517,
+        "standardDeviation": 2.3442716285259766,
         "count": 93312
       },
       "activations": {
         "file": "activations.bin",
         "offset": 3578500,
         "count": 93312,
-        "sha256": "8b872999051a1ef616d1c2f0473fec1948b4be65e8a0ebbc6a9c97b146239e5f"
+        "sha256": "3c135f8ab22e78f6911525dfb72cd14dd45a78a9c5b5fe90e67f5c403e114e65"
       }
     },
     {
@@ -584,16 +584,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 7.7712708,
-        "mean": 1.0488224528551098,
-        "standardDeviation": 1.2517921194171244,
+        "max": 6.1401424,
+        "mean": 0.9421163611998238,
+        "standardDeviation": 1.0841442816505196,
         "count": 93312
       },
       "activations": {
         "file": "activations.bin",
         "offset": 3951748,
         "count": 93312,
-        "sha256": "b14dcbe4beb03ce1ab4f56c464dab4c23bcbc7cda716f7220152b3233a96608d"
+        "sha256": "bfc7830929e2c005c45959b350cbcfe7e3085a9c58b8cbb3a1b46bba60edaba5"
       }
     },
     {
@@ -630,16 +630,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 7.3352675,
-        "mean": 0.98974658650155,
-        "standardDeviation": 1.1587834758917277,
+        "max": 6.39269,
+        "mean": 0.8604862783824077,
+        "standardDeviation": 0.9820360208121097,
         "count": 93312
       },
       "activations": {
         "file": "activations.bin",
         "offset": 4324996,
         "count": 93312,
-        "sha256": "e84175f48128cfe967e48b36736fd1da3f1f5dac5e78dd31ad1cb5a46d98849b"
+        "sha256": "ed914366274ae726716e9e306660557df205001b7d11d90cf8427775b14fb9dc"
       }
     },
     {
@@ -675,16 +675,16 @@
       "start": -2,
       "statistics": {
         "min": 0,
-        "max": 7.60175,
-        "mean": 1.0441663697254846,
-        "standardDeviation": 1.243190589910779,
+        "max": 6.0616317,
+        "mean": 0.9385899573115142,
+        "standardDeviation": 1.077306192408148,
         "count": 93312
       },
       "activations": {
         "file": "activations.bin",
         "offset": 4698244,
         "count": 93312,
-        "sha256": "f484638967b7067751c3b85d8bb7f75ca1177a20e63dbd864df6da17c790a595"
+        "sha256": "41fc314bea23c671f8740269f3a08b39aff295df70366e161de64e5ccdac67b4"
       }
     },
     {
@@ -720,16 +720,16 @@
       "start": -2,
       "statistics": {
         "min": 0,
-        "max": 7.2448993,
-        "mean": 0.9860732572375406,
-        "standardDeviation": 1.1517398659767584,
+        "max": 6.321706,
+        "mean": 0.8578528516765478,
+        "standardDeviation": 0.9765630447899333,
         "count": 93312
       },
       "activations": {
         "file": "activations.bin",
         "offset": 5071492,
         "count": 93312,
-        "sha256": "272a37ac43f5ea13e2566bc4c2de227c2bd2a41b94cec9f45cbe6c79527c144b"
+        "sha256": "5048ced639470ce02b069b6bf6021a1531f5288d5d9b324bd8a535d8908139a3"
       }
     },
     {
@@ -767,16 +767,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 7.60175,
-        "mean": 1.9427990296831785,
-        "standardDeviation": 1.5192424460164116,
+        "max": 6.0616317,
+        "mean": 1.5137039749477907,
+        "standardDeviation": 1.2643758035037254,
         "count": 21632
       },
       "activations": {
         "file": "activations.bin",
         "offset": 5444740,
         "count": 21632,
-        "sha256": "8bc39f6f3ccf5d273e6b5f5df37f124572ba53b2b076c3a0c53ae2993aad2194"
+        "sha256": "7125516810c586c2f3b0efa46dd2199803affc84037895350ba9e4386a3c7979"
       }
     },
     {
@@ -814,16 +814,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 7.2448993,
-        "mean": 1.930886883836719,
-        "standardDeviation": 1.3736594732064493,
+        "max": 6.321706,
+        "mean": 1.431562498772061,
+        "standardDeviation": 1.1547078260910582,
         "count": 21632
       },
       "activations": {
         "file": "activations.bin",
         "offset": 5531268,
         "count": 21632,
-        "sha256": "d32cf04e66148d2763318f7518d33c38fb9fe8aabfc6e9427689d6bef1f18972"
+        "sha256": "4ed7df05ee6323e24e2d3f8ca16ab07e3baa3b07f3b93a75abf96f860bacbebb"
       }
     },
     {
@@ -881,17 +881,17 @@
       "stride": 1,
       "start": -1,
       "statistics": {
-        "min": -11.891824,
-        "max": 10.822029,
-        "mean": -0.4099606386762945,
-        "standardDeviation": 3.275445861217107,
+        "min": -10.86091,
+        "max": 9.593319,
+        "mean": -0.3944155958524071,
+        "standardDeviation": 2.5954258633665925,
         "count": 32448
       },
       "activations": {
         "file": "activations.bin",
         "offset": 5617796,
         "count": 32448,
-        "sha256": "52f1710aa43a78a4cdde0293996483813dc2edf75afe278a84371c45ec7a5ff8"
+        "sha256": "df9a1333b87c41da7e9e4a188e7b971428688534c8a2abf23b603aeade769fb9"
       }
     },
     {
@@ -949,17 +949,17 @@
       "stride": 1,
       "start": -1,
       "statistics": {
-        "min": -12.199913,
-        "max": 10.771403,
-        "mean": 0.044294694583119985,
-        "standardDeviation": 3.2946600287566565,
+        "min": -10.283459,
+        "max": 10.46822,
+        "mean": 0.14905254617226066,
+        "standardDeviation": 2.5346500276594184,
         "count": 32448
       },
       "activations": {
         "file": "activations.bin",
         "offset": 5747588,
         "count": 32448,
-        "sha256": "9d931775f1fcb3b719c6a1f9edf43fa152b4439cec8373ea608621dd4b5f21a8"
+        "sha256": "d91bd00c2d2367c4d4c3c138a489f77eec3dc86b9e4b3a6c30128fa0d9ebbea7"
       }
     },
     {
@@ -1016,17 +1016,17 @@
       "stride": 1,
       "start": -1,
       "statistics": {
-        "min": -7.3448954,
-        "max": 10.642205,
-        "mean": 1.2450599116962073,
-        "standardDeviation": 2.5120096631874818,
+        "min": -5.574198,
+        "max": 8.680002,
+        "mean": 1.1965390217345377,
+        "standardDeviation": 1.9466663683652903,
         "count": 32448
       },
       "activations": {
         "file": "activations.bin",
         "offset": 5877380,
         "count": 32448,
-        "sha256": "74abefa229108684444ea52101b07380737b87e1eaf638f045d80ed778a8d0bc"
+        "sha256": "328040584f2fc507e94ff869e164aad374ecccf94b05fd7e1a1d935724a4a7ee"
       }
     },
     {
@@ -1083,17 +1083,17 @@
       "stride": 1,
       "start": -1,
       "statistics": {
-        "min": -7.7597494,
-        "max": 12.356436,
-        "mean": 1.1708823348187953,
-        "standardDeviation": 2.8911399241665503,
+        "min": -6.114146,
+        "max": 9.727772,
+        "mean": 1.0934106534460828,
+        "standardDeviation": 2.3267606633425615,
         "count": 32448
       },
       "activations": {
         "file": "activations.bin",
         "offset": 6007172,
         "count": 32448,
-        "sha256": "54a3517ffa7dfb43358eb4b2047998f786074cf6f243207482f8a5580195d2c5"
+        "sha256": "8368bfdc6c759c204a81c247e5a63c3146f5692122450feccca8d1d4e3c1409c"
       }
     },
     {
@@ -1150,17 +1150,17 @@
       "stride": 1,
       "start": -1,
       "statistics": {
-        "min": -10.482371,
-        "max": 14.889764,
-        "mean": 1.3240123282396097,
-        "standardDeviation": 3.3302071656853434,
+        "min": -8.053218,
+        "max": 11.085528,
+        "mean": 1.3519569320091702,
+        "standardDeviation": 2.72614700935531,
         "count": 21632
       },
       "activations": {
         "file": "activations.bin",
         "offset": 6136964,
         "count": 21632,
-        "sha256": "b8093bcbb67b9c1b61664d942d216b474a30ae0bc24d1d094eb9461d41c3c52b"
+        "sha256": "c5fc126e3a486f1b66b8498286c1ffd771c562e777f96b8d3e47ac6a3038a5c5"
       }
     },
     {
@@ -1217,17 +1217,17 @@
       "stride": 1,
       "start": -1,
       "statistics": {
-        "min": -9.658331,
-        "max": 12.184619,
-        "mean": 0.8397822527010985,
-        "standardDeviation": 3.227640239472,
+        "min": -8.693528,
+        "max": 10.421034,
+        "mean": 0.8279628156871706,
+        "standardDeviation": 2.7045253103630262,
         "count": 21632
       },
       "activations": {
         "file": "activations.bin",
         "offset": 6223492,
         "count": 21632,
-        "sha256": "42d88a0ee7e3df296b3394da696cd97e872ccb8611d5188eb3ccdf04656799eb"
+        "sha256": "4cf1f3729e2b9657ae0b424edcf9390631acf82f2396bbdeac71abd0e1e0461c"
       }
     },
     {
@@ -1263,17 +1263,17 @@
       "stride": 2,
       "start": 0,
       "statistics": {
-        "min": -7.588607,
-        "max": 14.889764,
-        "mean": 2.6377087257310956,
-        "standardDeviation": 3.3511266872883962,
+        "min": -6.468842,
+        "max": 11.085528,
+        "mean": 2.4373699709928283,
+        "standardDeviation": 2.7346405049869227,
         "count": 4608
       },
       "activations": {
         "file": "activations.bin",
         "offset": 6310020,
         "count": 4608,
-        "sha256": "54bdc0679463130c1ecbbc955689c9a69da9217bd11a6cf27e666395068b53e8"
+        "sha256": "ee134a0323ae6d4e79d40b1e550acb2cc7ee54147751102b31b65139e5422b0f"
       }
     },
     {
@@ -1309,17 +1309,17 @@
       "stride": 2,
       "start": 0,
       "statistics": {
-        "min": -6.665562,
-        "max": 12.184619,
-        "mean": 2.159002432366833,
-        "standardDeviation": 3.1708329648347697,
+        "min": -6.8811264,
+        "max": 10.421034,
+        "mean": 1.966233002164194,
+        "standardDeviation": 2.6686761780158266,
         "count": 4608
       },
       "activations": {
         "file": "activations.bin",
         "offset": 6328452,
         "count": 4608,
-        "sha256": "5f1f2a99db87efc78b92ca5a1f8cd7869e81ed32fb3f67e52687242934b1466b"
+        "sha256": "45ba8d679a6b934eed3e82167e10f807a3d158b2a2fafbde61451b2715ade042"
       }
     },
     {
@@ -1366,17 +1366,17 @@
       "stride": 1,
       "start": 0,
       "statistics": {
-        "min": -10.262284,
-        "max": 12.289803,
-        "mean": 1.0605066368952976,
-        "standardDeviation": 3.6425485758321554,
+        "min": -10.873762,
+        "max": 11.606841,
+        "mean": 1.0241356825717958,
+        "standardDeviation": 3.170343385112106,
         "count": 2048
       },
       "activations": {
         "file": "activations.bin",
         "offset": 6346884,
         "count": 2048,
-        "sha256": "6f8cacdb598e040d52eafd619b1c48ff4b0551dd15718d771afa493b6c93ac70"
+        "sha256": "5e05c16cff9e1653ecef4a84bd83594157ba6063ccb4ebd2a8dfba987cdd91d4"
       }
     },
     {
@@ -1423,17 +1423,17 @@
       "stride": 1,
       "start": 0,
       "statistics": {
-        "min": -10.072236,
-        "max": 15.470323,
-        "mean": 0.9625072245908086,
-        "standardDeviation": 3.7348907160712077,
+        "min": -8.829296,
+        "max": 13.757828,
+        "mean": 0.9511064602556871,
+        "standardDeviation": 3.275992581603338,
         "count": 2048
       },
       "activations": {
         "file": "activations.bin",
         "offset": 6355076,
         "count": 2048,
-        "sha256": "e06197d3257f3b2b1afdc5537d2941917dccd915f184e5d4afca982ab1c55aad"
+        "sha256": "de2fed45d1e2bdfe552ccb9666371d59c53aed67605e74b2f06f069d3a922c7a"
       }
     },
     {
@@ -1467,16 +1467,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 6.1449013,
-        "mean": 1.0222125470281753,
-        "standardDeviation": 1.2438320589824359,
+        "max": 5.8034205,
+        "mean": 0.9164876636314148,
+        "standardDeviation": 1.1036707287640908,
         "count": 2048
       },
       "activations": {
         "file": "activations.bin",
         "offset": 6363268,
         "count": 2048,
-        "sha256": "9a71cac45765f2059d5a2af60584486aeba85ecc80c81fde6b6a3821b0bb3c08"
+        "sha256": "587f887b3dc65d2eab5308ec44118cdbd32cb2e9bfac0c60d19940f68a27b801"
       }
     },
     {
@@ -1510,16 +1510,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 7.7351613,
-        "mean": 1.0111448613351968,
-        "standardDeviation": 1.2486444988254073,
+        "max": 6.878914,
+        "mean": 0.9208062716443237,
+        "standardDeviation": 1.1078315872269822,
         "count": 2048
       },
       "activations": {
         "file": "activations.bin",
         "offset": 6371460,
         "count": 2048,
-        "sha256": "ba30664a493bde7be088f275758f55d2fd99d4e44ab9670a66c294990e315f5a"
+        "sha256": "9a0adcbfb24a73c51ecece223d13aba5821cb374fe86d8252ac2907595ca7481"
       }
     },
     {
@@ -1566,17 +1566,17 @@
       "stride": 1,
       "start": 0,
       "statistics": {
-        "min": -2.1892824,
-        "max": 4.5380783,
-        "mean": 1.0372048891167651,
-        "standardDeviation": 1.027145430698785,
+        "min": -1.8856782,
+        "max": 4.1361985,
+        "mean": 1.036901151278471,
+        "standardDeviation": 0.921196850245794,
         "count": 2048
       },
       "activations": {
         "file": "activations.bin",
         "offset": 6379652,
         "count": 2048,
-        "sha256": "5193e30ed6fb60d3f15239f79bc3b974e2ff877b766d233119a86d3ee1696bb5"
+        "sha256": "2ac21cbc14e629f2a2336f8c110d7da9dbef95dc07dc4c95573bc2a7447fe5a3"
       }
     },
     {
@@ -1623,17 +1623,17 @@
       "stride": 1,
       "start": 0,
       "statistics": {
-        "min": -2.062823,
-        "max": 4.0784883,
-        "mean": 1.0294179138390973,
-        "standardDeviation": 0.9724221444551943,
+        "min": -1.9047459,
+        "max": 4.1344757,
+        "mean": 1.028018990471537,
+        "standardDeviation": 0.8795690321904462,
         "count": 2048
       },
       "activations": {
         "file": "activations.bin",
         "offset": 6387844,
         "count": 2048,
-        "sha256": "7eda5d822ffb9c29a800e1aecaf1c935ad4670b58a8b4d1fbfbc40b87f565ea6"
+        "sha256": "85d824cfe90975d367f13ff347fb483a3f7309e88cc47053fbcdde67b9e9733f"
       }
     },
     {
@@ -1666,16 +1666,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 2.2690392,
-        "mean": 0.5592233736283561,
-        "standardDeviation": 0.4489997421017808,
+        "max": 2.0680993,
+        "mean": 0.547217502906733,
+        "standardDeviation": 0.413164583520451,
         "count": 2048
       },
       "activations": {
         "file": "activations.bin",
         "offset": 6396036,
         "count": 2048,
-        "sha256": "dd8d57ae9ce1e9465d287d7dce2b2f9ee708b69879d30b3a275013e0c88d526a"
+        "sha256": "a69aa586fac900a08f32629b10993122fe3871636d2a28b5884759232328b606"
       }
     },
     {
@@ -1708,16 +1708,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 2.0392442,
-        "mean": 0.5511428140143835,
-        "standardDeviation": 0.4263802608311216,
+        "max": 2.0672379,
+        "mean": 0.5401742508947791,
+        "standardDeviation": 0.3945818474875158,
         "count": 2048
       },
       "activations": {
         "file": "activations.bin",
         "offset": 6404228,
         "count": 2048,
-        "sha256": "01cad37f5571ed3d332b01535d534ff08cd02e895a1548ffdb76435f188da9fe"
+        "sha256": "ee50bbf37952f51c3ef177125725712b2c33a14afae67573995834f8d3ca83fe"
       }
     },
     {
@@ -1764,17 +1764,17 @@
       "stride": 1,
       "start": 0,
       "statistics": {
-        "min": -2.0338407,
-        "max": 1.5491174,
-        "mean": -0.01293543168157339,
-        "standardDeviation": 0.4470333003966054,
+        "min": -1.8959162,
+        "max": 1.5551465,
+        "mean": -0.012642219884786756,
+        "standardDeviation": 0.4299897252984883,
         "count": 1000
       },
       "activations": {
         "file": "activations.bin",
         "offset": 6412420,
         "count": 1000,
-        "sha256": "88e6547f5767b6420a107f59dbd6f6dd3708548f398823fadd538436b0f7452b"
+        "sha256": "c01ebe3d6a3f9503ca2f210ae8af0c0e8b3cfb6ef443a5be61b3cef78d3ac6ef"
       }
     },
     {
@@ -1804,17 +1804,17 @@
       "stride": 1,
       "start": 0,
       "statistics": {
-        "min": 0.00011992424,
-        "max": 0.0043148524,
-        "mean": 0.0009999999205901986,
-        "standardDeviation": 0.00047649638778731563,
+        "min": 0.0001386396,
+        "max": 0.0043718456,
+        "mean": 0.0009999998534767655,
+        "standardDeviation": 0.00045722117546005426,
         "count": 1000
       },
       "activations": {
         "file": "activations.bin",
         "offset": 6416420,
         "count": 1000,
-        "sha256": "70033ba0f7d168a44551258b88953bc0d40add77fbd452a56446b8b94aa7e841"
+        "sha256": "f55356ecefbc1e8682c52588c891aa2c1b49f524fd903567779f2a598f616a92"
       }
     },
     {
@@ -1885,16 +1885,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 35.750443,
-        "mean": 6.889111741254538,
-        "standardDeviation": 6.608165725714131,
+        "max": 29.611258,
+        "mean": 5.351660369739942,
+        "standardDeviation": 5.111183012079258,
         "count": 34992
       },
       "activations": {
         "file": "activations.bin",
         "offset": 6420420,
         "count": 34992,
-        "sha256": "787a0aded9151d7484d7356570440cae54d98bffdfadafd93963c2b8a44b720d"
+        "sha256": "f15d39ab712dffdb2bccd15be258a5d63f7b7a2c5e189501b40ba0f045db261d"
       }
     },
     {
@@ -1925,16 +1925,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 37.28754,
-        "mean": 6.6766506646876085,
-        "standardDeviation": 6.382600344215492,
+        "max": 27.932892,
+        "mean": 5.071864297944315,
+        "standardDeviation": 5.152343764095905,
         "count": 34992
       },
       "activations": {
         "file": "activations.bin",
         "offset": 6560388,
         "count": 34992,
-        "sha256": "9b98f756911ec4cc25a79fb961e630613054e97a13746b0e5e9d0005d806fefb"
+        "sha256": "5aadd27fe8e7f79149afadf134e3bd7122a6a703f78279a61a25c57aa286cce0"
       }
     },
     {
@@ -1965,16 +1965,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 13.090599,
-        "mean": 1.7646151852611305,
-        "standardDeviation": 2.1063956584135797,
+        "max": 10.338659,
+        "mean": 1.5849187490191765,
+        "standardDeviation": 1.8240365767585502,
         "count": 93312
       },
       "activations": {
         "file": "activations.bin",
         "offset": 6700356,
         "count": 93312,
-        "sha256": "9844c951c2f71f77fd92e21d8bbd82bf7b60ae79d1aeeda6d126c372511eae59"
+        "sha256": "c05e49eea41dc5b2e4b0c59d0274f4ce50406e1e43a2534460061a941e26ced9"
       }
     },
     {
@@ -2005,16 +2005,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 12.353167,
-        "mean": 1.665116223982511,
-        "standardDeviation": 1.9497372927692669,
+        "max": 10.763285,
+        "mean": 1.4475252171052142,
+        "standardDeviation": 1.6521621698190156,
         "count": 93312
       },
       "activations": {
         "file": "activations.bin",
         "offset": 7073604,
         "count": 93312,
-        "sha256": "cee8fa17ad46d6e891d1d959daf7d6c16199ba0395f7b1e4c28974e14ca952c2"
+        "sha256": "8e2c1179cc10cd4117b37db529e2212033d76b23245d24b2756a2a231da72cbb"
       }
     },
     {
@@ -2045,16 +2045,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 10.822029,
-        "mean": 1.1268083075864752,
-        "standardDeviation": 1.802440333056816,
+        "max": 9.593319,
+        "mean": 0.8476170054198903,
+        "standardDeviation": 1.4164045111434684,
         "count": 32448
       },
       "activations": {
         "file": "activations.bin",
         "offset": 7446852,
         "count": 32448,
-        "sha256": "26343e9b7a0cfc65471f88c461a62d128d1efb477952793dbf0d482faa912d88"
+        "sha256": "3c1081448296d084a25d1877ac8cc3599122254dda9121ef0483ead7ff2074b9"
       }
     },
     {
@@ -2085,16 +2085,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 10.771403,
-        "mean": 1.326212884396378,
-        "standardDeviation": 1.89179842823728,
+        "max": 10.46822,
+        "mean": 1.071436870088051,
+        "standardDeviation": 1.5278589138233756,
         "count": 32448
       },
       "activations": {
         "file": "activations.bin",
         "offset": 7576644,
         "count": 32448,
-        "sha256": "107b4a36df0be151b839eaf5f85d2fba97c15e1bc9110bb5a60917682c762843"
+        "sha256": "0155b41bd4dac910c6f387c719a1b956a3f839240fc38f8f327495d03f1517c3"
       }
     },
     {
@@ -2125,16 +2125,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 10.642205,
-        "mean": 1.724020944785187,
-        "standardDeviation": 1.9297656836619035,
+        "max": 8.680002,
+        "mean": 1.4932886972340078,
+        "standardDeviation": 1.5728000359415204,
         "count": 32448
       },
       "activations": {
         "file": "activations.bin",
         "offset": 7706436,
         "count": 32448,
-        "sha256": "469a47c8135a0f7f8b3f15f5c5802ebeb9a2572c859bdfc4ab1005417ddf63d2"
+        "sha256": "ba1e6bf54933f3768a1f8523456c32dd51909d82c3754084a3b17fdf35167788"
       }
     },
     {
@@ -2165,16 +2165,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 12.356436,
-        "mean": 1.8066275445762765,
-        "standardDeviation": 2.1552140307569054,
+        "max": 9.727772,
+        "mean": 1.5667289120477625,
+        "standardDeviation": 1.7548141574657101,
         "count": 32448
       },
       "activations": {
         "file": "activations.bin",
         "offset": 7836228,
         "count": 32448,
-        "sha256": "4370d9de4cc5f4156ba4746b9498ace03372c9ae1890bb8773f2528d383cc19e"
+        "sha256": "12e092555b6f965c3e421e45403997ab052eff5e56d32288f5cd12fca370cc33"
       }
     },
     {
@@ -2206,16 +2206,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 14.889764,
-        "mean": 3.0521460208757265,
-        "standardDeviation": 2.724576762833389,
+        "max": 11.085528,
+        "mean": 2.708584979745663,
+        "standardDeviation": 2.3009970612804196,
         "count": 4608
       },
       "activations": {
         "file": "activations.bin",
         "offset": 7966020,
         "count": 4608,
-        "sha256": "330e816554275d09428b4612427d625bac08d75b3652c98a49b18485634e441a"
+        "sha256": "de679600d5cb7aa527eb2ecddd32ca83e918bbf27ef36fa6f3a92e142dea288c"
       }
     },
     {
@@ -2247,16 +2247,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 12.184619,
-        "mean": 2.640520306485188,
-        "standardDeviation": 2.495410901387867,
+        "max": 10.421034,
+        "mean": 2.340144640675539,
+        "standardDeviation": 2.1153836078202897,
         "count": 4608
       },
       "activations": {
         "file": "activations.bin",
         "offset": 7984452,
         "count": 4608,
-        "sha256": "ff264faadaf0e6d2393fc258d5f42a0c20ad43295134890c4aa2077d41eee3de"
+        "sha256": "c692f4b74de0964b4db45f5f9c7e730915e8514128e73e148eccebb4dea58011"
       }
     },
     {
@@ -2287,16 +2287,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 12.289803,
-        "mean": 2.0444250940563506,
-        "standardDeviation": 2.4876641179648717,
+        "max": 11.606841,
+        "mean": 1.8329753272628295,
+        "standardDeviation": 2.2073414575281816,
         "count": 2048
       },
       "activations": {
         "file": "activations.bin",
         "offset": 8002884,
         "count": 2048,
-        "sha256": "6fb2c85aef133e0e3cccf4a59a5ef61ace7e1edc473ab3f2bbb764c20047f1f2"
+        "sha256": "a73de95fd3d6a8ea74027597ffa0eeed2105bcde0315860a3a48116afe27e252"
       }
     },
     {
@@ -2327,16 +2327,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 15.470323,
-        "mean": 2.0222897226703935,
-        "standardDeviation": 2.4972889976508146,
+        "max": 13.757828,
+        "mean": 1.8416125432886474,
+        "standardDeviation": 2.2156631744539643,
         "count": 2048
       },
       "activations": {
         "file": "activations.bin",
         "offset": 8011076,
         "count": 2048,
-        "sha256": "fca5c07723bf7aef156831023de9e547d1acc087354ce2c1248fdbcb87308dc8"
+        "sha256": "dd8c1b5adba77a8f37a75e935908655a4e4f76795802b2f78a2e1a979975cb60"
       }
     },
     {
@@ -2367,16 +2367,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 4.5380783,
-        "mean": 1.1184467472567121,
-        "standardDeviation": 0.8979994842035616,
+        "max": 4.1361985,
+        "mean": 1.094435005813466,
+        "standardDeviation": 0.826329167040902,
         "count": 2048
       },
       "activations": {
         "file": "activations.bin",
         "offset": 8019268,
         "count": 2048,
-        "sha256": "371d019dc1d29a25b2983811f6ee521a2d24d819e212ba7d7473549a3341b16e"
+        "sha256": "7e48aa7ed7ea5d38304ec46213f5590bd4f6c0da5f367bc1cfb585ab444b7abd"
       }
     },
     {
@@ -2407,16 +2407,16 @@
       "start": 0,
       "statistics": {
         "min": 0,
-        "max": 4.0784883,
-        "mean": 1.102285628028767,
-        "standardDeviation": 0.8527605216622433,
+        "max": 4.1344757,
+        "mean": 1.0803485017895582,
+        "standardDeviation": 0.7891636949750316,
         "count": 2048
       },
       "activations": {
         "file": "activations.bin",
         "offset": 8027460,
         "count": 2048,
-        "sha256": "7859136059f91fa3e30d7bfb7fb641b1778c84d037c2c4f61afaa22bac9e5644"
+        "sha256": "a7001348cdbd0b2bc3676e1599267dfb0159a299d17f436ef3276371e790e250"
       }
     }
   ],
@@ -2429,27 +2429,27 @@
   "top5": [
     {
       "index": 907,
-      "probability": 0.0043148524
+      "probability": 0.0043718456
     },
     {
-      "index": 376,
-      "probability": 0.003725252
-    },
-    {
-      "index": 898,
-      "probability": 0.003387849
+      "index": 838,
+      "probability": 0.0033066156
     },
     {
       "index": 674,
-      "probability": 0.0032941839
+      "probability": 0.003249618
     },
     {
-      "index": 939,
-      "probability": 0.0032848178
+      "index": 376,
+      "probability": 0.0032275515
+    },
+    {
+      "index": 898,
+      "probability": 0.0031459066
     }
   ],
   "cost": [
-    7.313058853149414,
+    7.313915252685547,
     1,
     1
   ],

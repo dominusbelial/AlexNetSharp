@@ -1,0 +1,10 @@
+{
+  "testRegeneration": {
+    "exit": 0,
+    "seconds": 3.88
+  },
+  "cleanSolutionBuild": {
+    "exit": 0,
+    "seconds": 10.946
+  }
+}

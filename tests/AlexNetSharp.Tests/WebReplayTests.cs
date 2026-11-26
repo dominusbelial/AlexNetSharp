@@ -5,6 +5,8 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using AlexNetSharp.Core.Config;
 using AlexNetSharp.Replay;
+using AlexNetSharp.Snapshot;
+using AlexNetSharp.Viz;
 
 namespace AlexNetSharp.Tests;
 public static class WebReplayTests
@@ -27,29 +29,49 @@ public static class WebReplayTests
         var watch=Stopwatch.StartNew();var snapshot=Load(root);var manifest=snapshot.Manifest;
         var layout=new LayerLayout(manifest);var camera=new OrbitCamera(layout.Span);int count=0;
         Check(layout.Boxes.Length==49&&layout.Boxes.Select(b=>b.Name).Distinct().Count()==49,"49 unique boxes");count++;
-        foreach(var viewport in new[]{(1280,280),(390,310)})
+        foreach(bool portrait in new[]{false,true})
         {
-            foreach(var box in layout.Boxes)
+            var fitted=new LayerLayout(manifest,portrait);var orbit=new OrbitCamera(fitted.Span);orbit.Fit(fitted.Span,portrait);
+            int width=portrait?362:908,height=portrait?442:280;
+            foreach(var box in fitted.Boxes)
             {
-                var p=layout.Project(box,camera,viewport.Item1,viewport.Item2);
-                Check(p.X>0&&p.X<viewport.Item1&&p.Y>0&&p.Y<viewport.Item2,"in fitted viewport "+box.Name);
-                Check(layout.Pick(p.X,p.Y,camera,viewport.Item1,viewport.Item2)==box.Name,"projected ray hit "+box.Name);
-                Check(layout.PickRay(box.Center+Vector3.UnitZ*10,-Vector3.UnitZ)==box.Name,"known ray "+box.Name);
+                var p=fitted.Project(box,orbit,width,height);
+                Check(p.X>0&&p.X<width&&p.Y>0&&p.Y<height,"in fitted viewport "+box.Name+" portrait="+portrait+" point="+p);
+                // Exact inverse projection ray, including nearest occluder in perspective.
+                var picked=fitted.Pick(p.X,p.Y,orbit,width,height);
+                Check(picked==box.Name,"exact projected ray "+box.Name+" hit="+picked+" portrait="+portrait);
+                Check(fitted.PickRay(box.Center+Vector3.UnitZ*10,-Vector3.UnitZ)==box.Name,"known ray "+box.Name);
             }
-            count++;
-        }
-        foreach(var a in layout.Boxes)foreach(var b in layout.Boxes.Where(b=>string.CompareOrdinal(a.Name,b.Name)<0))
-        {
-            var d=Vector3.Abs(a.Center-b.Center);var half=(a.Size+b.Size)/2;
-            Check(d.X>=half.X||d.Y>=half.Y||d.Z>=half.Z,"nonoverlap "+a.Name+" / "+b.Name);
+            var conv=fitted.Boxes.Single(b=>b.Name=="conv1a");var point=fitted.Project(conv,orbit,width,height);
+            Check(fitted.Pick(point.X,point.Y,orbit,width,height)=="conv1a","unoccluded conv1 center exact picking");
+            var corners=fitted.Boxes.SelectMany(box=>from x in new[]{-1,1} from y in new[]{-1,1} from z in new[]{-1,1}
+                select fitted.Project(box with{Center=box.Center+box.Size*new Vector3(x,y,z)/2},orbit,width,height)).ToArray();
+            Check(corners.All(p=>p.X>=0&&p.X<=width&&p.Y>=0&&p.Y<=height),"all projected corners fit portrait="+portrait);
+            Check(corners.Max(p=>p.X)-corners.Min(p=>p.X)>=width*.60f,"stack fills >=60% canvas width portrait="+portrait+" ratio="+((corners.Max(p=>p.X)-corners.Min(p=>p.X))/width));
+            Check(orbit.Projection(width,height).M44==0,"perspective projection");
+            foreach(var a in fitted.Boxes)foreach(var b in fitted.Boxes.Where(b=>string.CompareOrdinal(a.Name,b.Name)<0))
+            {
+                var d=Vector3.Abs(a.Center-b.Center);var half=(a.Size+b.Size)/2;
+                Check(d.X>=half.X||d.Y>=half.Y||d.Z>=half.Z,"nonoverlap "+a.Name+" / "+b.Name);
+            }
+            orbit.Orbit(.08f,.04f);orbit.Magnify(.1f);
+            point=fitted.Project(conv,orbit,width,height);
+            Check(fitted.Pick(point.X,point.Y,orbit,width,height)=="conv1a","moved camera exact conv1 picking");count+=2;
         }
         Check(layout.Pick(-100,-100,camera,1280,280) is null,"miss outside scene");
         Check(layout.Edges.Length==manifest.Layers.Sum(l=>l.Inputs.Length),"all edges");
         foreach(string name in new[]{"conv3a","conv3b","fc2048a","fc2048b","fc2048ba","fc2048bb"})
             Check(layout.Edges.Any(e=>e.Consumer==name&&e.CrossTower),"distinct cross-tower "+name);
         Check(layout.Edges.Single(e=>e.Consumer=="fc2048bb"&&e.Slot==0).Input=="hs1b","reversed input slot 0");count++;
-        camera.Orbit(.2f,.15f);camera.Magnify(.2f);camera.Pan(1,1);
-        foreach(var box in layout.Boxes){var p=layout.Project(box,camera,1280,280);Check(layout.Pick(p.X,p.Y,camera,1280,280)==box.Name,"moved camera picking "+box.Name);}count++;
+        float yaw=camera.Yaw,pitch=camera.Pitch;CameraControls.Key(camera,"ArrowRight");Check(camera.Yaw!=yaw,"shared keyboard orbit");
+        camera.Orbit(100,-100);Check(camera.Yaw<=1.05f&&camera.Pitch>=-1.05f,"orbit limits");
+        camera.Magnify(100);Check(camera.Zoom==4,"zoom upper limit");camera.Magnify(-100);Check(camera.Zoom==.6f,"zoom lower limit");
+        camera.Reset();Check(camera.Yaw==yaw&&camera.Pitch==pitch&&camera.Zoom==1&&camera.Target==Vector3.Zero,"reset default three quarter angle");count++;
+        var photo=Path.Combine(root,"content/samples/labrador.jpg");var provenance=Path.Combine(root,"content/samples/PROVENANCE.md");
+        Check(File.Exists(provenance),"photo provenance exists");string provenanceText=File.ReadAllText(provenance);
+        Check(Regex.IsMatch(provenanceText,@"Licence:.*(CC0|public domain)"),"explicit CC0 or PD licence line");
+        Check(provenanceText.Contains(ReplaySnapshot.Hash(File.ReadAllBytes(photo))),"photo SHA-256 matches provenance");
+        Check(new FileInfo(photo).Length<=200_000&&manifest.Image.Sha256==ReplaySnapshot.Hash(File.ReadAllBytes(photo)),"bounded photograph pinned by manifest");count++;
         var cases=new[]{
             ("conv1a",0,0,new PixelRange(0,0,10,10),new PixelRange(0,0,10,10)),
             ("conv1b",54,54,new PixelRange(216,216,223,223),new PixelRange(216,216,226,226)),
@@ -86,6 +108,11 @@ public static class WebReplayTests
         }
         var cards=Directory.GetFiles(Path.Combine(root,"content/explain"),"*.md").Select(p=>ExplainCard.Parse(File.ReadAllText(p))).ToDictionary(c=>c.Id);
         Check(cards.Count==59,"59 cards");
+        Check(CardText.PlainBody("See [conv1](card:conv1a).")=="See conv1.","shared card link labels remain readable");
+        Check(File.Exists(Path.Combine(root,"content/fonts/DejaVuSans.ttf"))&&File.ReadAllText(Path.Combine(root,"content/fonts/LICENSE.txt")).Contains("Permission is hereby granted"),"desktop font and permissive licence");
+        var fontHash=ReplaySnapshot.Hash(File.ReadAllBytes(Path.Combine(root,"content/fonts/DejaVuSans.ttf")));
+        Check(File.ReadAllText(Path.Combine(root,"content/fonts/LICENSE.txt")).Contains(fontHash),"bundled font checksum");count++;
+
         foreach(var l in manifest.Layers){Check(cards.ContainsKey(l.Name),"instance card "+l.Name);Check(cards.ContainsKey("type-"+l.Type),"type card "+l.Type);}
         foreach(var card in cards.Values)foreach(string link in card.Links)Check(cards.ContainsKey(link),"card link "+link);
         string? original=Environment.GetEnvironmentVariable("ALEXNET_ORIGINAL_SRC");
@@ -131,7 +158,7 @@ public static class WebReplayTests
         Check(first.Payload.SequenceEqual(second.Payload),"byte-identical payloads");
         first.Write(Path.Combine(root,".scratch/viz1/test-replay"));
         var committed=Load(root);Check(first.ManifestBytes().SequenceEqual(committed.ManifestBytes())&&first.Payload.SequenceEqual(committed.Payload),"committed replay reproduces");
-        var direct=PlaceholderForward.Run(PlaceholderForward.Parse(root),PlaceholderForward.Preprocess(File.ReadAllBytes(Path.Combine(root,"content/samples/synthetic.ppm"))),145,2);
+        var direct=PlaceholderForward.Run(PlaceholderForward.Parse(root),PlaceholderForward.LoadPhoto(root),145,2);
         foreach(var l in first.Manifest.Layers)
         {
             float[] expected=l.Activations.Count==0?[]:direct.Activations[l.Name].Storage.ToArray();

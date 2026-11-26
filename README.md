@@ -26,16 +26,19 @@ Early. Done so far:
 | ANX-10 | Unscaled dropout with injectable deterministic masks, stable softmax, fused/general loss gradients, fractional top-k ties and multiview cost | [ANX-10](docs/reports/ANX-10_REPORT.md) |
 
 | VIZ-1 | KNI BlazorGL layer explorer, explain cards, activation/filter grids and one real untrained replay | [VIZ-1](docs/reports/VIZ-1_REPORT.md) |
+| VIZ-2 | CC0 photo, perspective stack, touch portrait layout and shared KNI desktop renderer | [VIZ-2](docs/reports/VIZ-2_REPORT.md) |
 
 Next: optimiser/initialisation, data pipeline and trainer.
 
 ## Layout
 
 - `src/AlexNetSharp.Core` — parser, shapes, (later) layers, optimiser, data pipeline; no graphics dependency.
-- `src/AlexNetSharp.Replay` — graphics-free replay schema, producer assembly, layout/picking and receptive fields.
+- `src/AlexNetSharp.Replay` — graphics-free replay schema, card parser and receptive fields.
+- `src/AlexNetSharp.Viz` — platform-neutral KNI renderer, camera, picking, layout and textures.
+- `src/AlexNetSharp.Desktop` — SDL2/GL host, input and FontStashSharp in-canvas cards (Linux/Windows).
 - `src/AlexNetSharp.Web` — KNI BlazorGL replay explorer, HTML explain cards.
 - `tools/AlexNetSharp.Snapshot` — one-image placeholder forward pass and snapshot writer.
-- `content/explain` — 59 cited cards; `content/samples` — synthetic CC0 input.
+- `content/explain` — 59 cited cards; `content/samples` — CC0 Labrador photograph; `content/fonts` — permissively licensed DejaVu Sans.
 - `tests/AlexNetSharp.Tests` — spec checker, Core tests and replay/layout/card checks.
 - `docs/spec` — the ledger and experiment manifest; `docs/reports` — one report per story.
 
@@ -121,12 +124,12 @@ MIT for this repository's code and documents (see [LICENSE](LICENSE)). The origi
 ## Browser replay
 
 This is an untrained architecture demonstration. It shows agreement with a
-reconstructed specification, not bitwise historical parity. The replay is committed,
-so the browser does not need the original checkout or in-browser inference.
+reconstructed specification, not bitwise historical parity. The manifest is committed and pins the generated replay payload,
+so the browser does not need the original checkout or in-browser inference. Top-5 predictions are meaningless with these weights.
 
 ```sh
 dotnet run --project src/AlexNetSharp.Web
-# Rebuild the 8.24 MB replay from the committed 145 configs and synthetic sample:
+# Rebuild the 8.24 MB replay from the committed 145 configs and CC0 photo:
 dotnet run -c Release --project tools/AlexNetSharp.Snapshot -- . src/AlexNetSharp.Web/wwwroot/replay
 # Expensive production/determinism/direct-Core proof, separate from the fast default suite:
 dotnet run -c Release --project tests/AlexNetSharp.Tests -- --snapshot-proof
@@ -155,3 +158,30 @@ and runs Chrome at 1280×800 and 390×844. `CHROME_PATH` can select another Chro
 binary. It saves screenshots and JSON metrics under `.scratch/viz1` and closes its
 server/browser. No deployment or external hosting is involved. See the
 [schema and extension points](docs/spec/REPLAY.md) and [sample provenance](content/samples/PROVENANCE.md).
+
+
+## Desktop replay and VIZ-2 verification
+
+The same platform-neutral renderer draws the stack, activations, RGB filters and
+receptive-field outline on SDL2/GL. Desktop cards use the same Markdown data and
+bundled DejaVu Sans through FontStashSharp.Kni, with no XNB or content pipeline.
+The default replay path is the Web project's `wwwroot/replay`; a path argument can
+override it. Both platform builds regenerate a missing payload and verify the
+tracked manifest byte for byte. An intentional photo/recipe change requires the
+snapshot producer's `--update-manifest` option.
+
+```sh
+dotnet run --project src/AlexNetSharp.Desktop -- src/AlexNetSharp.Web/wwwroot/replay
+python3 tools/viz2-gates.py
+node tools/viz1-browser-proof.cjs --clean
+python3 tools/viz2-desktop-proof.py
+```
+
+The browser proof now covers both viewports, portrait width coverage, actual touch
+orbit/pinch, GL pixels, exact box/pixel clicks and card interactions. The opt-in
+desktop proof tries SDL offscreen before a display fallback bounded to 25 seconds,
+saves six PNG frames plus a JSON receipt and exits. Both proofs keep their output
+under `.scratch/viz2`. Desktop: F toggles filters, Tab toggles deeper text, scroll the
+card panel to read more, click links to pin more cards, and click x to close a card.
+All camera keys match the browser. On phones, one finger orbits and two fingers
+zoom inside the canvas; taps name and pin a layer.

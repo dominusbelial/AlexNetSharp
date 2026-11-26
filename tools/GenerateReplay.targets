@@ -1,0 +1,8 @@
+<Project>
+  <PropertyGroup><ReplayDirectory>$(MSBuildThisFileDirectory)../src/AlexNetSharp.Web/wwwroot/replay</ReplayDirectory></PropertyGroup>
+  <Target Name="GenerateReplayPayload" BeforeTargets="BeforeBuild" Condition="!Exists('$(ReplayDirectory)/activations.bin')">
+    <MSBuild Projects="$(MSBuildThisFileDirectory)AlexNetSharp.Snapshot/AlexNetSharp.Snapshot.csproj" Targets="Restore;Build" Properties="Configuration=$(Configuration)" RemoveProperties="RuntimeIdentifier;SelfContained;PublishTrimmed;TrimMode" />
+    <Exec Command="&quot;$(DOTNET_HOST_PATH)&quot; &quot;$(MSBuildThisFileDirectory)AlexNetSharp.Snapshot/bin/$(Configuration)/net10.0/AlexNetSharp.Snapshot.dll&quot; &quot;$(MSBuildThisFileDirectory)..&quot; &quot;$(ReplayDirectory)&quot;" />
+    <ItemGroup Condition="'$(KniPlatform)' == 'BlazorGL'"><Content Include="wwwroot/replay/activations.bin" Exclude="@(Content)" /></ItemGroup>
+  </Target>
+</Project>

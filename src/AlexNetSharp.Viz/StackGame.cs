@@ -3,16 +3,17 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NMatrix=System.Numerics.Matrix4x4;
 
-namespace AlexNetSharp.Web;
+namespace AlexNetSharp.Viz;
 
-public sealed class StackGame : Game
+public class StackGame : Game
 {
-    private readonly GraphicsDeviceManager graphics;
+    protected readonly GraphicsDeviceManager graphics;
+    public bool EmbeddedCanvas { get; init; } = true;
     private BasicEffect effect=null!;
     private SpriteBatch sprites=null!;
     private Texture2D white=null!,photo=null!,grid=null!,filters=null!;
     private readonly ReplaySnapshot snapshot;
-    public LayerLayout Layout { get; }
+    public LayerLayout Layout { get; private set; }
     public OrbitCamera Camera { get; }
     public bool Started { get; set; }
     public string Selected { get; private set; }="conv1a";
@@ -22,7 +23,7 @@ public sealed class StackGame : Game
     public PixelImage GridImage { get; private set; }
     public int Width { get; private set; }=900;
     public int Height { get; private set; }=560;
-    public int StackHeight=>Height/2;
+    public int StackHeight=>PixelViews.StackHeight(Width,Height);
     public ReplayLayer Layer=>snapshot.Manifest.Layers.Single(l=>l.Name==Selected);
     public ViewRect GridRectangle=>PixelViews.Fit(ShowFilters?filterImage:GridImage,PixelViews.GridRect(Width,Height));
     private readonly PixelImage filterImage;
@@ -44,7 +45,8 @@ public sealed class StackGame : Game
     }
     public void Select(string name)
     {
-        var layer=snapshot.Manifest.Layers.Single(l=>l.Name==name);
+        var layer=snapshot.Manifest.Layers.FirstOrDefault(l=>l.Name==name);
+        if(layer is null)return;
         if(layer.Type is not ("conv" or "pool" or "cmrnorm" or "rnorm")) return;
         Selected=name; Pixel=new(0,0,0); ShowFilters=false; GridImage=PixelViews.Activations(snapshot,layer);
         if(Started){grid.Dispose();grid=Texture(GridImage);}
@@ -52,6 +54,8 @@ public sealed class StackGame : Game
     public void Size(int width,int height)
     {
         if(width==Width&&height==Height) return;
+        bool portrait=width<=600;
+        if(portrait!=Layout.Portrait){Layout=new(snapshot.Manifest,portrait);Camera.Fit(Layout.Span,portrait);}
         Width=width;Height=height;graphics.PreferredBackBufferWidth=width;graphics.PreferredBackBufferHeight=height;
         // The DOM owns the canvas buffer; Draw synchronizes KNI presentation metadata.
     }
@@ -61,20 +65,20 @@ public sealed class StackGame : Game
     {
         // Blazor window events can reset managed backbuffer dimensions to the browser window.
         // Keep them equal to this embedded canvas before KNI converts viewport Y to GL.
-        GraphicsDevice.PresentationParameters.BackBufferWidth=Width;
-        GraphicsDevice.PresentationParameters.BackBufferHeight=Height;
+        if(EmbeddedCanvas){GraphicsDevice.PresentationParameters.BackBufferWidth=Width;
+        GraphicsDevice.PresentationParameters.BackBufferHeight=Height;}
         GraphicsDevice.Clear(new Color(11,20,33));
         GraphicsDevice.Viewport=new(0,0,Width,Height);
         GraphicsDevice.DepthStencilState=DepthStencilState.Default; GraphicsDevice.BlendState=BlendState.Opaque;
         GraphicsDevice.RasterizerState=RasterizerState.CullNone;
-        effect.World=Matrix.Identity; effect.View=Convert(Camera.View); effect.Projection=Convert(Camera.Projection(Width,StackHeight))*Matrix.CreateScale(1,.5f,1)*Matrix.CreateTranslation(0,.5f,0);
+        effect.World=Matrix.Identity; effect.View=Convert(Camera.ViewFor(Width,StackHeight)); effect.Projection=Convert(Camera.Projection(Width,StackHeight))*Matrix.CreateScale(1,(float)StackHeight/Height,1)*Matrix.CreateTranslation(0,1-(float)StackHeight/Height,0);
         var boxes=Layout.Boxes.ToDictionary(b=>b.Name);
         foreach(var edge in Layout.Edges)
         {
             Color color=edge.CrossTower?new Color(248,183,93):new Color(57,85,110);
             // Input slots are displaced vertically, making reversed fan-in observable.
             var a=Convert(boxes[edge.Input].Center);var b=Convert(boxes[edge.Consumer].Center);
-            a.Z=-.4f;b.Z=-.4f;b.Y+=(edge.Slot==0?.18f:-.18f);
+            a.Z=-1.8f;b.Z=-1.8f;b.Y+=(edge.Slot==0?.18f:-.18f);
             VertexPositionColor[] line=[new(a,color),new(b,color)];
             foreach(var pass in effect.CurrentTechnique.Passes){pass.Apply();GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList,line,0,1);}
         }
@@ -85,7 +89,7 @@ public sealed class StackGame : Game
             Color color=box.Name==Hovered?new Color(255,223,164):box.Name==Selected?new Color(105,245,202):layer.Type=="neuron"?new Color(189,148,236):box.Tower==1?new Color(93,148,213):new Color(64,191,170);
             Vector3[] p=[center+new Vector3(-size.X,-size.Y,-size.Z),center+new Vector3(size.X,-size.Y,-size.Z),center+new Vector3(size.X,size.Y,-size.Z),center+new Vector3(-size.X,size.Y,-size.Z),center+new Vector3(-size.X,-size.Y,size.Z),center+new Vector3(size.X,-size.Y,size.Z),center+new Vector3(size.X,size.Y,size.Z),center+new Vector3(-size.X,size.Y,size.Z)];
             int[] indices=[0,2,1,0,3,2,4,5,6,4,6,7,0,1,5,0,5,4,3,7,6,3,6,2,0,4,7,0,7,3,1,2,6,1,6,5];
-            var vertices=indices.Select((i,k)=>new VertexPositionColor(p[i],k<12?color:new Color(color.R*.65f/255,color.G*.65f/255,color.B*.65f/255))).ToArray();
+            var vertices=indices.Select((i,k)=>new VertexPositionColor(p[i],Shade(color,k/6))).ToArray();
             foreach(var pass in effect.CurrentTechnique.Passes){pass.Apply();GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList,vertices,0,12);}
         }
         sprites.Begin(blendState:BlendState.AlphaBlend,samplerState:SamplerState.PointClamp);
@@ -105,6 +109,11 @@ public sealed class StackGame : Game
             Border(new(px-2,py-2,5,5),Color.White);
         }
         sprites.End();base.Draw(time);
+    }
+    private static Color Shade(Color color,int face)
+    {
+        float shade=face switch{0=>.42f,1=>1f,2=>.55f,3=>.86f,4=>.64f,_=>.76f};
+        return new Color((byte)(color.R*shade),(byte)(color.G*shade),(byte)(color.B*shade));
     }
     private void Border(Rectangle r,Color color)
     {

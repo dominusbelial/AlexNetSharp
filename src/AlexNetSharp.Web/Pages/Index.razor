@@ -6,7 +6,7 @@
     <div class="eyebrow">ALEXNET / 2012 · RECONSTRUCTED IN C#</div>
     <h1>Inside the network<span class="dot">.</span></h1>
     <p class="intro">One image. Two towers. Every operation, open to inspection.</p>
-    <p id="untrained-banner">Untrained placeholder weights · agreement with a reconstructed specification, not bitwise historical parity.</p>
+    <p id="untrained-banner">Untrained placeholder weights · top-5 predictions are meaningless · agreement with a reconstructed specification, not bitwise historical parity.</p>
 </header>
 @if (_error is not null)
 {
@@ -34,6 +34,7 @@
                     <span class="layer-label" style="left:@(F(point.X))px;top:@(F(point.Y-18))px">@point.Name</span>
                 }
             </div>
+            <div id="tap-name">Tap a box · @(_hover ?? _game?.Selected ?? "conv1a")</div>
             <div class="fan-in-note">fc2048bb · input 0 = hs1b → input 1 = hs1a</div>
             <div class="view-heading"><span>02 / @(_game?.ShowFilters == true ? "CONV1 · 96 RGB FILTERS" : $"{_game?.Selected ?? "conv1a"} · ACTIVATIONS")</span><span>INPUT CROP / 224²</span></div>
             @if (_hover is not null && _cards.TryGetValue(_hover, out var tip))
@@ -64,7 +65,7 @@
                 </div>
             </details>
             <div class="facts"><span><strong>49</strong> layers / 14 explicit ReLUs</span><span><strong>60.97M</strong> parameter slots</span><span><strong>1</strong> real eval forward pass</span></div>
-            <p class="hint">Drag: orbit · Shift/right drag: pan · Wheel: zoom · Arrows: orbit · WASD: pan · +/−: zoom · R: reset. Box dimensions use log₂ of shape dimensions. Click a map pixel to trace its input range.</p>
+            <p class="hint">Drag: orbit · Shift/right drag: pan · Wheel: zoom · Arrows: orbit · WASD: pan · +/−: zoom · R: reset. Box axes: X = .45 + .075 log₂(W), Y = .45 + .12 log₂(H), Z = .4 + .2 log₂(C). Click a map pixel to trace its input range.</p>
         }
     </main>
     <aside aria-label="Pinned explain cards">
@@ -100,4 +101,4 @@
         }
     </aside>
 </div>
-<footer class="page-footer">REPLAY 000 / SEED 145 · <span>Placeholder, not ANX-11 initialisation. Preprocessing is not the ANX-12 pipeline.</span><br />Synthetic CC0 colour study · RGB mean (123, 117, 104) · Top-5 indices: @(_snapshot is null ? "loading" : string.Join(", ",_snapshot.Manifest.Top5.Select(c => $"{c.Index} ({c.Probability:G3})")))<br />No training, live source, in-browser inference or audio.</footer>
+<footer class="page-footer">REPLAY 000 / SEED 145 · <span>Placeholder, not ANX-11 initialisation. Preprocessing is not the ANX-12 pipeline.</span><br />CC0 Labrador photograph / Dktue · RGB mean (123, 117, 104) · Meaningless untrained top-5 indices: @(_snapshot is null ? "loading" : string.Join(", ",_snapshot.Manifest.Top5.Select(c => $"{c.Index} ({c.Probability:G3})")))<br />No training, live source, in-browser inference or audio.</footer>

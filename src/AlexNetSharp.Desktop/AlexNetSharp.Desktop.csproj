@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><KniPlatform>SDL2</KniPlatform><AllowUnsafeBlocks>true</AllowUnsafeBlocks></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../AlexNetSharp.Viz/AlexNetSharp.Viz.csproj" />
+    <PackageReference Include="nkast.Kni.Platform.SDL2.GL" Version="4.3.9001" />
+    <PackageReference Include="FontStashSharp.Kni" Version="1.6.2" />
+    <Content Include="../../content/fonts/*" Link="content/fonts/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="../../content/explain/*.md" Link="content/explain/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Import Project="../../tools/GenerateReplay.targets" />
+</Project>

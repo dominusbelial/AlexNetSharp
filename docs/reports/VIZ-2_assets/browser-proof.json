@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "manifestSha256": "24c6f87cf1f16f5f89a1ba81fd560b6b8b556e27a75babb5ed3e805f37c5f53b",
+  "payloadSha256": "d873f8203592228b5fbe3d2df5c4bd2f4393afebb5a17ecbe0b6befac6a2a22e",
+  "publishBytes": 28105742,
+  "webRootBytes": 27087116,
+  "snapshotBytes": 8248986,
+  "results": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "firstFrameMs": 1125.3999999761581,
+      "frames": 74,
+      "pixels": {
+        "nonBackground": 122931,
+        "mint": 59310,
+        "yellow": 52
+      },
+      "stackPixel": [
+        79,
+        186,
+        153,
+        255
+      ],
+      "filterColors": 11586,
+      "stackWidthFraction": 0.7327394273127753,
+      "touchOrbit": false,
+      "pinchZoom": false,
+      "outsideTouchScroll": false,
+      "screenshotBytes": 230080,
+      "consoleErrors": 0
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "firstFrameMs": 1070.6000000238419,
+      "frames": 94,
+      "pixels": {
+        "nonBackground": 48516,
+        "mint": 23416,
+        "yellow": 20
+      },
+      "stackPixel": [
+        105,
+        245,
+        202,
+        255
+      ],
+      "filterColors": 9819,
+      "stackWidthFraction": 0.6418286740331491,
+      "touchOrbit": true,
+      "pinchZoom": true,
+      "outsideTouchScroll": true,
+      "screenshotBytes": 194312,
+      "consoleErrors": 0
+    }
+  ]
+}

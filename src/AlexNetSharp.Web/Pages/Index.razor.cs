@@ -1,5 +1,6 @@
 using System.Globalization;
 using AlexNetSharp.Replay;
+using AlexNetSharp.Viz;
 using Microsoft.JSInterop;
 
 namespace AlexNetSharp.Web.Pages;
@@ -71,13 +72,7 @@ public partial class Index
     [JSInvokable] public void Key(string key)
     {
         if(_game is null)return;
-        switch(key.ToLowerInvariant())
-        {
-            case "arrowleft":_game.Camera.Orbit(-.08f,0);break;case "arrowright":_game.Camera.Orbit(.08f,0);break;
-            case "arrowup":_game.Camera.Orbit(0,-.08f);break;case "arrowdown":_game.Camera.Orbit(0,.08f);break;
-            case "a":_game.Camera.Pan(-1,0);break;case "d":_game.Camera.Pan(1,0);break;case "w":_game.Camera.Pan(0,1);break;case "s":_game.Camera.Pan(0,-1);break;
-            case "+":case "=":_game.Camera.Magnify(.12f);break;case "-":_game.Camera.Magnify(-.12f);break;case "r":_game.Camera.Reset();break;
-        }
+        CameraControls.Key(_game.Camera,key);
         RefreshPoints();
     }
     private void CameraAction(string action){if(action=="reset")Key("r");else Key(action switch{"left"=>"ArrowLeft","right"=>"ArrowRight","in"=>"+",_=>"-"});}
@@ -124,9 +119,16 @@ public partial class Index
             _=>layer.Name=="data"?$"x[0] = RGB[0] - 123 = {G(FirstValue(layer))}":"Synthetic label index = 0"
         };
     }
-    private static string PlainBody(string body)=>System.Text.RegularExpressions.Regex.Replace(body,@"\[([^\]]+)\]\(card:[^)]+\)","").Trim();
+    private static string PlainBody(string body)=>CardText.PlainBody(body);
     // Proof hooks return coordinates computed by the very same pure geometry used to draw and pick.
     [JSInvokable] public ScreenPoint[] LayoutPoints()=>_points;
-    [JSInvokable] public object ViewState()=>new{selected=_game?.Selected,grid=_game?.GridRectangle,field=_field,pixel=_game?.Pixel,frames=_game?.Started};
+    [JSInvokable] public object ViewState()=>new{selected=_game?.Selected,grid=_game?.GridRectangle,field=_field,pixel=_game?.Pixel,frames=_game?.Started,camera=_game is null?null:new{_game.Camera.Yaw,_game.Camera.Pitch,_game.Camera.Zoom},stackBounds=StackBounds()};
+    private object? StackBounds()
+    {
+        if(_game is null)return null;
+        var points=_game.Layout.Boxes.SelectMany(box=>from x in new[]{-1,1} from y in new[]{-1,1} from z in new[]{-1,1}
+            select _game.Layout.Project(box with{Center=box.Center+box.Size*new System.Numerics.Vector3(x,y,z)/2},_game.Camera,_game.Width,_game.StackHeight)).ToArray();
+        return new{x=points.Min(p=>p.X),y=points.Min(p=>p.Y),width=points.Max(p=>p.X)-points.Min(p=>p.X),height=points.Max(p=>p.Y)-points.Min(p=>p.Y)};
+    }
     public void Dispose(){_game?.Dispose();_reference?.Dispose();}
 }

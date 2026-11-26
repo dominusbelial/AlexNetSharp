@@ -1,4 +1,6 @@
-namespace AlexNetSharp.Replay;
+using AlexNetSharp.Replay;
+
+namespace AlexNetSharp.Viz;
 
 public sealed record PixelImage(int Width,int Height,byte[] Rgba);
 public sealed record ViewRect(int X,int Y,int Width,int Height);
@@ -54,15 +56,16 @@ public static class PixelViews
         return new(width,height,rgba);
     }
     public static int Columns(int channels)=>(int)Math.Ceiling(Math.Sqrt(channels*1.6));
+    public static int StackHeight(int width,int height)=>width<=600?height-210:height/2;
     public static ViewRect GridRect(int width,int height)
     {
         int photo=Math.Min(224,Math.Max(120,width/4));
-        return new(16,height/2+46,Math.Max(80,width-photo-48),Math.Max(40,height/2-62));
+        return new(16,StackHeight(width,height)+42,Math.Max(80,width-photo-48),Math.Max(40,height-StackHeight(width,height)-58));
     }
     public static ViewRect PhotoRect(int width,int height)
     {
-        int side=Math.Min(Math.Min(224,Math.Max(120,width/4)),height/2-62);
-        return new(width-side-16,height/2+46,side,side);
+        int side=Math.Min(Math.Min(224,Math.Max(120,width/4)),height-StackHeight(width,height)-58);
+        return new(width-side-16,StackHeight(width,height)+42,side,side);
     }
     public static ViewRect Fit(PixelImage image,ViewRect area)
     {

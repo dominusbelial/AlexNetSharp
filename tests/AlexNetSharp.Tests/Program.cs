@@ -7,6 +7,7 @@ try
     var sw = Stopwatch.StartNew();
     var repoRoot = SpecVerifier.FindRepoRoot();
     if (args.Contains("--snapshot-proof")) return WebReplayTests.FullSnapshotProof(repoRoot);
+    if (args.Contains("--viz-only")) { WebReplayTests.RunAll(repoRoot); return 0; }
     var origRoot = SpecVerifier.ResolveOriginalSrcRoot(repoRoot);
 
     if (args.Contains("--benchmark-dropout-softmax-cost")) return DropoutSoftmaxCostBenchmark.Run(origRoot, args);

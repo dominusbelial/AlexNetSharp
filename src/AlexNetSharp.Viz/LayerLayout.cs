@@ -1,6 +1,8 @@
 using System.Numerics;
 
-namespace AlexNetSharp.Replay;
+using AlexNetSharp.Replay;
+
+namespace AlexNetSharp.Viz;
 
 public sealed record LayerBox(string Name, Vector3 Center, Vector3 Size, int Tower);
 public sealed record LayerEdge(string Input, string Consumer, int Slot, bool CrossTower);
@@ -12,8 +14,10 @@ public sealed class LayerLayout
     public LayerBox[] Boxes { get; }
     public LayerEdge[] Edges { get; }
     public float Span { get; }
-    public LayerLayout(ReplayManifest manifest)
+    public bool Portrait { get; }
+    public LayerLayout(ReplayManifest manifest,bool portrait=false)
     {
+        Portrait=portrait;
         var layers = manifest.Layers.ToDictionary(l => l.Name);
         var levels = new Dictionary<string,int>();
         int Level(string name)
@@ -22,14 +26,21 @@ public sealed class LayerLayout
             var l = layers[name];
             return levels[name] = l.Inputs.Length == 0 ? 0 : l.Inputs.Max(Level) + 1;
         }
-        int max = manifest.Layers.Max(l => Level(l.Name)); Span = max * 2.15f + 5;
+        int max = manifest.Layers.Max(l => Level(l.Name)); Span = portrait ? 32 : max * 2.15f + 5;
         Boxes = manifest.Layers.Select(l =>
         {
             float x = ((l.Name == "labels" ? max : Level(l.Name)) - max / 2f) * 2.15f;
             float y = l.Name == "labels" ? -5f : l.Name == "data" ? 0 : l.Tower == 1 ? -2.3f : 2.3f;
-            // Log2 scale, with separated fixed stage spacing. Shape C×H×W is never a physical volume.
-            return new LayerBox(l.Name,new(x,y,0),new(.8f + .025f*MathF.Log2(Math.Max(1,l.Shape[0])),
-                .5f + .095f*MathF.Log2(Math.Max(1,l.Shape[1])),.35f + .08f*MathF.Log2(Math.Max(1,l.Shape[0]))),l.Tower);
+            if(portrait)
+            {
+                int stage=l.Name=="labels"?max:Level(l.Name),row=stage/3,col=stage%3;
+                if(row%2==1)col=2-col; // snake the topological stages through the portrait canvas
+                x=(col-1)*6.2f+(l.Name=="data"?0:l.Name=="labels"?-1.7f:l.Tower==1?-1.1f:1.1f);
+                y=(max/3f/2-row)*3.3f+(l.Name=="labels"?-.9f:0);
+            }
+            // World X encodes W, Y encodes H, Z encodes C; logarithms keep the entire graph navigable.
+            return new LayerBox(l.Name,new(x,y,0),new(.45f+.075f*MathF.Log2(Math.Max(1,l.Shape[2])),
+                .45f+.12f*MathF.Log2(Math.Max(1,l.Shape[1])),.4f+.2f*MathF.Log2(Math.Max(1,l.Shape[0]))),l.Tower);
         }).ToArray();
         Edges = manifest.Layers.SelectMany(l => l.Inputs.Select((input,slot) =>
             new LayerEdge(input,l.Name,slot,layers[input].Tower >= 0 && l.Tower >= 0 && layers[input].Tower != l.Tower))).ToArray();
@@ -72,22 +83,28 @@ public sealed class LayerLayout
     }
 }
 
-public sealed class OrbitCamera(float span)
+public sealed class OrbitCamera
 {
+    private float span;
+    private bool portrait;
+    public OrbitCamera(float span){this.span=span;Reset();}
     public float Yaw { get; private set; }
-    public float Pitch { get; private set; } = -.28f;
-    public float Zoom { get; private set; } = 1;
+    public float Pitch { get; private set; }
+    public float Zoom { get; private set; }
     public Vector3 Target { get; private set; }
-    public void Orbit(float dx,float dy) { Yaw += dx; Pitch = Math.Clamp(Pitch+dy,-1.1f,1.1f); }
-    public void Magnify(float amount) => Zoom = Math.Clamp(Zoom*MathF.Exp(amount),.25f,8);
-    public void Pan(float dx,float dy) => Target += new Vector3(dx,dy,0);
-    public void Reset() { Yaw = 0; Pitch = -.28f; Zoom = 1; Target = Vector3.Zero; }
-    public Matrix4x4 View => Matrix4x4.CreateLookAt(Target + Vector3.Transform(new Vector3(0,0,60),
-        Matrix4x4.CreateRotationX(Pitch)*Matrix4x4.CreateRotationY(Yaw)),Target,Vector3.UnitY);
-    public Matrix4x4 Projection(int width,int height)
+    public void Fit(float extent,bool isPortrait){span=extent;portrait=isPortrait;Reset();}
+    public void Orbit(float dx,float dy) { Yaw = Math.Clamp(Yaw+dx,-1.05f,1.05f); Pitch = Math.Clamp(Pitch+dy,-1.05f,.8f); }
+    public void Magnify(float amount) => Zoom = Math.Clamp(Zoom*MathF.Exp(amount),.6f,4);
+    public void Pan(float dx,float dy) => Target = Vector3.Clamp(Target+new Vector3(dx,dy,0),new(-span/2),new(span/2));
+    public void Reset() { Yaw = portrait ? -.16f : -.28f; Pitch = portrait ? -.24f : -.55f; Zoom = 1; Target = Vector3.Zero; }
+    private float Distance(int width,int height)
     {
-        float aspect = (float)width/height, w = Math.Max(span,14*aspect)/Zoom;
-        return Matrix4x4.CreateOrthographic(w,w/aspect,.1f,200);
+        float aspect=(float)width/height;
+        return (portrait?Math.Max(span,18/aspect):Math.Max(20,span*1.32f/aspect)) / (2*MathF.Tan(.38f)) / Zoom;
     }
-    public Matrix4x4 ViewProjection(int width,int height) => View*Projection(width,height);
+    // View depends on aspect through the fitted distance, so all callers use ViewFor with the same viewport.
+    public Matrix4x4 ViewFor(int width,int height) => Matrix4x4.CreateLookAt(Target + Vector3.Transform(new Vector3(0,0,Distance(width,height)),
+        Matrix4x4.CreateRotationX(Pitch)*Matrix4x4.CreateRotationY(Yaw)),Target,Vector3.UnitY);
+    public Matrix4x4 Projection(int width,int height) => Matrix4x4.CreatePerspectiveFieldOfView(.76f,(float)width/height,.1f,500);
+    public Matrix4x4 ViewProjection(int width,int height) => ViewFor(width,height)*Projection(width,height);
 }

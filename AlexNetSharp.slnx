@@ -2,6 +2,8 @@
   <Folder Name="/src/">
     <Project Path="src/AlexNetSharp.Core/AlexNetSharp.Core.csproj" />
     <Project Path="src/AlexNetSharp.Replay/AlexNetSharp.Replay.csproj" />
+    <Project Path="src/AlexNetSharp.Viz/AlexNetSharp.Viz.csproj" />
+    <Project Path="src/AlexNetSharp.Desktop/AlexNetSharp.Desktop.csproj" />
     <Project Path="src/AlexNetSharp.Web/AlexNetSharp.Web.csproj" />
   </Folder>
   <Folder Name="/tests/">

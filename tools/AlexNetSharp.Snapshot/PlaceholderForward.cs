@@ -12,7 +12,10 @@ using AlexNetSharp.Core.Layers.Dropout;
 using AlexNetSharp.Core.Layers.Softmax;
 using AlexNetSharp.Core.Layers.Cost;
 
-namespace AlexNetSharp.Replay;
+using AlexNetSharp.Replay;
+using StbImageSharp;
+
+namespace AlexNetSharp.Snapshot;
 
 /// <summary>Only a one-image replay producer: placeholder weights, not ANX-11 initialisation.</summary>
 public static class PlaceholderForward
@@ -33,21 +36,15 @@ public static class PlaceholderForward
         }
         public float Next(double std) => (float)(std * Math.Sqrt(-2 * Math.Log(Uniform())) * Math.Cos(2 * Math.PI * Uniform()));
     }
-    public static float[] Preprocess(byte[] ppm)
+    public static float[] LoadPhoto(string root)
     {
-        int position = 0;
-        string Token()
-        {
-            while (ppm[position] <= 32) position++;
-            int begin = position;
-            while (ppm[position] > 32) position++;
-            return System.Text.Encoding.ASCII.GetString(ppm, begin, position - begin);
-        }
-        if (Token() != "P6") throw new InvalidDataException("Expected P6 RGB.");
-        int width = int.Parse(Token(), CultureInfo.InvariantCulture), height = int.Parse(Token(), CultureInfo.InvariantCulture);
-        if (Token() != "255" || width <= 0 || height <= 0) throw new InvalidDataException("Expected 8-bit RGB.");
-        position++; // single PPM header separator
-        if (ppm.Length - position != checked(width * height * 3)) throw new InvalidDataException("Incorrect PPM size.");
+        // Managed stb decoder is confined to the producer assembly; never downloaded by the browser.
+        var image = ImageResult.FromMemory(File.ReadAllBytes(Path.Combine(root,"content/samples/labrador.jpg")), ColorComponents.RedGreenBlue);
+        return Preprocess(image.Data, image.Width, image.Height);
+    }
+    public static float[] Preprocess(byte[] rgb, int width, int height)
+    {
+        if(width <= 0 || height <= 0 || rgb.Length != checked(width*height*3)) throw new InvalidDataException("Expected RGB photo.");
         double scale = 256.0 / Math.Min(width, height);
         int rw = (int)Math.Round(width * scale), rh = (int)Math.Round(height * scale);
         int left = (rw - 224) / 2, top = (rh - 224) / 2;
@@ -55,7 +52,7 @@ public static class PlaceholderForward
         for (int c = 0; c < 3; c++) for (int y = 0; y < 224; y++) for (int x = 0; x < 224; x++)
         {
             int sx = Math.Min(width - 1, (int)((x + left) / scale)), sy = Math.Min(height - 1, (int)((y + top) / scale));
-            result[(c * 224 + y) * 224 + x] = ppm[position + (sy * width + sx) * 3 + c] - means[c];
+            result[(c * 224 + y) * 224 + x] = rgb[(sy * width + sx) * 3 + c] - means[c];
         }
         return result;
     }
@@ -127,8 +124,8 @@ public static class PlaceholderForward
 
     public static ReplaySnapshot Produce(string root, ulong seed = 145)
     {
-        byte[] image = File.ReadAllBytes(Path.Combine(root, "content/samples/synthetic.ppm"));
-        var run = Run(Parse(root), Preprocess(image), seed);
+        byte[] image = File.ReadAllBytes(Path.Combine(root, "content/samples/labrador.jpg"));
+        var run = Run(Parse(root), LoadPhoto(root), seed);
         using var payload = new MemoryStream();
         Blob Append(float[] values)
         {
@@ -176,7 +173,7 @@ public static class PlaceholderForward
             ReplaySnapshot.Hash(File.ReadAllBytes(Path.Combine(root,"layers/layers-145.cfg"))),
             ReplaySnapshot.Hash(File.ReadAllBytes(Path.Combine(root,"layers/layer-params-145.cfg"))),seed,
             "placeholder, not ANX-11 initialisation; SplitMix64 Box-Muller Gaussian; configured initW/initB", "float32-le","channel,y,x","eval",
-            new("content/samples/synthetic.ppm",ReplaySnapshot.Hash(image),"Synthetic colour study; content/samples/PROVENANCE.md","CC0-1.0",
+            new("content/samples/labrador.jpg",ReplaySnapshot.Hash(image),"Dktue, Portrait of a labrador retriever; content/samples/PROVENANCE.md","CC0-1.0",
                 "not the ANX-12 pipeline; short side 256 nearest-neighbour, centre crop 224, RGB constant mean subtraction",[123,117,104]),
             layers.ToArray(),Append(run.Conv1Filters),run.Activations["probs"].Storage.ToArray().Select((p,i) => new RankedClass(i,p))
                 .OrderByDescending(c => c.Probability).ThenBy(c => c.Index).Take(5).ToArray(),run.Cost,

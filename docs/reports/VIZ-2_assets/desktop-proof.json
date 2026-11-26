@@ -1,0 +1,151 @@
+{
+  "passed": true,
+  "attempts": [
+    {
+      "mode": "offscreen",
+      "exit": -6,
+      "pid": 131,
+      "seconds": 0.216
+    },
+    {
+      "mode": "display",
+      "exit": 0,
+      "pid": 139,
+      "seconds": 1.369
+    }
+  ],
+  "receipt": {
+    "passed": true,
+    "firstFrameMs": 348.7891,
+    "frames": [
+      {
+        "name": "default",
+        "nonBackground": 394391,
+        "stackPixels": 9109,
+        "filterColors": 0,
+        "cardTextPixels": 0,
+        "receptiveFieldPixels": 56,
+        "hovered": null,
+        "pinned": [],
+        "pixel": {
+          "Channel": 0,
+          "X": 0,
+          "Y": 0
+        },
+        "camera": {
+          "Yaw": -0.28,
+          "Pitch": -0.55,
+          "Zoom": 1
+        }
+      },
+      {
+        "name": "hover-conv1a",
+        "nonBackground": 394439,
+        "stackPixels": 9109,
+        "filterColors": 0,
+        "cardTextPixels": 0,
+        "receptiveFieldPixels": 56,
+        "hovered": "conv1a",
+        "pinned": [],
+        "pixel": {
+          "Channel": 0,
+          "X": 0,
+          "Y": 0
+        },
+        "camera": {
+          "Yaw": -0.28,
+          "Pitch": -0.55,
+          "Zoom": 1
+        }
+      },
+      {
+        "name": "pinned-card",
+        "nonBackground": 394391,
+        "stackPixels": 9109,
+        "filterColors": 0,
+        "cardTextPixels": 728,
+        "receptiveFieldPixels": 56,
+        "hovered": null,
+        "pinned": [
+          "conv1a"
+        ],
+        "pixel": {
+          "Channel": 0,
+          "X": 0,
+          "Y": 0
+        },
+        "camera": {
+          "Yaw": -0.28,
+          "Pitch": -0.55,
+          "Zoom": 1
+        }
+      },
+      {
+        "name": "selected-pixel",
+        "nonBackground": 394428,
+        "stackPixels": 9109,
+        "filterColors": 0,
+        "cardTextPixels": 728,
+        "receptiveFieldPixels": 56,
+        "hovered": null,
+        "pinned": [
+          "conv1a"
+        ],
+        "pixel": {
+          "Channel": 0,
+          "X": 3,
+          "Y": 4
+        },
+        "camera": {
+          "Yaw": -0.28,
+          "Pitch": -0.55,
+          "Zoom": 1
+        }
+      },
+      {
+        "name": "orbit",
+        "nonBackground": 393181,
+        "stackPixels": 7862,
+        "filterColors": 0,
+        "cardTextPixels": 728,
+        "receptiveFieldPixels": 56,
+        "hovered": null,
+        "pinned": [
+          "conv1a"
+        ],
+        "pixel": {
+          "Channel": 0,
+          "X": 3,
+          "Y": 4
+        },
+        "camera": {
+          "Yaw": 0.02000001,
+          "Pitch": -0.42000002,
+          "Zoom": 1
+        }
+      },
+      {
+        "name": "filters",
+        "nonBackground": 369044,
+        "stackPixels": 7862,
+        "filterColors": 11586,
+        "cardTextPixels": 728,
+        "receptiveFieldPixels": 0,
+        "hovered": null,
+        "pinned": [
+          "conv1a"
+        ],
+        "pixel": {
+          "Channel": 0,
+          "X": 3,
+          "Y": 4
+        },
+        "camera": {
+          "Yaw": 0.02000001,
+          "Pitch": -0.42000002,
+          "Zoom": 1
+        }
+      }
+    ]
+  }
+}

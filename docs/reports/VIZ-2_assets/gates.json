@@ -1,0 +1,56 @@
+[
+  {
+    "name": "build-debug",
+    "pid": 3,
+    "exit": 0,
+    "seconds": 3.177
+  },
+  {
+    "name": "build-release",
+    "pid": 363,
+    "exit": 0,
+    "seconds": 3.339
+  },
+  {
+    "name": "default-debug-1",
+    "pid": 843,
+    "exit": 0,
+    "seconds": 12.236
+  },
+  {
+    "name": "default-debug-2",
+    "pid": 879,
+    "exit": 0,
+    "seconds": 12.052
+  },
+  {
+    "name": "default-debug-3",
+    "pid": 914,
+    "exit": 0,
+    "seconds": 12.028
+  },
+  {
+    "name": "full-release",
+    "pid": 949,
+    "exit": 0,
+    "seconds": 42.572
+  },
+  {
+    "name": "snapshot-proof",
+    "pid": 991,
+    "exit": 0,
+    "seconds": 5.285
+  },
+  {
+    "name": "producer-1",
+    "pid": 1003,
+    "exit": 0,
+    "seconds": 2.027
+  },
+  {
+    "name": "producer-2",
+    "pid": 1012,
+    "exit": 0,
+    "seconds": 2.036
+  }
+]

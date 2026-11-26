@@ -3,3 +3,11 @@
 
 .fan-in-note{position:absolute;top:calc(50% - 30px);right:14px;font:8px ui-monospace,monospace;color:#e2b879;pointer-events:none}
 @media(max-width:600px){aside{display:block;overflow-x:visible}.aside-heading{min-width:0}.explain-card{min-width:0;max-width:none}.empty{min-width:0}.layer-label{display:none}}
+
+#tap-name{display:none}
+@media(max-width:600px){
+ #canvas-holder{height:round(up, calc((100vw - 28px) * 1.22 + 210px), 1px)}
+ #tap-name{display:block;position:absolute;left:8px;right:8px;top:auto;bottom:215px;font:12px ui-monospace,monospace;color:#d6efe3;pointer-events:none;background:#142b35dd;padding:8px;border-radius:4px}
+ .fan-in-note{display:none}
+ .view-heading{top:calc(100% - 210px);padding:15px 8px 8px;font-size:8px}
+}

@@ -46,18 +46,17 @@ is in `PlaceholderForward.Gaussian`; this is not NumPy/CUDA RNG parity. Byte ide
 is proven across fresh producer invocations on the current .NET runtime/platform;
 transcendental implementations may differ on other runtimes/platforms.
 
-Preprocessing: **not the ANX-12 pipeline**. P6 8-bit RGB, short side resized to 256
+Preprocessing: **not the ANX-12 pipeline**. JPEG decoded to 8-bit RGB in the console producer only (managed StbImageSharp), short side resized to 256
 with nearest-neighbour samples, centre crop 224, subtract constants RGB (123,117,104),
-no division by 255. See `content/samples/PROVENANCE.md`: synthetic CC0 image, no
-external photograph or licence ambiguity. Image SHA-256 is recorded in the manifest.
+no division by 255. See `content/samples/PROVENANCE.md`: CC0 Labrador photograph by Dktue, with source and checksum. Image SHA-256 is recorded in the manifest.
 The displayed input restores these means from the exact saved input activation.
 Dropout evaluation multiplies by keep, without drawing masks. All layers execute
 real optimized Core forward operations; the cost is calculated for label 0.
 
 ## Extension points
 
-`ISnapshotSource.LoadAsync` supplies the same immutable snapshot to the web view;
-`ReplaySource` is the only implemented source. A future run index can append entries
+`ISnapshotSource.LoadAsync` supplies the immutable snapshot to the web view;
+`ReplaySource` loads HTTP bytes. Desktop reads the same files from disk. A future run index can append entries
 `{step, manifest}` pointing to new directories, without overwriting previous steps.
 Trainer iteration is `step`; the schema can add optional scalar curves, per-layer
 gradient statistics, additional named filter blob descriptors, checkpoint identifiers
@@ -68,13 +67,25 @@ engine is implemented. `IAudioLayer` is an empty interface for future work.
 
 ## Layout and receptive fields
 
-`LayerLayout` and `OrbitCamera` use System.Numerics only. Layers occupy topological
-stages 2.15 units apart, towers at y=±2.3, data at the first centre, labels at the
-output end, cost at the last stage. Box extents are x=`.8+.025 log2(C)`,
-y=`.5+.095 log2(H)`, z=`.35+.08 log2(C)` with each argument clamped to at least 1.
-Orthographic projection fits the whole graph; orbit, pan and zoom share the same
-matrices as inverse-projection slab-ray picking. Cross-tower edges are amber;
-input slots have distinct offsets; cards explicitly show reversed FC fan-in.
+`LayerLayout` and `OrbitCamera` live in `AlexNetSharp.Viz` and use System.Numerics
+only. On desktop-width scenes, layers occupy topological stages 2.15 units apart,
+towers at y=±2.3, data at the first centre, labels at the output end and cost at
+the last stage. Box extents are x=`.45+.075 log2(W)`, y=`.45+.12 log2(H)`,
+z=`.4+.2 log2(C)`, each argument clamped to at least 1. The three axes visibly
+encode W, H and C using a logarithmic display scale, not a physical volume.
+Perspective projection uses a .76-radian vertical field of view; default yaw=-.28,
+pitch=-.55 radians. Face-dependent shading reveals the depth. Orbit/pan/zoom use
+the same view/projection matrices as inverse-projection nearest slab-ray picking.
+Yaw is limited to ±1.05, pitch to [-1.05,.8], zoom to [.6,4]. Reset restores
+orientation, zoom and target. Cross-tower edges are amber; input slots have distinct
+offsets; cards explicitly show reversed FC fan-in.
+
+For scene widths ≤600 px, stages snake through three columns spaced 6.2 units
+apart, rows 3.3 apart, tower boxes side by side. Default yaw=-.16, pitch=-.24;
+the fitted world extent is 32 units. The phone stack canvas height follows its
+width (1.22 × width), plus 210 px for maps/photo. A persistent tap-to-name strip
+replaces tiny projected labels. Pointer capture supports one-finger orbit and
+two-finger pinch without cancelling page scroll outside the canvas.
 
 Receptive fields trace a selected spatial interval backwards: multiply by stride,
 add start, extend by kernel−1, clip to each preceding tensor, union input branches.
@@ -89,5 +100,8 @@ mint, independent min/max for each channel (constant channel = midpoint). RGB
 filters use one min/max across all three channels of each filter. Both use nearest
 sampling. Clicking the grid resolves channel and pixel through the same atlas
 geometry; a yellow rectangle marks the clipped input range. Numeric controls offer
-precise selection when maps are small. Text and cards are HTML; there is no content
-pipeline, XNB or MGCB asset.
+precise selection when maps are small. Web text and cards are HTML; desktop draws the same parsed cards using
+FontStashSharp.Kni and bundled DejaVu Sans (see `content/fonts/LICENSE.txt`).
+There is no content pipeline, XNB or MGCB asset. Shared KNI rendering, texture
+creation and camera controls live in Viz; each host owns platform input and text UI.
+Snapshot production and JPEG decoding live only in the console producer assembly.

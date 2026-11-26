@@ -221,7 +221,9 @@ standard compressed variants and debug/runtime files shipped by publish:
 Raw proof metrics: `.scratch/viz1/browser-proof.json`; publish output and browser
 logs are under the same ignored directory. Two full-page screenshots, both under
 400 KB, were copied into the report assets (no other screenshots are deliverables):
-[desktop](VIZ-1_assets/desktop.png) · [mobile](VIZ-1_assets/mobile.png).
+[desktop baseline](VIZ-1_assets/desktop.png). The historical mobile screenshot
+was retired in VIZ-2 to keep the repository within its four-screenshot media
+budget; see the clearly identified [current VIZ-2 phone view](VIZ-2_assets/web-phone.jpg).
 Full-page images include scrollable content; browser viewport dimensions remain
 those specified by the brief. On mobile, multiple pinned cards share a horizontal
 scroll area.

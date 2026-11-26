@@ -4,7 +4,7 @@
 
 Run the **real thing**: the network, layer maths, training procedure and data of the 2012 ImageNet winner, taken from
 the original source release (`computerhistory/AlexNet-Source-Code`, BSD-style, Google 2023). Render the process in a
-**web build** (MonoGame API via KNI/BlazorGL, as in the AllegianceCore browser client; no desktop client) and make every
+**web build** (MonoGame API via KNI/BlazorGL, as in the AllegianceCore browser client; shared SDL2 desktop target for iteration) and make every
 part **easy to explore and explained on screen**. Speed is not the goal, but throughput decides feasibility, so it is
 measured early (story 15).
 
@@ -73,6 +73,8 @@ backprop → update. Explanations are data (`content/explain/*.md`) with citatio
 - `AlexNetSharp.Trainer` — headless .NET process that does the real training (on a server/lane; ImageNet cannot be
   trained in a browser). Publishes **sampled** snapshots (one tracked example, filters, gradient statistics, curves) at
   a bounded rate and a pause/snapshot mode; snapshot cost is measured, not assumed free. Writes a run log + checkpoints.
+- `AlexNetSharp.Viz` — shared KNI rendering, layout, camera, picking and textures for both hosts; no platform package.
+- `AlexNetSharp.Desktop` — .NET 10 KNI SDL2/GL replay explorer for Linux/Windows, using the shared renderer and Markdown cards. The browser remains the public page; desktop supports fast iteration and a future live trainer view.
 - `AlexNetSharp.Web` — the browser app (KNI BlazorGL, MonoGame API): 3D layer stack, filter grids, gradient flow,
   dashboards, explain cards, tour. Two sources:
   - **live**: WebSocket to a running trainer;
