@@ -53,9 +53,9 @@ All non-data layers also inherit `neuron=""` (`layer.py:374`), `gpu=inputLayers[
 | `rnorm` | 1 | `inputs`, `channels`, `size`; `scale`, `pow` | `blocked=False` (`:1193`, parsed but unused spatially); divides `scale /= size**2` (`:1183`); no `minDiv` | **Fwd:** Within-channel clamped `size x size` spatial window: `denom = 1.0 + (scale/size^2)*sum x^2`, `y = x * denom^(-pow)`. **Bwd:** `convResponseNormUndo` using cached `_denoms`. | `layer.py:1170-1216`, `src/layer.cu:1560-1574` |
 | `pool` | 1 | `inputs`, `pool`, `channels`, `sizeX`, `stride` | `start=0` (`:1139`), `outputsX=0` -> `ceil((imgSize-start-sizeX)/stride)+1` (`:1164`), `doMax=False` (only if `pool=='rand'`) | **Fwd (`max`):** Clamped window numeric max, finite seed `-2e38f`, NaNs ignored (`convLocalPool<MaxPooler>`); average divides by clipped count. **Bwd (`max`):** `convLocalMaxUndo` routes full upstream gradient to every input pixel matching window max (`img == ma`, including all ties). | `layer.py:1125-1168`, `src/layer.cu:1273-1334`; A:`include/cudaconv2/conv_util.cuh:71-94,161-186`, A:`src/cudaconv2/conv_util.cu:1555-1559` |
 | `fc` | `>= 1` | `inputs`, `outputs`, `initW` (quirk `:832`); `epsW`, `epsB`, `momW`, `momB` | `initB=0` (`:833`), `initWFunc=""`, `initBFunc=""`, `weightSource=['']*N`, `wc=[0.0]*N`, `wball=[0.0]*N`, `superEps=0.0`, `superMom=0.0`, `schedW="default"`, `schedB="default"` | **Fwd:** Sums `X[i] * W[i]` in declared input order (`W[i]` F-order `numInputs[i] x outputs`), adds `1 x outputs` bias row immediately after the first product (before remaining input products). **Bwd:** `dX[i] += dY * W[i]^T`, `db = (1/numCases)*sum dY`, `_weightsInc[i] = momW*V + (epsW/numCases)*(X[i]^T * dY)`. | `layer.py:873-886`, `src/layer.cu:634-675`, `src/convnet.cu:444` |
-| `hs` | 1 | `inputs`, `keep`; `enable` | None beyond base `LayerWithInputParser` | **Fwd:** Unscaled binary mask `(u < keep) * x` when `enable && PASS_TRAIN`; `keep * x` otherwise. **Bwd:** Same `_sexMask` in `PASS_TRAIN`, or `keep` otherwise. | `layer.py:689-709`, `src/layer.cu:1121-1153` |
-| `softmax` | 1 | `inputs` | None beyond base `LayerWithInputParser` | **Fwd:** `p_c = exp(z_c - max_k z_k) / sum_j exp(z_j - max_k z_k)`. **Bwd:** Fuses `coeff * ((label == c) - p_c)` when sole same-GPU consumer is `cost.logreg`; else `p_c * sum_j dy_j * ((j == c) - p_j)`. | `layer.py:1104-1112`, `src/layer.cu:1016-1042`, `src/layer_kernels.cu:464` |
-| `cost.logreg` | 2 (`labels, probs`) | `inputs`, `coeff` | `topk=1` (`:1257`; `neuron` deleted at `:1225`) | **Fwd:** Accumulates multiview `probs` when testing; computes `[-sum log p_y, N - top1, N - topk]` with fractional tie splitting (`computeMultiSoftmaxCost` when `topk > 1`). **Bwd:** Delegates fused logit grad to single-consumer same-GPU `softmax` (`doWork == false`). | `layer.py:1250-1271`, `src/layer.cu:1800-1858`, `src/layer_kernels.cu:96-119` |
+| `hs` | 1 | `inputs`, `keep`; `enable` | None beyond base `LayerWithInputParser` | **Fwd:** Unscaled binary mask `(u < keep) * x` when `enable && PASS_TRAIN`; `keep * x` otherwise. **Bwd:** Same saved `_sexMask` when `enable && PASS_TRAIN`, or `keep` otherwise; nonzero `scaleTargets` adds. Disabled training also scales by `keep`. | `layer.py:689-709`, `src/layer.cu:1121-1153` |
+| `softmax` | 1 | `inputs` | None beyond base `LayerWithInputParser` | **Fwd:** `p_c = exp(z_c - max_k z_k) / sum_j exp(z_j - max_k z_k)`. **Bwd:** Fuses `coeff * ((label == c) - p_c)` when `_doLogregGrad` and sole same-GPU consumer is `cost.logreg`; else `p_c * sum_j dy_j * ((j == c) - p_j)` (ascending j separately per c, then multiply). Negative loss gradient, no batch division. Adds only for `scaleTargets==1`. | `layer.py:1104-1112`, `src/layer.cu:1016-1042`, `src/layer_kernels.cu:464` |
+| `cost.logreg` | 2 (`labels, probs`) | `inputs`, `coeff` | `topk=1` (`:1257`; `neuron` deleted at `:1225`) | **Fwd:** Unweighted `[-sum log p_y, N - top1, N - topk]`; natural float32 `__logf`, no clipping (`p_y=0` gives +infinite loss). For label-probability tie size E and B greater classes: top1 credit `1/E` at maximum; topk credit `clamp((k-B)/E,0,1)`. Multiview start copies, intermediate calls sum probabilities, end divides by view count and computes. **Bwd:** Skips probability gradient for single-consumer same-GPU `softmax`; otherwise `coeff*indicator/p` for every class, adds only for `scaleTargets==1`. | `layer.py:1250-1271`, `src/layer.cu:1800-1858`, `src/layer_kernels.cu:96-119` |
 | `neuron` (`relu`) | 1 | `inputs`, `neuron` | Detached as `<src>_neuron` (`:630`); `relu` takes 0 params (`usesActs=True, usesInputs=False`, `:1400`) | **Fwd (`relu`):** `y = (x < 0.0f ? 0.0f : x)`. **Bwd (`relu`):** `dx = dy * (y > 0.0f)` (accumulated if `scaleTargets > 0`). | `layer.py:594-653, 1400`, `src/layer.cu:483-510`, `src/neuron.cu:36`, `include/neuron.cuh:146-176` |
 
 ---
@@ -130,7 +130,7 @@ cudaconv3 forward citation remains relevant only for that later addition.
 | 32 | `hs2b` (`:289` / `:134`) | `hs` (`1` def) | `[fc2048bb]` -> `[fc2048bb_neuron]` | `2048` (`2048`) | `keep=0.5`; **def:** `neuron="", gpu=1`; **params:** `enable=true` | Unscaled dropout on GPU 1 feeding `fc1000` input `1` (`src/layer.cu:1137`). |
 | 33 | `fc1000` (`:294` / `:113`) | `fc` (`0`) | `[hs2a, hs2b]` -> `[hs2a, hs2b]` | `1000` (`1000`), `W:2x(2048,1000)` F, `b:(1,1000)` | `outputs=1000, initW=0.01,0.01, gpu=0`; **def:** **`initB=0`**, `neuron=""`; **params:** `epsW=1e-5,1e-5, epsB=0.02, momW=0.9,0.9, momB=0.9, wc=5e-4,5e-4, wball=0,0` | 1000-way linear logits (`initB=0` default, no ReLU) (`layer.py:833`, `src/layer.cu:640`). |
 | 34 | `probs` (`:301` / —) | `softmax` (`0` def) | `[fc1000]` -> `[fc1000]` | `1000` (`1000`) | **def:** `neuron="", gpu=0` | Stable softmax; backward emits fused `coeff * ((label == c) - p_c)` (`src/layer.cu:1020, 1038`, `src/layer_kernels.cu:464`). |
-| 35 | `logprob` (`:305` / `:121`) | `cost.logreg` (`0`) | `[labels, probs]` -> `[labels, probs]` | `0` (`_costv`: 3 scalars) | `gpu=0`; **params:** `coeff=1, topk=5` (default `1` at `layer.py:1257`) | Multiview prob accumulator + `[-sum log p_y, N - top1, N - top5]` via `computeMultiSoftmaxCost` (`src/layer.cu:1804-1858`). |
+| 35 | `logprob` (`:305` / `:121`) | `cost.logreg` (`0`) | `[labels, probs]` -> `[labels, probs]` | `0` (`_costv`: 3 scalars) | `gpu=0`; **params:** `coeff=1, topk=5` (default `1` at `layer.py:1257`) | Multiview probabilities summed then averaged at end; unweighted `[-sum log p_y, N - top1, N - top5]` (fractional ties) via `computeMultiSoftmaxCost` (`src/layer.cu:1804-1858`). |
 
 ### 3.3 Detached Neuron Layers (`layer.py:272, 627`)
 
@@ -199,3 +199,31 @@ see CUDACONV2.md §8 and ANX-9_REPORT.md. The port honors the requested alpha/be
 contract for N=1 as well. Ordered CPU reductions establish scalar/SIMD bit parity,
 not historical cuBLAS or CUDA reduction-tree bit parity. Weight sharing is rejected
 by the FC runtime with a named “unsupported in this port” error; parsing is unchanged.
+
+
+## ANX-10 softmax, dropout and cost precision notes
+
+`src/layer.cu:1022-1026` uses max, subtraction, float32 exponential, sum,
+then division in separate stages. A:`src/nvmatrix/nvmatrix.cu:700-716`
+dispatches these class-axis reductions (and cost's max) to
+A:`include/nvmatrix/nvmatrix_kernels.cuh:544-556`: seed from class 0,
+then ascending classes; max combines `new > old ? new : old`
+(A:`include/nvmatrix/nvmatrix_operators.cuh:305-313`). Thus there is no finite
+max seed on this path. A first NaN sticks in max; later NaNs are ignored by
+max but contaminate the exp/sum. All -infinity logits produce NaN probabilities.
+A:`include/nvmatrix/nvmatrix_operators.cuh:34-51,228-231` uses CUDA
+`__expf`, `__logf`, `__fdividef`; the CPU port uses `MathF.Exp`, `MathF.Log`
+and ordinary float32 division. The original logreg kernel directly calls
+`__logf` (`src/layer_kernels.cu:106,396`), not `safelog`.
+
+Dropout draws one uniform per feature/case, stores a strict `(u<keep)` mask,
+and reuses it in backward (`src/layer.cu:1128-1143`;
+A:`src/nvmatrix/nvmatrix.cu:326-330,834-835`;
+A:`include/nvmatrix/nvmatrix_kernels.cuh:613-617`). Its historical CUDA stream
+cannot be reproduced. The deterministic port mask source, seed/cursor scheme,
+CPU reduction contract and signature audit are documented in
+[ANX-10_REPORT.md](../reports/ANX-10_REPORT.md) and CUDACONV2.md §9.
+The cost's skip test ignores `_doLogregGrad` (`src/layer.cu:1853`); a caller
+forcing softmax's general path must explicitly provide probability upstream.
+Batch averaging belongs to parameter-gradient/update callers
+(`src/layer.cu:654,664-671`), not these activity gradients.

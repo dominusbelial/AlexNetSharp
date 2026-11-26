@@ -22,10 +22,11 @@ Early. Done so far:
 | ANX-6 | Managed SIMD CPU convolution, bitwise scalar parity and thread determinism, bounded workspace, batch-128 benchmark | [ANX-6](docs/reports/ANX-6_REPORT.md) |
 | ANX-7 | Scalar and SIMD max/average pooling and ReLU, edge/tie/NaN fixtures, numerical gradients and batch-128 timings | [ANX-7](docs/reports/ANX-7_REPORT.md) |
 | ANX-8 | Scalar and SIMD spatial/cross-map response normalisation, cached-denominator gradients, independent float64 fixtures, numerical checks and batch-128 timings | [ANX-8](docs/reports/ANX-8_REPORT.md) |
-
 | ANX-9 | Scalar and SIMD multi-input fully connected layers, ordered bias/fan-in, alpha/beta gradients, fan-out and batch-128 timings | [ANX-9](docs/reports/ANX-9_REPORT.md) |
 
-Next: dropout, softmax/loss, the trainer, and the web explorer.
+| ANX-10 | Unscaled dropout with injectable deterministic masks, stable softmax, fused/general loss gradients, fractional top-k ties and multiview cost | [ANX-10](docs/reports/ANX-10_REPORT.md) |
+
+Next: optimiser/initialisation, data pipeline, trainer, and web explorer.
 
 ## Layout
 
@@ -90,6 +91,19 @@ separate FC ReLU placement. Batch-128 timing is opt-in:
 dotnet run -c Release --project tests/AlexNetSharp.Tests -- --benchmark-fc
 # Optional: --fc-threads 2 --fc-repeats 3 --fc-output .scratch/fc-benchmark.json
 python3 tests/fixtures/make_fc_fixture.py
+```
+
+Dropout, softmax and logistic-regression cost checks include independent fixtures,
+float64 gradients, RNG and worker-count determinism, all four 2048-wide dropout
+layers and 1000-class batch-128 softmax/fused gradients/top-5 cost. Dropout uses
+unscaled training masks and `* keep` evaluation, including disabled training.
+The port RNG does not reproduce the original CUDA stream. The full parity mode
+also runs batch-128 general softmax backward and actual FC-pair fan-out.
+
+```sh
+dotnet run -c Release --project tests/AlexNetSharp.Tests -- --benchmark-dropout-softmax-cost
+# Optional: --dsc-threads 2 --dsc-output .scratch/dropout-softmax-cost-benchmark.json
+python3 tests/fixtures/make_dropout_softmax_cost_fixture.py
 ```
 
 ImageNet data is not part of this repository.

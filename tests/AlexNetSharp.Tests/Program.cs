@@ -8,6 +8,7 @@ try
     var repoRoot = SpecVerifier.FindRepoRoot();
     var origRoot = SpecVerifier.ResolveOriginalSrcRoot(repoRoot);
 
+    if (args.Contains("--benchmark-dropout-softmax-cost")) return DropoutSoftmaxCostBenchmark.Run(origRoot, args);
     if (args.Contains("--benchmark-fc")) return FullyConnectedBenchmark.Run(origRoot, args);
     if (args.Contains("--benchmark-norm")) return NormBenchmark.Run(origRoot, args);
     if (args.Contains("--benchmark-pool")) return PoolReluBenchmark.Run(origRoot, args);
@@ -88,6 +89,7 @@ try
     int poolPassed = PoolReluTests.RunAll(repoRoot, origRoot, args.Contains("--full-scalar-parity"));
     int normPassed = NormTests.RunAll(repoRoot, origRoot, args.Contains("--full-scalar-parity"));
     int fcPassed = FullyConnectedTests.RunAll(repoRoot, origRoot, args.Contains("--full-scalar-parity"));
+    int dscPassed = DropoutSoftmaxCostTests.RunAll(repoRoot, origRoot, args.Contains("--full-scalar-parity"));
     sw.Stop();
 
     Console.WriteLine(
@@ -95,7 +97,7 @@ try
     Console.WriteLine($"SHAPE TESTS PASSED: {shapesPassed} full-network, hand, boundary/error and ledger enforcement tests.");
     Console.WriteLine($"TENSOR TESTS PASSED: {tensorsPassed} layout, views, RGB, weights, accumulation and full-network allocation tests in {tensorSw.ElapsedMilliseconds} ms.");
     Console.WriteLine($"CONVOLUTION TESTS PASSED: {convPassed} fixture, numerical, contract and real-geometry groups.");
-    Console.WriteLine($"TEST SUITE PASSED: {goldenPassed + errorPassed + shapesPassed + tensorsPassed + convPassed + poolPassed + normPassed + fcPassed} tests plus spec checks in {sw.ElapsedMilliseconds} ms.");
+    Console.WriteLine($"TEST SUITE PASSED: {goldenPassed + errorPassed + shapesPassed + tensorsPassed + convPassed + poolPassed + normPassed + fcPassed + dscPassed} tests plus spec checks in {sw.ElapsedMilliseconds} ms.");
     return 0;
 }
 catch (Exception ex)

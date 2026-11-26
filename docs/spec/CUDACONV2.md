@@ -272,3 +272,59 @@ be established from the original release. Neither original cuBLAS reductions nor
 A's CUDA bias reduction association is claimed bit-identical to this CPU port.
 The matrix layouts and caller coefficients are supported by the source; historical
 execution/rounding parity still needs the unavailable linked library/binary.
+
+## 9. Dropout, softmax and logreg NVMatrix evidence (ANX-10)
+
+All helpers used by `src/layer.cu:1020-1040,1126-1151,1804-1856` were checked
+individually against Candidate A. The original's own `src/layer_kernels.cu`
+provides the cost/backward kernels; those take precedence over A's older versions.
+Paths in the candidate column are relative to A's trunk.
+
+| Original call | Candidate A declaration / implementation | Audit result |
+| --- | --- | --- |
+| `_sexMask.resize(input)` (`src/layer.cu:1128`) | `src/nvmatrix/nvmatrix.cu:493-495` | Matches `resize(const NVMatrix&)`, copies dimensions and transposed flag; bool result ignored |
+| `randomizeUniform()` (`:1129`) | `include/nvmatrix/nvmatrix.cuh:215`; `src/nvmatrix/nvmatrix.cu:326-330,246-254` | No args; one CUDA uniform draw per element using persistent per-device CURAND states |
+| `smallerThanScalar(keep)` (`:1130`) | `include/nvmatrix/nvmatrix.cuh:393-394`; `src/nvmatrix/nvmatrix.cu:830-835`; `include/nvmatrix/nvmatrix_operators.cuh:111-120` | One float, in-place; strict `<`, not `<=` |
+| `input.eltwiseMult(mask,target)` (`:1131,1143`) | `include/nvmatrix/nvmatrix.cuh:354`; `src/nvmatrix/nvmatrix.cu:623-624` | Two matrix arguments; ordinary multiply, so 0*NaN stays NaN |
+| `input.scale(keep,target)` and `probs.scale(1.0/count)` (`:1133,1150,1820`) | `include/nvmatrix/nvmatrix.cuh:404-405`; `src/nvmatrix/nvmatrix.cu:874-879` | Both overloads match; double reciprocal converts to float parameter |
+| `v.applyTernary(op,mask,target,target)` (`:1140-1141`) | `include/nvmatrix/nvmatrix.cuh:322-343` | Four args, templated ternary op; original `include/neuron.cuh:36-43` computes product + target |
+| `v.applyBinary(op,target,target)` (`:1147-1148`) | `include/nvmatrix/nvmatrix.cuh:275-302` | Three args, templated binary op; original `include/neuron.cuh:47-54` computes target + scaled upstream |
+| `input.max(1)` and `probs.max(0)` (`:1022`; `src/layer_kernels.cu:146,660`) | `include/nvmatrix/nvmatrix.cuh:377`; `src/nvmatrix/nvmatrix.cu:912-913,700-716` | Axis-only overload returns heap matrix; F axis 1 / C axis 0 both reduce classes |
+| `input.addVector(max,-1,target)` (`src/layer.cu:1023`) | `include/nvmatrix/nvmatrix.cuh:361`; `src/nvmatrix/nvmatrix.cu:652-653` | Three args match; WeightedAdd(1,-1), broadcast per case |
+| `acts.apply(NVMatrixOps::Exp())` (`:1024`) | `include/nvmatrix/nvmatrix.cuh:245-269`; `include/nvmatrix/nvmatrix_operators.cuh:34-39` | Unary/in-place apply matches; exponential is `__expf`, not expf |
+| `acts.sum(1)` (`:1025`) | `include/nvmatrix/nvmatrix.cuh:375`; `src/nvmatrix/nvmatrix.cu:916-917` | Axis-only overload matches; same class-axis linear reduction |
+| `acts.eltwiseDivideByVector(sum)` (`:1026`) | `include/nvmatrix/nvmatrix.cuh:370`; `src/nvmatrix/nvmatrix.cu:684-689`; `include/nvmatrix/nvmatrix_operators.cuh:228-232` | One arg matches; CUDA `__fdividef` |
+| `probs.copy(accum)` (`:1812`) | `include/nvmatrix/nvmatrix.cuh:208`; `src/nvmatrix/nvmatrix.cu:178-181` | One target argument matches; copies rather than adds |
+| `accum.add(probs)` (`:1815`) | `include/nvmatrix/nvmatrix.cuh:352`; `src/nvmatrix/nvmatrix.cu:611-612,583-601` | One source argument matches; WeightedAdd(1,1) |
+| scratch `.sum()` (`:1833-1836`) | `include/nvmatrix/nvmatrix.cuh:381`; `src/nvmatrix/nvmatrix.cu:936-937,948-979` | No args; returns **float**, widened in the original cost triple; at N=128 CPU ascending float32 sum (`src/common/matrix.cpp:563-564,615-621`) |
+
+**No relevant NVMatrix signature mismatch was found.** This does not remove ANX-8's
+cross-map `minDiv` mismatch. `computeMultiSoftmaxCost` is absent from A, but is
+fully present in the original release (`include/layer_kernels.cuh:62-63`,
+`src/layer_kernels.cu:96-119,132-165`), with the exact eight-argument call at
+`src/layer.cu:1830`. The original's `computeSoftmaxGrad`, `computeLogregGrad`,
+`computeLogregSoftmaxGrad`, and `computeLogregCost` declarations/calls match their
+own definitions (`include/layer_kernels.cuh:46,48-49,55`,
+`src/layer_kernels.cu:593-613,650-722`). No named NVMatrix exp/log method is
+called here: softmax uses the Exp functor; logreg directly invokes `__logf`.
+A's Log functor also uses `__logf` (`include/nvmatrix/nvmatrix_operators.cuh:48-52`).
+
+For these class-axis reductions, `kDumbAggCols` starts with class 0 and visits
+classes 1..C-1 (`include/nvmatrix/nvmatrix_kernels.cuh:544-556`). Its max op
+is `new > old ? new : old` (`include/nvmatrix/nvmatrix_operators.cuh:305-313`),
+so a first NaN is sticky while later NaNs are ignored by max. All -infinity
+logits yield NaN after subtraction. The generic Max base `-2e38` is **not used**
+by this kernel. Forward sum order is fixed, unlike the FC case-axis CUDA trees.
+For total cost sums beyond A's `CPUSUM_MAX=4096`, A first uses GPU tree reduction;
+the port deliberately fixes ascending float32 case sums at every batch size.
+This is a documented rounding boundary, not historical GPU bit parity.
+
+A's RNG delegates to `curand_uniform` (`include/nvmatrix/nvmatrix_kernels.cuh:613-617`)
+and maintains per-device CUDA thread states (`src/nvmatrix/nvmatrix.cu:246-254,271-283`).
+The port takes injectable binary masks and uses a documented counter-addressed
+SplitMix64 stream for training. It cannot reproduce the original stream.
+`MathF.Exp`, `MathF.Log`, ordinary division and separate multiply/add replace
+CUDA fast intrinsics and possible compiler contraction. CPU scalar/optimized
+raw-bit agreement and worker-count independence are verified; historical CUDA
+bit agreement is not claimed. Full semantics, fixtures and timings are in
+[ANX-10_REPORT.md](../reports/ANX-10_REPORT.md).
