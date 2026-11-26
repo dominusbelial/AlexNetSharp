@@ -23,7 +23,9 @@ Early. Done so far:
 | ANX-7 | Scalar and SIMD max/average pooling and ReLU, edge/tie/NaN fixtures, numerical gradients and batch-128 timings | [ANX-7](docs/reports/ANX-7_REPORT.md) |
 | ANX-8 | Scalar and SIMD spatial/cross-map response normalisation, cached-denominator gradients, independent float64 fixtures, numerical checks and batch-128 timings | [ANX-8](docs/reports/ANX-8_REPORT.md) |
 
-Next: fully connected layers, the trainer, and the web explorer.
+| ANX-9 | Scalar and SIMD multi-input fully connected layers, ordered bias/fan-in, alpha/beta gradients, fan-out and batch-128 timings | [ANX-9](docs/reports/ANX-9_REPORT.md) |
+
+Next: dropout, softmax/loss, the trainer, and the web explorer.
 
 ## Layout
 
@@ -75,6 +77,19 @@ at N=3. Full scalar parity additionally checks N=17 (SIMD lanes and tail) at
 ```sh
 dotnet run -c Release --project tests/AlexNetSharp.Tests -- --benchmark-norm
 # Optional: --norm-output .scratch/norm-benchmark.json
+```
+
+Fully connected checks include independent one/two-input fixtures, reversed input
+order, alpha/beta gradients, NaN handling, numerical differences, thread determinism
+and all five 145 shapes at N=3. Default runs optimized kernels with sampled scalar
+checks; `--full-scalar-parity` compares every element at N=3 and N=9 with
+1/2/all/repeated-all workers. Both modes verify actual pool3/hs1 fan-out and the
+separate FC ReLU placement. Batch-128 timing is opt-in:
+
+```sh
+dotnet run -c Release --project tests/AlexNetSharp.Tests -- --benchmark-fc
+# Optional: --fc-threads 2 --fc-repeats 3 --fc-output .scratch/fc-benchmark.json
+python3 tests/fixtures/make_fc_fixture.py
 ```
 
 ImageNet data is not part of this repository.

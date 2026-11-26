@@ -238,3 +238,37 @@ ANX-8 reverified §6–7 against the archive bytes:
   power give signed zero, while infinity times zero gives NaN. Float32 square
   overflow is retained. Zero inputs have unit (spatial) or `minDiv` (cross-map)
   denominator; signed zero output is preserved for finite positive denominators.
+
+
+## 8. Fully connected NVMatrix evidence (ANX-9)
+
+The original release omits nvmatrix as well. Candidate A's archive/revision above
+supplies its source; all relevant FC call signatures were individually checked:
+
+| Original call | Candidate A declaration / implementation | Result |
+| --- | --- | --- |
+| `addProduct(a,b,scaleTargets,1)` forward/dX (`src/layer.cu:641,649`) and arbitrary gradient coefficients (`:666,671`) | `include/nvmatrix/nvmatrix.cuh:210`; `src/nvmatrix/nvmatrix.cu:221-236` | Four arguments match; F-order target; dispatches beta=0 to rightMult |
+| `rightMult(b,alpha,target)` (inside addProduct) | `include/nvmatrix/nvmatrix.cuh:212`; `src/nvmatrix/nvmatrix.cu:189-205` | Three arguments; SGEMM alpha=scaleAB, beta=0; nonzero addProduct passes both coefficients directly to SGEMM |
+| `addVector(bias)` (`src/layer.cu:643`) | `include/nvmatrix/nvmatrix.cuh:362`; `src/nvmatrix/nvmatrix.cu:652-657` | One-argument overload matches, WeightedAdd(1,1), broadcasts `(1,O)` across cases |
+| `getTranspose()` (`src/layer.cu:648,661`) | `include/nvmatrix/nvmatrix.cuh:412`; `src/nvmatrix/nvmatrix.cu:530-550` | No arguments; dimension/stride view, no data movement |
+| `addSum(v,0,beta,alpha)` (`src/layer.cu:656`) | `include/nvmatrix/nvmatrix.cuh:373`; `src/nvmatrix/nvmatrix.cu:896-900` | Four arguments match; axis=0 sums cases of native `(N,O)` F matrix |
+| `sum(axis,target)` / `sum(axis)` helpers | `include/nvmatrix/nvmatrix.cuh:374-375`; `src/nvmatrix/nvmatrix.cu:904-905,916-917` | Present; FC itself calls addSum, not sum |
+
+There is **no FC signature mismatch**. This does not remove ANX-8's documented
+missing minDiv mismatch elsewhere. Candidate A `_aggregate` dispatches native
+F-order axis 0 to physical row reduction (`src/nvmatrix/nvmatrix.cu:700-724`),
+with CUDA trees, not ascending scalar case sums (`include/nvmatrix/nvmatrix_kernels.cuh:272-332`).
+`WeightedAdd` returns `a*beta+b*alpha`; `SecondScaled` skips old target when beta=0
+(`include/nvmatrix/nvmatrix_operators.cuh:249-258,281-290`). It does **not** skip
+the source sum for alpha=0. GEMM alpha=0 follows the ANX-4 BLAS contract and skips
+product operands. Target beta=0 never reads old NaNs in either port kernel.
+
+A semantic caveat: when the physical reduction width is 1 (N=1), A's
+`src/nvmatrix/nvmatrix.cu:723,801-803` calls `copy(target)` instead of the passed
+reduction operator. That bypasses alpha/beta and can preserve -0 directly. The
+port follows ANX-9's explicit alpha/beta and +0-seeded ascending-sum contract
+also for N=1. Whether the missing September library fixed A's edge case cannot
+be established from the original release. Neither original cuBLAS reductions nor
+A's CUDA bias reduction association is claimed bit-identical to this CPU port.
+The matrix layouts and caller coefficients are supported by the source; historical
+execution/rounding parity still needs the unavailable linked library/binary.

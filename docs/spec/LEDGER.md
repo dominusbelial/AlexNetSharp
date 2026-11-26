@@ -52,7 +52,7 @@ All non-data layers also inherit `neuron=""` (`layer.py:374`), `gpu=inputLayers[
 | `cmrnorm` | 1 | `inputs`, `channels`, `size`; `scale`, `pow` | `blocked=False` (`:1193`), `minDiv=1.0` (`:1186`); divides `scale /= size` (`:1183`) | **Fwd:** Cross-channel window `[max(0, c-size/2), min(C, c-size/2+size))` (when `!blocked`): `denom = minDiv + (scale/size)*sum_f x_f^2`, `y = x * denom^(-pow)`. **Bwd:** `convResponseNormCrossMapUndo` using cached `_denoms`. | `layer.py:1170-1216`, `src/layer.cu:1583-1594` |
 | `rnorm` | 1 | `inputs`, `channels`, `size`; `scale`, `pow` | `blocked=False` (`:1193`, parsed but unused spatially); divides `scale /= size**2` (`:1183`); no `minDiv` | **Fwd:** Within-channel clamped `size x size` spatial window: `denom = 1.0 + (scale/size^2)*sum x^2`, `y = x * denom^(-pow)`. **Bwd:** `convResponseNormUndo` using cached `_denoms`. | `layer.py:1170-1216`, `src/layer.cu:1560-1574` |
 | `pool` | 1 | `inputs`, `pool`, `channels`, `sizeX`, `stride` | `start=0` (`:1139`), `outputsX=0` -> `ceil((imgSize-start-sizeX)/stride)+1` (`:1164`), `doMax=False` (only if `pool=='rand'`) | **Fwd (`max`):** Clamped window numeric max, finite seed `-2e38f`, NaNs ignored (`convLocalPool<MaxPooler>`); average divides by clipped count. **Bwd (`max`):** `convLocalMaxUndo` routes full upstream gradient to every input pixel matching window max (`img == ma`, including all ties). | `layer.py:1125-1168`, `src/layer.cu:1273-1334`; A:`include/cudaconv2/conv_util.cuh:71-94,161-186`, A:`src/cudaconv2/conv_util.cu:1555-1559` |
-| `fc` | `>= 1` | `inputs`, `outputs`, `initW` (quirk `:832`); `epsW`, `epsB`, `momW`, `momB` | `initB=0` (`:833`), `initWFunc=""`, `initBFunc=""`, `weightSource=['']*N`, `wc=[0.0]*N`, `wball=[0.0]*N`, `superEps=0.0`, `superMom=0.0`, `schedW="default"`, `schedB="default"` | **Fwd:** Sums `X[i] * W[i]` in declared input order (`W[i]` F-order `numInputs[i] x outputs`), adds `1 x outputs` bias row once. **Bwd:** `dX[i] += dY * W[i]^T`, `db = (1/numCases)*sum dY`, `_weightsInc[i] = momW*V + (epsW/numCases)*(X[i]^T * dY)`. | `layer.py:873-886`, `src/layer.cu:634-675`, `src/convnet.cu:444` |
+| `fc` | `>= 1` | `inputs`, `outputs`, `initW` (quirk `:832`); `epsW`, `epsB`, `momW`, `momB` | `initB=0` (`:833`), `initWFunc=""`, `initBFunc=""`, `weightSource=['']*N`, `wc=[0.0]*N`, `wball=[0.0]*N`, `superEps=0.0`, `superMom=0.0`, `schedW="default"`, `schedB="default"` | **Fwd:** Sums `X[i] * W[i]` in declared input order (`W[i]` F-order `numInputs[i] x outputs`), adds `1 x outputs` bias row immediately after the first product (before remaining input products). **Bwd:** `dX[i] += dY * W[i]^T`, `db = (1/numCases)*sum dY`, `_weightsInc[i] = momW*V + (epsW/numCases)*(X[i]^T * dY)`. | `layer.py:873-886`, `src/layer.cu:634-675`, `src/convnet.cu:444` |
 | `hs` | 1 | `inputs`, `keep`; `enable` | None beyond base `LayerWithInputParser` | **Fwd:** Unscaled binary mask `(u < keep) * x` when `enable && PASS_TRAIN`; `keep * x` otherwise. **Bwd:** Same `_sexMask` in `PASS_TRAIN`, or `keep` otherwise. | `layer.py:689-709`, `src/layer.cu:1121-1153` |
 | `softmax` | 1 | `inputs` | None beyond base `LayerWithInputParser` | **Fwd:** `p_c = exp(z_c - max_k z_k) / sum_j exp(z_j - max_k z_k)`. **Bwd:** Fuses `coeff * ((label == c) - p_c)` when sole same-GPU consumer is `cost.logreg`; else `p_c * sum_j dy_j * ((j == c) - p_j)`. | `layer.py:1104-1112`, `src/layer.cu:1016-1042`, `src/layer_kernels.cu:464` |
 | `cost.logreg` | 2 (`labels, probs`) | `inputs`, `coeff` | `topk=1` (`:1257`; `neuron` deleted at `:1225`) | **Fwd:** Accumulates multiview `probs` when testing; computes `[-sum log p_y, N - top1, N - topk]` with fractional tie splitting (`computeMultiSoftmaxCost` when `topk > 1`). **Bwd:** Delegates fused logit grad to single-consumer same-GPU `softmax` (`doWork == false`). | `layer.py:1250-1271`, `src/layer.cu:1800-1858`, `src/layer_kernels.cu:96-119` |
@@ -169,3 +169,33 @@ in each layer's `shape.inference_by_inner_size` in `ledger.json` and machine che
 4. **`OQ-LEDGER-4` — Host/GPU RNG seeds & CUDA reduction order:**
    Unseeded `numpy.random.randn` (`layer.py:807`), device CURAND `randomizeUniform` (`src/layer.cu:1129`), and warp/block
    FP32 summation order preclude bitwise historical trajectory identity.
+
+
+## FC matrix contracts (ANX-9)
+
+`src/layer.cu:157-165,640-644` writes input 0 with beta=0, alpha=1,
+adds bias immediately, then adds each later product with beta=1, alpha=1.
+There is no activation inside FC: the four FC2048 ReLUs are separate neurons;
+fc1000 has none. `src/layer.cu:647-650` uses dY*W[i]^T, without batch averaging.
+
+For ANX-11, weight gradient APIs accept arbitrary float32 alpha/beta and apply
+them once after the ordered case reduction. Unshared training writes increments
+with alpha=`getEps(progress)/getNumCases(v)` and beta=`momW` on the first update,
+then 1 (`src/layer.cu:668-671`). The useGrad path instead uses alpha=`1/N` and
+beta=0 then 1 (`:663-666`). Bias always writes its **gradient**, alpha=`1/N`,
+beta=0 then 1 (`:653-656,565`); epsB/momB belong to the later update
+(`src/weights.cu:151-152`). PASS_GC uses alpha=1, beta=0 then 1 for both.
+N may be the virtual batch size (`src/layer.cu:337-340`). Do not pre-scale each
+product or replace eps/N division with eps*(1/N): association can change rounding.
+
+Fan-out counts are per producer/device (`src/layer.cu:287-295,358-367`). Both
+pool3 neurons and hs1 outputs have one FC consumer per GPU: each device first
+writes beta=0, then the producer merges local plus remote (beta=1). There is no
+fixed global arrival order (`:370-377`); a CPU single-buffer 0-then-1 sequence is
+an explicit equivalent accumulation policy for these two contributions.
+
+Candidate A's FC signatures match, but its N=1 bias reduction bypasses scaling;
+see CUDACONV2.md §8 and ANX-9_REPORT.md. The port honors the requested alpha/beta
+contract for N=1 as well. Ordered CPU reductions establish scalar/SIMD bit parity,
+not historical cuBLAS or CUDA reduction-tree bit parity. Weight sharing is rejected
+by the FC runtime with a named “unsupported in this port” error; parsing is unchanged.
