@@ -490,3 +490,6 @@ $RECYCLE.BIN/
 local.env
 .scratch/
 *_BRIEF.md
+
+# Generated replay payload (VIZ-1): rebuilt by the Web build / tests from tools/AlexNetSharp.Snapshot; manifest.json stays tracked and pins its SHA-256
+src/AlexNetSharp.Web/wwwroot/replay/activations.bin

@@ -1,0 +1,103 @@
+@implements IDisposable
+@inject HttpClient Http
+@inject IJSRuntime JS
+
+<header>
+    <div class="eyebrow">ALEXNET / 2012 · RECONSTRUCTED IN C#</div>
+    <h1>Inside the network<span class="dot">.</span></h1>
+    <p class="intro">One image. Two towers. Every operation, open to inspection.</p>
+    <p id="untrained-banner">Untrained placeholder weights · agreement with a reconstructed specification, not bitwise historical parity.</p>
+</header>
+@if (_error is not null)
+{
+    <p id="error" role="alert">@_error</p>
+}
+@if (_snapshot is null)
+{
+    <p class="loading" role="status">Loading the replay and C# renderer…</p>
+}
+<div class="workspace">
+    <main>
+        <div class="scene-heading"><span>01 / THE LAYER STACK</span><span class="legend"><i></i> Tower A <i class="blue"></i> Tower B <i class="purple"></i> ReLU <i class="gold"></i> Cross-tower edge</span></div>
+        <div class="toolbar" aria-label="Camera controls">
+            <button @onclick='() => CameraAction("left")' title="Left arrow">↶ Orbit</button>
+            <button @onclick='() => CameraAction("right")' title="Right arrow">Orbit ↷</button>
+            <button @onclick='() => CameraAction("in")'>＋ Zoom</button>
+            <button @onclick='() => CameraAction("out")'>− Zoom</button>
+            <button @onclick='() => CameraAction("reset")'>Reset view</button>
+        </div>
+        <div id="canvas-holder">
+            <canvas id="theCanvas" tabindex="0" aria-label="3D AlexNet layer stack and activation maps. Drag to orbit, shift-drag to pan, wheel to zoom. Arrow keys orbit, WASD pan, plus or minus zoom."></canvas>
+            <div id="labels" aria-hidden="true">
+                @foreach (var point in _points)
+                {
+                    <span class="layer-label" style="left:@(F(point.X))px;top:@(F(point.Y-18))px">@point.Name</span>
+                }
+            </div>
+            <div class="fan-in-note">fc2048bb · input 0 = hs1b → input 1 = hs1a</div>
+            <div class="view-heading"><span>02 / @(_game?.ShowFilters == true ? "CONV1 · 96 RGB FILTERS" : $"{_game?.Selected ?? "conv1a"} · ACTIVATIONS")</span><span>INPUT CROP / 224²</span></div>
+            @if (_hover is not null && _cards.TryGetValue(_hover, out var tip))
+            {
+                <div id="tooltip" role="tooltip">@_hover — @tip.Summary</div>
+            }
+        </div>
+        @if (_snapshot is not null && _game is not null)
+        {
+            <div class="view-controls">
+                <button id="activation-tab" class="@(!_game.ShowFilters ? "active" : "")" @onclick="() => Filters(false)">Activations</button>
+                <button id="filter-tab" class="@(_game.ShowFilters ? "active" : "")" @onclick="() => Filters(true)">96 conv1 filters</button>
+                <span>Blue → mint · min/max per channel. RGB filters: min/max per filter.</span>
+            </div>
+            <div class="pixel-controls">
+                <label>Channel <input id="pixel-channel" type="number" min="0" max="@(_game.Layer.Shape[0]-1)" value="@_game.Pixel.Channel" @onchange='e => SetPixel("c",e.Value)' /></label>
+                <label>x <input id="pixel-x" type="number" min="0" max="@(_game.Layer.Shape[2]-1)" value="@_game.Pixel.X" @onchange='e => SetPixel("x",e.Value)' /></label>
+                <label>y <input id="pixel-y" type="number" min="0" max="@(_game.Layer.Shape[1]-1)" value="@_game.Pixel.Y" @onchange='e => SetPixel("y",e.Value)' /></label>
+                <span id="pixel-value">value @SelectedValue().ToString("G5",System.Globalization.CultureInfo.InvariantCulture)</span>
+            </div>
+            <p id="receptive-field" data-highlight="@(!_game.ShowFilters)"><strong>Receptive field</strong> @_field?.Contributing<br /><small>Nominal window: @_field?.Nominal · bounds clipped at each layer; yellow outline on the input.</small></p>
+            <details class="layer-directory"><summary>All 49 layers · select or pin</summary>
+                <div class="directory-grid">
+                @foreach (var layer in _snapshot.Manifest.Layers)
+                {
+                    <button class="@(layer.Name == _game.Selected ? "active" : "")" data-layer="@layer.Name" @onclick="() => Pin(layer.Name)">@layer.Name <small>@layer.Type · @string.Join("×",layer.Shape)</small></button>
+                }
+                </div>
+            </details>
+            <div class="facts"><span><strong>49</strong> layers / 14 explicit ReLUs</span><span><strong>60.97M</strong> parameter slots</span><span><strong>1</strong> real eval forward pass</span></div>
+            <p class="hint">Drag: orbit · Shift/right drag: pan · Wheel: zoom · Arrows: orbit · WASD: pan · +/−: zoom · R: reset. Box dimensions use log₂ of shape dimensions. Click a map pixel to trace its input range.</p>
+        }
+    </main>
+    <aside aria-label="Pinned explain cards">
+        <div class="aside-heading"><span>EXPLAIN / COMPARE</span><span>@_pinned.Count pinned</span></div>
+        @if (_pinned.Count == 0) { <p class="empty">Hover to get a hint.<br />Click any layer to keep its explanation here.</p> }
+        @foreach (string id in _pinned)
+        {
+            var card = _cards[id];
+            var layer = _snapshot?.Manifest.Layers.FirstOrDefault(l => l.Name == id);
+            <article class="explain-card" data-card="@id" @key="id">
+                <button class="close" aria-label="Close @id" @onclick="() => _pinned.Remove(id)">×</button>
+                <div class="card-kicker">@(layer is null ? "LAYER TYPE" : $"{layer.Type} / TOWER {(layer.Tower == 1 ? "B" : layer.Tower < 0 ? "INPUT" : "A")}")</div>
+                <h2>@card.Title</h2><p class="summary">@card.Summary</p>
+                @if (layer is not null)
+                {
+                    <dl><dt>Shape C × H × W</dt><dd>@string.Join(" × ",layer.Shape)</dd><dt>Parameters</dt><dd>@layer.ParameterCount.ToString("N0",System.Globalization.CultureInfo.InvariantCulture)</dd><dt>Activation min / max</dt><dd>@G(layer.Statistics.Min) / @G(layer.Statistics.Max)</dd><dt>Mean / std</dt><dd>@G(layer.Statistics.Mean) / @G(layer.Statistics.StandardDeviation)</dd></dl>
+                    @if (layer.NeuronPlacement is not null) { <p class="callout">@layer.NeuronPlacement</p> }
+                    @if (layer.Name == "fc2048bb") { <p class="callout">Input order: 0 → hs1b, 1 → hs1a</p> }
+                }
+                <p class="explanation">@PlainBody(card.Body)</p>
+                <details><summary>Deeper / formula &amp; live values</summary><p class="formula">@card.Formula</p>
+                    @if (layer is not null)
+                    {
+                        <p>kernel=@layer.Kernel, stride=@layer.Stride, start=@layer.Start; @layer.Statistics.Count stored outputs.</p>
+                        <p>Snapshot output[0] = @G(FirstValue(layer)); mean = @G(layer.Statistics.Mean).</p>
+                        <p class="formula">@LiveFormula(layer)</p>
+                        <details><summary>All configured parameters</summary><dl>@foreach (var parameter in layer.Parameters) { <dt>@parameter.Key</dt><dd>@parameter.Value</dd> }</dl></details>
+                    }
+                </details>
+                <div class="related">@foreach (var link in card.Links) { <button @onclick="() => Pin(link)">@link ↗</button> }</div>
+                <footer>Paper §@card.PaperSection<br />@string.Join(" · ",card.Citations)</footer>
+            </article>
+        }
+    </aside>
+</div>
+<footer class="page-footer">REPLAY 000 / SEED 145 · <span>Placeholder, not ANX-11 initialisation. Preprocessing is not the ANX-12 pipeline.</span><br />Synthetic CC0 colour study · RGB mean (123, 117, 104) · Top-5 indices: @(_snapshot is null ? "loading" : string.Join(", ",_snapshot.Manifest.Top5.Select(c => $"{c.Index} ({c.Probability:G3})")))<br />No training, live source, in-browser inference or audio.</footer>

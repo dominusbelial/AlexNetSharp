@@ -23,15 +23,20 @@ Early. Done so far:
 | ANX-7 | Scalar and SIMD max/average pooling and ReLU, edge/tie/NaN fixtures, numerical gradients and batch-128 timings | [ANX-7](docs/reports/ANX-7_REPORT.md) |
 | ANX-8 | Scalar and SIMD spatial/cross-map response normalisation, cached-denominator gradients, independent float64 fixtures, numerical checks and batch-128 timings | [ANX-8](docs/reports/ANX-8_REPORT.md) |
 | ANX-9 | Scalar and SIMD multi-input fully connected layers, ordered bias/fan-in, alpha/beta gradients, fan-out and batch-128 timings | [ANX-9](docs/reports/ANX-9_REPORT.md) |
-
 | ANX-10 | Unscaled dropout with injectable deterministic masks, stable softmax, fused/general loss gradients, fractional top-k ties and multiview cost | [ANX-10](docs/reports/ANX-10_REPORT.md) |
 
-Next: optimiser/initialisation, data pipeline, trainer, and web explorer.
+| VIZ-1 | KNI BlazorGL layer explorer, explain cards, activation/filter grids and one real untrained replay | [VIZ-1](docs/reports/VIZ-1_REPORT.md) |
+
+Next: optimiser/initialisation, data pipeline and trainer.
 
 ## Layout
 
 - `src/AlexNetSharp.Core` — parser, shapes, (later) layers, optimiser, data pipeline; no graphics dependency.
-- `tests/AlexNetSharp.Tests` — spec checker, parser/shape tests and fixtures.
+- `src/AlexNetSharp.Replay` — graphics-free replay schema, producer assembly, layout/picking and receptive fields.
+- `src/AlexNetSharp.Web` — KNI BlazorGL replay explorer, HTML explain cards.
+- `tools/AlexNetSharp.Snapshot` — one-image placeholder forward pass and snapshot writer.
+- `content/explain` — 59 cited cards; `content/samples` — synthetic CC0 input.
+- `tests/AlexNetSharp.Tests` — spec checker, Core tests and replay/layout/card checks.
 - `docs/spec` — the ledger and experiment manifest; `docs/reports` — one report per story.
 
 ## Running the checks
@@ -112,3 +117,41 @@ ImageNet data is not part of this repository.
 
 MIT for this repository's code and documents (see [LICENSE](LICENSE)). The original AlexNet source release is
 © 2023 Google LLC under its own BSD-style license; this repository does not copy it, it cites it.
+
+## Browser replay
+
+This is an untrained architecture demonstration. It shows agreement with a
+reconstructed specification, not bitwise historical parity. The replay is committed,
+so the browser does not need the original checkout or in-browser inference.
+
+```sh
+dotnet run --project src/AlexNetSharp.Web
+# Rebuild the 8.24 MB replay from the committed 145 configs and synthetic sample:
+dotnet run -c Release --project tools/AlexNetSharp.Snapshot -- . src/AlexNetSharp.Web/wwwroot/replay
+# Expensive production/determinism/direct-Core proof, separate from the fast default suite:
+dotnet run -c Release --project tests/AlexNetSharp.Tests -- --snapshot-proof
+```
+
+The web client uses runtime textures, with no content pipeline. Drag to orbit,
+shift-drag to pan, wheel to zoom; arrow keys, WASD, +/− and R are equivalents.
+Hover boxes for tooltips, click to pin multiple explain cards, and select an
+activation pixel to highlight its receptive field. A directory provides all layers
+and type-card links, including the implicit neurons and reversed FC input order.
+
+Headless proof (not in the default suite; installs only under scratch):
+
+```sh
+mkdir -p .scratch/tmp .scratch/runtime .scratch/browser-home
+export NUGET_HTTP_CACHE_PATH="$PWD/.scratch/nuget-http-cache"
+export DOTNET_CLI_HOME="$PWD/.scratch/dotnet-home"
+export NUGET_PACKAGES="$PWD/.scratch/nuget-packages"
+export TMPDIR="$PWD/.scratch/tmp"
+npm --cache .scratch/npm-cache install --prefix .scratch/npm playwright
+node tools/viz1-browser-proof.cjs
+```
+
+The script publishes trimmed Release, serves only on an OS-selected loopback port,
+and runs Chrome at 1280×800 and 390×844. `CHROME_PATH` can select another Chrome
+binary. It saves screenshots and JSON metrics under `.scratch/viz1` and closes its
+server/browser. No deployment or external hosting is involved. See the
+[schema and extension points](docs/spec/REPLAY.md) and [sample provenance](content/samples/PROVENANCE.md).

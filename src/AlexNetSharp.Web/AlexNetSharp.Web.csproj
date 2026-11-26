@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework><Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings>
+    <PublishTrimmed>true</PublishTrimmed><TrimMode>partial</TrimMode><KniPlatform>BlazorGL</KniPlatform>
+    <DefineConstants>$(DefineConstants);BLAZORGL</DefineConstants><BlazorEnableTimeZoneSupport>false</BlazorEnableTimeZoneSupport>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../AlexNetSharp.Core/AlexNetSharp.Core.csproj" />
+    <ProjectReference Include="../AlexNetSharp.Replay/AlexNetSharp.Replay.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.10" PrivateAssets="all" />
+    <PackageReference Include="nkast.Xna.Framework" Version="4.3.9001" />
+    <PackageReference Include="nkast.Xna.Framework.Content" Version="4.3.9001" />
+    <PackageReference Include="nkast.Xna.Framework.Graphics" Version="4.3.9001" />
+    <PackageReference Include="nkast.Xna.Framework.Audio" Version="4.3.9001" />
+    <PackageReference Include="nkast.Xna.Framework.Media" Version="4.3.9001" />
+    <PackageReference Include="nkast.Xna.Framework.Input" Version="4.3.9001" />
+    <PackageReference Include="nkast.Xna.Framework.Game" Version="4.3.9001" />
+    <PackageReference Include="nkast.Xna.Framework.Devices" Version="4.3.9001" />
+    <PackageReference Include="nkast.Xna.Framework.Storage" Version="4.3.9001" />
+    <PackageReference Include="nkast.Xna.Framework.XR" Version="4.3.9001" />
+    <PackageReference Include="nkast.Kni.Platform.Blazor.GL" Version="4.3.9001" />
+    <Content Include="../../content/explain/*.md" Link="wwwroot/explain/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <!-- activations.bin is generated, not tracked: build the snapshot tool in-graph and run it when the payload is missing.
+       The tracked manifest.json pins every blob's SHA-256, so a regenerated payload that differs fails to load. -->
+  <Target Name="GenerateReplayPayload" BeforeTargets="BeforeBuild" Condition="!Exists('$(MSBuildProjectDirectory)/wwwroot/replay/activations.bin')">
+    <MSBuild Projects="$(MSBuildProjectDirectory)/../../tools/AlexNetSharp.Snapshot/AlexNetSharp.Snapshot.csproj" Targets="Build" Properties="Configuration=Release" />
+    <Exec Command="&quot;$(DOTNET_HOST_PATH)&quot; &quot;$(MSBuildProjectDirectory)/../../tools/AlexNetSharp.Snapshot/bin/Release/net10.0/AlexNetSharp.Snapshot.dll&quot; &quot;$(MSBuildProjectDirectory)/../..&quot; &quot;$(MSBuildProjectDirectory)/wwwroot/replay&quot;" />
+    <ItemGroup>
+      <Content Include="wwwroot/replay/activations.bin" Exclude="@(Content)" />
+    </ItemGroup>
+  </Target>
+</Project>

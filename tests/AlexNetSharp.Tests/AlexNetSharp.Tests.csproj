@@ -1,6 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="../../src/AlexNetSharp.Replay/AlexNetSharp.Replay.csproj" />
     <ProjectReference Include="..\..\src\AlexNetSharp.Core\AlexNetSharp.Core.csproj" />
   </ItemGroup>
 

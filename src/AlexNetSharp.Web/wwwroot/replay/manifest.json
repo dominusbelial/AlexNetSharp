@@ -1,0 +1,2460 @@
+{
+  "schemaVersion": 1,
+  "step": 0,
+  "configSha256": "cd584061d12b1247667e495f6b047cbe43558d7455b0b9840168a0d0832d0e32",
+  "paramsSha256": "bd92616d5570492cb29993e69d67ae63914a104b4812c4dea79ddfe928e0a9c6",
+  "seed": 145,
+  "weights": "placeholder, not ANX-11 initialisation; SplitMix64 Box-Muller Gaussian; configured initW/initB",
+  "dtype": "float32-le",
+  "layout": "channel,y,x",
+  "mode": "eval",
+  "image": {
+    "file": "content/samples/synthetic.ppm",
+    "sha256": "98e3e9e92a2021df678d470be63dde205f39b3605e1ef62336abed17738418ad",
+    "provenance": "Synthetic colour study; content/samples/PROVENANCE.md",
+    "license": "CC0-1.0",
+    "preprocessing": "not the ANX-12 pipeline; short side 256 nearest-neighbour, centre crop 224, RGB constant mean subtraction",
+    "mean": [
+      123,
+      117,
+      104
+    ]
+  },
+  "layers": [
+    {
+      "name": "data",
+      "type": "data",
+      "shape": [
+        3,
+        224,
+        224
+      ],
+      "tower": -1,
+      "inputs": [],
+      "consumers": [
+        "conv1a",
+        "conv1b"
+      ],
+      "neuronPlacement": null,
+      "parameterCount": 0,
+      "parameters": {
+        "dataIdx": "0",
+        "gpu": "-1",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": -107,
+        "max": 136,
+        "mean": 15.99234693877551,
+        "standardDeviation": 80.24794130873623,
+        "count": 150528
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 0,
+        "count": 150528,
+        "sha256": "d6ec1937ac1cbcfbc0e1511a54c685c960f5e54f22c3daea132dba3a0caf7243"
+      }
+    },
+    {
+      "name": "labels",
+      "type": "data",
+      "shape": [
+        1,
+        1,
+        1
+      ],
+      "tower": -1,
+      "inputs": [],
+      "consumers": [
+        "logprob"
+      ],
+      "neuronPlacement": null,
+      "parameterCount": 0,
+      "parameters": {
+        "dataIdx": "1",
+        "gpu": "-1",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 0,
+        "mean": 0,
+        "standardDeviation": 0,
+        "count": 1
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 602112,
+        "count": 1,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      }
+    },
+    {
+      "name": "conv1a",
+      "type": "conv",
+      "shape": [
+        48,
+        55,
+        55
+      ],
+      "tower": 0,
+      "inputs": [
+        "data"
+      ],
+      "consumers": [
+        "rnorm1a"
+      ],
+      "neuronPlacement": null,
+      "parameterCount": 17472,
+      "parameters": {
+        "channels": "[3]",
+        "epsB": "0",
+        "epsW": "[0]",
+        "filterSize": "[11]",
+        "filters": "[48]",
+        "gpu": "0",
+        "groups": "[1]",
+        "initB": "0",
+        "initBFunc": "\u0022\u0022",
+        "initCFunc": "\u0022\u0022",
+        "initW": "[0.01]",
+        "initWFunc": "\u0022\u0022",
+        "momB": "0.90000000000000002",
+        "momW": "[0.90000000000000002]",
+        "neuron": "\u0022\u0022",
+        "padding": "[0]",
+        "partialSum": "5",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "randSparse": "[false]",
+        "schedB": "\u0022default\u0022",
+        "schedW": "\u0022default\u0022",
+        "sharedBiases": "true",
+        "stride": "[4]",
+        "superEps": "0",
+        "superMom": "0",
+        "wball": "[0]",
+        "wc": "[0.00050000000000000001]",
+        "wcNormMax": "[0]",
+        "wcNormMin": "[0]",
+        "weightSource": "[\u0022\u0022]"
+      },
+      "kernel": 11,
+      "stride": 4,
+      "start": 0,
+      "statistics": {
+        "min": -72.9363,
+        "max": 62.696712,
+        "mean": 0.0742045949147655,
+        "standardDeviation": 15.496657036279155,
+        "count": 145200
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 602116,
+        "count": 145200,
+        "sha256": "e38a7e5696b414ff29fee440892abe4375d84ec1f9dcbaa9a0fa85a72bf40fb1"
+      }
+    },
+    {
+      "name": "conv1b",
+      "type": "conv",
+      "shape": [
+        48,
+        55,
+        55
+      ],
+      "tower": 1,
+      "inputs": [
+        "data"
+      ],
+      "consumers": [
+        "rnorm1b"
+      ],
+      "neuronPlacement": null,
+      "parameterCount": 17472,
+      "parameters": {
+        "channels": "[3]",
+        "epsB": "0",
+        "epsW": "[0]",
+        "filterSize": "[11]",
+        "filters": "[48]",
+        "gpu": "1",
+        "groups": "[1]",
+        "initB": "0",
+        "initBFunc": "\u0022\u0022",
+        "initCFunc": "\u0022\u0022",
+        "initW": "[0.01]",
+        "initWFunc": "\u0022\u0022",
+        "momB": "0.90000000000000002",
+        "momW": "[0.90000000000000002]",
+        "neuron": "\u0022\u0022",
+        "padding": "[0]",
+        "partialSum": "5",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "randSparse": "[false]",
+        "schedB": "\u0022default\u0022",
+        "schedW": "\u0022default\u0022",
+        "sharedBiases": "true",
+        "stride": "[4]",
+        "superEps": "0",
+        "superMom": "0",
+        "wball": "[0]",
+        "wc": "[0.00050000000000000001]",
+        "wcNormMax": "[0]",
+        "wcNormMin": "[0]",
+        "weightSource": "[\u0022\u0022]"
+      },
+      "kernel": 11,
+      "stride": 4,
+      "start": 0,
+      "statistics": {
+        "min": -65.23949,
+        "max": 65.453964,
+        "mean": 0.25616960643380804,
+        "standardDeviation": 15.025720959931602,
+        "count": 145200
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 1182916,
+        "count": 145200,
+        "sha256": "223db1cf39e2f9560b995a76500df028686c48e81beeca9176fad7963043ef34"
+      }
+    },
+    {
+      "name": "rnorm1a",
+      "type": "cmrnorm",
+      "shape": [
+        48,
+        55,
+        55
+      ],
+      "tower": 0,
+      "inputs": [
+        "conv1a"
+      ],
+      "consumers": [
+        "pool1a"
+      ],
+      "neuronPlacement": null,
+      "parameterCount": 0,
+      "parameters": {
+        "blocked": "false",
+        "channels": "48",
+        "gpu": "0",
+        "minDiv": "2",
+        "neuron": "\u0022\u0022",
+        "pow": "0.75",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "scale": "2.0000000000000002E-05",
+        "size": "5"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": -41.295708,
+        "max": 35.750443,
+        "mean": 0.04227857926885947,
+        "standardDeviation": 9.092187361119196,
+        "count": 145200
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 1763716,
+        "count": 145200,
+        "sha256": "f2d831b0a2e4dbd289e0fcc8ddc06f336a4877573f40b956f5675691113753fb"
+      }
+    },
+    {
+      "name": "rnorm1b",
+      "type": "cmrnorm",
+      "shape": [
+        48,
+        55,
+        55
+      ],
+      "tower": 1,
+      "inputs": [
+        "conv1b"
+      ],
+      "consumers": [
+        "pool1b"
+      ],
+      "neuronPlacement": null,
+      "parameterCount": 0,
+      "parameters": {
+        "blocked": "false",
+        "channels": "48",
+        "gpu": "1",
+        "minDiv": "2",
+        "neuron": "\u0022\u0022",
+        "pow": "0.75",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "scale": "2.0000000000000002E-05",
+        "size": "5"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": -37.310753,
+        "max": 37.28754,
+        "mean": 0.1492271296843381,
+        "standardDeviation": 8.825673608370074,
+        "count": 145200
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 2344516,
+        "count": 145200,
+        "sha256": "1d9edf0436da9d7329c93bf7e26e7002dd8c5ab9950f49f514c257a9cc4391f3"
+      }
+    },
+    {
+      "name": "pool1a",
+      "type": "pool",
+      "shape": [
+        48,
+        27,
+        27
+      ],
+      "tower": 0,
+      "inputs": [
+        "rnorm1a"
+      ],
+      "consumers": [
+        "pool1a_neuron"
+      ],
+      "neuronPlacement": "then pool1a_neuron",
+      "parameterCount": 0,
+      "parameters": {
+        "channels": "48",
+        "gpu": "0",
+        "neuron": "\u0022relu\u0022",
+        "outputsX": "0",
+        "pool": "\u0022max\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "sizeX": "3",
+        "start": "0",
+        "stride": "2"
+      },
+      "kernel": 3,
+      "stride": 2,
+      "start": 0,
+      "statistics": {
+        "min": -27.807732,
+        "max": 35.750443,
+        "mean": 5.549634376104722,
+        "standardDeviation": 8.505558003339724,
+        "count": 34992
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 2925316,
+        "count": 34992,
+        "sha256": "7c2d23ab3fdc2ef481c45236c6fc54f5e8063e5239e4eb50408955c6a4c15a28"
+      }
+    },
+    {
+      "name": "pool1b",
+      "type": "pool",
+      "shape": [
+        48,
+        27,
+        27
+      ],
+      "tower": 1,
+      "inputs": [
+        "rnorm1b"
+      ],
+      "consumers": [
+        "pool1b_neuron"
+      ],
+      "neuronPlacement": "then pool1b_neuron",
+      "parameterCount": 0,
+      "parameters": {
+        "channels": "48",
+        "gpu": "1",
+        "neuron": "\u0022relu\u0022",
+        "outputsX": "0",
+        "pool": "\u0022max\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "sizeX": "3",
+        "start": "0",
+        "stride": "2"
+      },
+      "kernel": 3,
+      "stride": 2,
+      "start": 0,
+      "statistics": {
+        "min": -27.051138,
+        "max": 37.28754,
+        "mean": 5.4099863128535155,
+        "standardDeviation": 8.223115750865771,
+        "count": 34992
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 3065284,
+        "count": 34992,
+        "sha256": "97c835e317f6785b8279bf28b76e28c8aecd1be00247b0b72d7973ddcd0262f0"
+      }
+    },
+    {
+      "name": "conv2a",
+      "type": "conv",
+      "shape": [
+        128,
+        27,
+        27
+      ],
+      "tower": 0,
+      "inputs": [
+        "pool1a_neuron"
+      ],
+      "consumers": [
+        "conv2a_neuron"
+      ],
+      "neuronPlacement": "then conv2a_neuron",
+      "parameterCount": 153728,
+      "parameters": {
+        "channels": "[48]",
+        "epsB": "0.02",
+        "epsW": "[1.0000000000000001E-05]",
+        "filterSize": "[5]",
+        "filters": "[128]",
+        "gpu": "0",
+        "groups": "[1]",
+        "initB": "1",
+        "initBFunc": "\u0022\u0022",
+        "initCFunc": "\u0022\u0022",
+        "initW": "[0.01]",
+        "initWFunc": "\u0022\u0022",
+        "momB": "0.90000000000000002",
+        "momW": "[0.90000000000000002]",
+        "neuron": "\u0022relu\u0022",
+        "padding": "[-2]",
+        "partialSum": "3",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "randSparse": "[false]",
+        "schedB": "\u0022default\u0022",
+        "schedW": "\u0022default\u0022",
+        "sharedBiases": "true",
+        "stride": "[1]",
+        "superEps": "0",
+        "superMom": "0",
+        "wball": "[0]",
+        "wc": "[0.00050000000000000001]",
+        "wcNormMax": "[0]",
+        "wcNormMin": "[0]",
+        "weightSource": "[\u0022\u0022]"
+      },
+      "kernel": 5,
+      "stride": 1,
+      "start": -2,
+      "statistics": {
+        "min": -11.6574745,
+        "max": 13.090599,
+        "mean": 0.9033803344271126,
+        "standardDeviation": 3.145418185171253,
+        "count": 93312
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 3205252,
+        "count": 93312,
+        "sha256": "271e1198b092f71e25fe0a23ddc1abfbce47d18d3816b9553d79aacd7f6e1397"
+      }
+    },
+    {
+      "name": "conv2b",
+      "type": "conv",
+      "shape": [
+        128,
+        27,
+        27
+      ],
+      "tower": 1,
+      "inputs": [
+        "pool1b_neuron"
+      ],
+      "consumers": [
+        "conv2b_neuron"
+      ],
+      "neuronPlacement": "then conv2b_neuron",
+      "parameterCount": 153728,
+      "parameters": {
+        "channels": "[48]",
+        "epsB": "0.02",
+        "epsW": "[1.0000000000000001E-05]",
+        "filterSize": "[5]",
+        "filters": "[128]",
+        "gpu": "1",
+        "groups": "[1]",
+        "initB": "1",
+        "initBFunc": "\u0022\u0022",
+        "initCFunc": "\u0022\u0022",
+        "initW": "[0.01]",
+        "initWFunc": "\u0022\u0022",
+        "momB": "0.90000000000000002",
+        "momW": "[0.90000000000000002]",
+        "neuron": "\u0022relu\u0022",
+        "padding": "[-2]",
+        "partialSum": "3",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "randSparse": "[false]",
+        "schedB": "\u0022default\u0022",
+        "schedW": "\u0022default\u0022",
+        "sharedBiases": "true",
+        "stride": "[1]",
+        "superEps": "0",
+        "superMom": "0",
+        "wball": "[0]",
+        "wc": "[0.00050000000000000001]",
+        "wcNormMax": "[0]",
+        "wcNormMin": "[0]",
+        "weightSource": "[\u0022\u0022]"
+      },
+      "kernel": 5,
+      "stride": 1,
+      "start": -2,
+      "statistics": {
+        "min": -10.198497,
+        "max": 12.353167,
+        "mean": 0.9510735218459165,
+        "standardDeviation": 2.8480606732504565,
+        "count": 93312
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 3578500,
+        "count": 93312,
+        "sha256": "8b872999051a1ef616d1c2f0473fec1948b4be65e8a0ebbc6a9c97b146239e5f"
+      }
+    },
+    {
+      "name": "rnorm2a",
+      "type": "cmrnorm",
+      "shape": [
+        128,
+        27,
+        27
+      ],
+      "tower": 0,
+      "inputs": [
+        "conv2a_neuron"
+      ],
+      "consumers": [
+        "cnorm2a"
+      ],
+      "neuronPlacement": null,
+      "parameterCount": 0,
+      "parameters": {
+        "blocked": "false",
+        "channels": "128",
+        "gpu": "0",
+        "minDiv": "2",
+        "neuron": "\u0022\u0022",
+        "pow": "0.75",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "scale": "2.0000000000000002E-05",
+        "size": "5"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 7.7712708,
+        "mean": 1.0488224528551098,
+        "standardDeviation": 1.2517921194171244,
+        "count": 93312
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 3951748,
+        "count": 93312,
+        "sha256": "b14dcbe4beb03ce1ab4f56c464dab4c23bcbc7cda716f7220152b3233a96608d"
+      }
+    },
+    {
+      "name": "rnorm2b",
+      "type": "cmrnorm",
+      "shape": [
+        128,
+        27,
+        27
+      ],
+      "tower": 1,
+      "inputs": [
+        "conv2b_neuron"
+      ],
+      "consumers": [
+        "cnorm2b"
+      ],
+      "neuronPlacement": null,
+      "parameterCount": 0,
+      "parameters": {
+        "blocked": "false",
+        "channels": "128",
+        "gpu": "1",
+        "minDiv": "2",
+        "neuron": "\u0022\u0022",
+        "pow": "0.75",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "scale": "2.0000000000000002E-05",
+        "size": "5"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 7.3352675,
+        "mean": 0.98974658650155,
+        "standardDeviation": 1.1587834758917277,
+        "count": 93312
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 4324996,
+        "count": 93312,
+        "sha256": "e84175f48128cfe967e48b36736fd1da3f1f5dac5e78dd31ad1cb5a46d98849b"
+      }
+    },
+    {
+      "name": "cnorm2a",
+      "type": "rnorm",
+      "shape": [
+        128,
+        27,
+        27
+      ],
+      "tower": 0,
+      "inputs": [
+        "rnorm2a"
+      ],
+      "consumers": [
+        "pool2a"
+      ],
+      "neuronPlacement": null,
+      "parameterCount": 0,
+      "parameters": {
+        "blocked": "false",
+        "channels": "128",
+        "gpu": "0",
+        "neuron": "\u0022\u0022",
+        "pow": "0.75",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "scale": "4.0000000000000003E-05",
+        "size": "5"
+      },
+      "kernel": 5,
+      "stride": 1,
+      "start": -2,
+      "statistics": {
+        "min": 0,
+        "max": 7.60175,
+        "mean": 1.0441663697254846,
+        "standardDeviation": 1.243190589910779,
+        "count": 93312
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 4698244,
+        "count": 93312,
+        "sha256": "f484638967b7067751c3b85d8bb7f75ca1177a20e63dbd864df6da17c790a595"
+      }
+    },
+    {
+      "name": "cnorm2b",
+      "type": "rnorm",
+      "shape": [
+        128,
+        27,
+        27
+      ],
+      "tower": 1,
+      "inputs": [
+        "rnorm2b"
+      ],
+      "consumers": [
+        "pool2b"
+      ],
+      "neuronPlacement": null,
+      "parameterCount": 0,
+      "parameters": {
+        "blocked": "false",
+        "channels": "128",
+        "gpu": "1",
+        "neuron": "\u0022\u0022",
+        "pow": "0.75",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "scale": "4.0000000000000003E-05",
+        "size": "5"
+      },
+      "kernel": 5,
+      "stride": 1,
+      "start": -2,
+      "statistics": {
+        "min": 0,
+        "max": 7.2448993,
+        "mean": 0.9860732572375406,
+        "standardDeviation": 1.1517398659767584,
+        "count": 93312
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 5071492,
+        "count": 93312,
+        "sha256": "272a37ac43f5ea13e2566bc4c2de227c2bd2a41b94cec9f45cbe6c79527c144b"
+      }
+    },
+    {
+      "name": "pool2a",
+      "type": "pool",
+      "shape": [
+        128,
+        13,
+        13
+      ],
+      "tower": 0,
+      "inputs": [
+        "cnorm2a"
+      ],
+      "consumers": [
+        "conv3a",
+        "conv3b"
+      ],
+      "neuronPlacement": null,
+      "parameterCount": 0,
+      "parameters": {
+        "channels": "128",
+        "gpu": "0",
+        "neuron": "\u0022\u0022",
+        "outputsX": "0",
+        "pool": "\u0022max\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "sizeX": "3",
+        "start": "0",
+        "stride": "2"
+      },
+      "kernel": 3,
+      "stride": 2,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 7.60175,
+        "mean": 1.9427990296831785,
+        "standardDeviation": 1.5192424460164116,
+        "count": 21632
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 5444740,
+        "count": 21632,
+        "sha256": "8bc39f6f3ccf5d273e6b5f5df37f124572ba53b2b076c3a0c53ae2993aad2194"
+      }
+    },
+    {
+      "name": "pool2b",
+      "type": "pool",
+      "shape": [
+        128,
+        13,
+        13
+      ],
+      "tower": 1,
+      "inputs": [
+        "cnorm2b"
+      ],
+      "consumers": [
+        "conv3a",
+        "conv3b"
+      ],
+      "neuronPlacement": null,
+      "parameterCount": 0,
+      "parameters": {
+        "channels": "128",
+        "gpu": "1",
+        "neuron": "\u0022\u0022",
+        "outputsX": "0",
+        "pool": "\u0022max\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "sizeX": "3",
+        "start": "0",
+        "stride": "2"
+      },
+      "kernel": 3,
+      "stride": 2,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 7.2448993,
+        "mean": 1.930886883836719,
+        "standardDeviation": 1.3736594732064493,
+        "count": 21632
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 5531268,
+        "count": 21632,
+        "sha256": "d32cf04e66148d2763318f7518d33c38fb9fe8aabfc6e9427689d6bef1f18972"
+      }
+    },
+    {
+      "name": "conv3a",
+      "type": "conv",
+      "shape": [
+        192,
+        13,
+        13
+      ],
+      "tower": 0,
+      "inputs": [
+        "pool2a",
+        "pool2b"
+      ],
+      "consumers": [
+        "conv3a_neuron"
+      ],
+      "neuronPlacement": "then conv3a_neuron",
+      "parameterCount": 442560,
+      "parameters": {
+        "channels": "[128, 128]",
+        "epsB": "0.02",
+        "epsW": "[1.0000000000000001E-05, 1.0000000000000001E-05]",
+        "filterSize": "[3, 3]",
+        "filters": "[192, 192]",
+        "gpu": "0",
+        "groups": "[1, 1]",
+        "initB": "0",
+        "initBFunc": "\u0022\u0022",
+        "initCFunc": "\u0022\u0022",
+        "initW": "[0.029999999999999999, 0.029999999999999999]",
+        "initWFunc": "\u0022\u0022",
+        "momB": "0.90000000000000002",
+        "momW": "[0.90000000000000002, 0.90000000000000002]",
+        "neuron": "\u0022relu\u0022",
+        "padding": "[-1, -1]",
+        "partialSum": "13",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "randSparse": "[false, false]",
+        "schedB": "\u0022default\u0022",
+        "schedW": "\u0022default\u0022",
+        "sharedBiases": "true",
+        "stride": "[1, 1]",
+        "superEps": "0",
+        "superMom": "0",
+        "wball": "[0, 0]",
+        "wc": "[0.00050000000000000001, 0.00050000000000000001]",
+        "wcNormMax": "[0, 0]",
+        "wcNormMin": "[0, 0]",
+        "weightSource": "[\u0022\u0022, \u0022\u0022]"
+      },
+      "kernel": 3,
+      "stride": 1,
+      "start": -1,
+      "statistics": {
+        "min": -11.891824,
+        "max": 10.822029,
+        "mean": -0.4099606386762945,
+        "standardDeviation": 3.275445861217107,
+        "count": 32448
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 5617796,
+        "count": 32448,
+        "sha256": "52f1710aa43a78a4cdde0293996483813dc2edf75afe278a84371c45ec7a5ff8"
+      }
+    },
+    {
+      "name": "conv3b",
+      "type": "conv",
+      "shape": [
+        192,
+        13,
+        13
+      ],
+      "tower": 1,
+      "inputs": [
+        "pool2a",
+        "pool2b"
+      ],
+      "consumers": [
+        "conv3b_neuron"
+      ],
+      "neuronPlacement": "then conv3b_neuron",
+      "parameterCount": 442560,
+      "parameters": {
+        "channels": "[128, 128]",
+        "epsB": "0.02",
+        "epsW": "[1.0000000000000001E-05, 1.0000000000000001E-05]",
+        "filterSize": "[3, 3]",
+        "filters": "[192, 192]",
+        "gpu": "1",
+        "groups": "[1, 1]",
+        "initB": "0",
+        "initBFunc": "\u0022\u0022",
+        "initCFunc": "\u0022\u0022",
+        "initW": "[0.029999999999999999, 0.029999999999999999]",
+        "initWFunc": "\u0022\u0022",
+        "momB": "0.90000000000000002",
+        "momW": "[0.90000000000000002, 0.90000000000000002]",
+        "neuron": "\u0022relu\u0022",
+        "padding": "[-1, -1]",
+        "partialSum": "13",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "randSparse": "[false, false]",
+        "schedB": "\u0022default\u0022",
+        "schedW": "\u0022default\u0022",
+        "sharedBiases": "true",
+        "stride": "[1, 1]",
+        "superEps": "0",
+        "superMom": "0",
+        "wball": "[0, 0]",
+        "wc": "[0.00050000000000000001, 0.00050000000000000001]",
+        "wcNormMax": "[0, 0]",
+        "wcNormMin": "[0, 0]",
+        "weightSource": "[\u0022\u0022, \u0022\u0022]"
+      },
+      "kernel": 3,
+      "stride": 1,
+      "start": -1,
+      "statistics": {
+        "min": -12.199913,
+        "max": 10.771403,
+        "mean": 0.044294694583119985,
+        "standardDeviation": 3.2946600287566565,
+        "count": 32448
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 5747588,
+        "count": 32448,
+        "sha256": "9d931775f1fcb3b719c6a1f9edf43fa152b4439cec8373ea608621dd4b5f21a8"
+      }
+    },
+    {
+      "name": "conv4a",
+      "type": "conv",
+      "shape": [
+        192,
+        13,
+        13
+      ],
+      "tower": 0,
+      "inputs": [
+        "conv3a_neuron"
+      ],
+      "consumers": [
+        "conv4a_neuron"
+      ],
+      "neuronPlacement": "then conv4a_neuron",
+      "parameterCount": 331968,
+      "parameters": {
+        "channels": "[192]",
+        "epsB": "0.02",
+        "epsW": "[1.0000000000000001E-05]",
+        "filterSize": "[3]",
+        "filters": "[192]",
+        "gpu": "0",
+        "groups": "[1]",
+        "initB": "1",
+        "initBFunc": "\u0022\u0022",
+        "initCFunc": "\u0022\u0022",
+        "initW": "[0.029999999999999999]",
+        "initWFunc": "\u0022\u0022",
+        "momB": "0.90000000000000002",
+        "momW": "[0.90000000000000002]",
+        "neuron": "\u0022relu\u0022",
+        "padding": "[-1]",
+        "partialSum": "13",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "randSparse": "[false]",
+        "schedB": "\u0022default\u0022",
+        "schedW": "\u0022default\u0022",
+        "sharedBiases": "true",
+        "stride": "[1]",
+        "superEps": "0",
+        "superMom": "0",
+        "wball": "[0]",
+        "wc": "[0.00050000000000000001]",
+        "wcNormMax": "[0]",
+        "wcNormMin": "[0]",
+        "weightSource": "[\u0022\u0022]"
+      },
+      "kernel": 3,
+      "stride": 1,
+      "start": -1,
+      "statistics": {
+        "min": -7.3448954,
+        "max": 10.642205,
+        "mean": 1.2450599116962073,
+        "standardDeviation": 2.5120096631874818,
+        "count": 32448
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 5877380,
+        "count": 32448,
+        "sha256": "74abefa229108684444ea52101b07380737b87e1eaf638f045d80ed778a8d0bc"
+      }
+    },
+    {
+      "name": "conv4b",
+      "type": "conv",
+      "shape": [
+        192,
+        13,
+        13
+      ],
+      "tower": 1,
+      "inputs": [
+        "conv3b_neuron"
+      ],
+      "consumers": [
+        "conv4b_neuron"
+      ],
+      "neuronPlacement": "then conv4b_neuron",
+      "parameterCount": 331968,
+      "parameters": {
+        "channels": "[192]",
+        "epsB": "0.02",
+        "epsW": "[1.0000000000000001E-05]",
+        "filterSize": "[3]",
+        "filters": "[192]",
+        "gpu": "1",
+        "groups": "[1]",
+        "initB": "1",
+        "initBFunc": "\u0022\u0022",
+        "initCFunc": "\u0022\u0022",
+        "initW": "[0.029999999999999999]",
+        "initWFunc": "\u0022\u0022",
+        "momB": "0.90000000000000002",
+        "momW": "[0.90000000000000002]",
+        "neuron": "\u0022relu\u0022",
+        "padding": "[-1]",
+        "partialSum": "13",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "randSparse": "[false]",
+        "schedB": "\u0022default\u0022",
+        "schedW": "\u0022default\u0022",
+        "sharedBiases": "true",
+        "stride": "[1]",
+        "superEps": "0",
+        "superMom": "0",
+        "wball": "[0]",
+        "wc": "[0.00050000000000000001]",
+        "wcNormMax": "[0]",
+        "wcNormMin": "[0]",
+        "weightSource": "[\u0022\u0022]"
+      },
+      "kernel": 3,
+      "stride": 1,
+      "start": -1,
+      "statistics": {
+        "min": -7.7597494,
+        "max": 12.356436,
+        "mean": 1.1708823348187953,
+        "standardDeviation": 2.8911399241665503,
+        "count": 32448
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 6007172,
+        "count": 32448,
+        "sha256": "54a3517ffa7dfb43358eb4b2047998f786074cf6f243207482f8a5580195d2c5"
+      }
+    },
+    {
+      "name": "conv5a",
+      "type": "conv",
+      "shape": [
+        128,
+        13,
+        13
+      ],
+      "tower": 0,
+      "inputs": [
+        "conv4a_neuron"
+      ],
+      "consumers": [
+        "pool3a"
+      ],
+      "neuronPlacement": null,
+      "parameterCount": 221312,
+      "parameters": {
+        "channels": "[192]",
+        "epsB": "0.02",
+        "epsW": "[1.0000000000000001E-05]",
+        "filterSize": "[3]",
+        "filters": "[128]",
+        "gpu": "0",
+        "groups": "[1]",
+        "initB": "1",
+        "initBFunc": "\u0022\u0022",
+        "initCFunc": "\u0022\u0022",
+        "initW": "[0.029999999999999999]",
+        "initWFunc": "\u0022\u0022",
+        "momB": "0.90000000000000002",
+        "momW": "[0.90000000000000002]",
+        "neuron": "\u0022\u0022",
+        "padding": "[-1]",
+        "partialSum": "13",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "randSparse": "[false]",
+        "schedB": "\u0022default\u0022",
+        "schedW": "\u0022default\u0022",
+        "sharedBiases": "true",
+        "stride": "[1]",
+        "superEps": "0",
+        "superMom": "0",
+        "wball": "[0]",
+        "wc": "[0.00050000000000000001]",
+        "wcNormMax": "[0]",
+        "wcNormMin": "[0]",
+        "weightSource": "[\u0022\u0022]"
+      },
+      "kernel": 3,
+      "stride": 1,
+      "start": -1,
+      "statistics": {
+        "min": -10.482371,
+        "max": 14.889764,
+        "mean": 1.3240123282396097,
+        "standardDeviation": 3.3302071656853434,
+        "count": 21632
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 6136964,
+        "count": 21632,
+        "sha256": "b8093bcbb67b9c1b61664d942d216b474a30ae0bc24d1d094eb9461d41c3c52b"
+      }
+    },
+    {
+      "name": "conv5b",
+      "type": "conv",
+      "shape": [
+        128,
+        13,
+        13
+      ],
+      "tower": 1,
+      "inputs": [
+        "conv4b_neuron"
+      ],
+      "consumers": [
+        "pool3b"
+      ],
+      "neuronPlacement": null,
+      "parameterCount": 221312,
+      "parameters": {
+        "channels": "[192]",
+        "epsB": "0.02",
+        "epsW": "[1.0000000000000001E-05]",
+        "filterSize": "[3]",
+        "filters": "[128]",
+        "gpu": "1",
+        "groups": "[1]",
+        "initB": "1",
+        "initBFunc": "\u0022\u0022",
+        "initCFunc": "\u0022\u0022",
+        "initW": "[0.029999999999999999]",
+        "initWFunc": "\u0022\u0022",
+        "momB": "0.90000000000000002",
+        "momW": "[0.90000000000000002]",
+        "neuron": "\u0022\u0022",
+        "padding": "[-1]",
+        "partialSum": "13",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "randSparse": "[false]",
+        "schedB": "\u0022default\u0022",
+        "schedW": "\u0022default\u0022",
+        "sharedBiases": "true",
+        "stride": "[1]",
+        "superEps": "0",
+        "superMom": "0",
+        "wball": "[0]",
+        "wc": "[0.00050000000000000001]",
+        "wcNormMax": "[0]",
+        "wcNormMin": "[0]",
+        "weightSource": "[\u0022\u0022]"
+      },
+      "kernel": 3,
+      "stride": 1,
+      "start": -1,
+      "statistics": {
+        "min": -9.658331,
+        "max": 12.184619,
+        "mean": 0.8397822527010985,
+        "standardDeviation": 3.227640239472,
+        "count": 21632
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 6223492,
+        "count": 21632,
+        "sha256": "42d88a0ee7e3df296b3394da696cd97e872ccb8611d5188eb3ccdf04656799eb"
+      }
+    },
+    {
+      "name": "pool3a",
+      "type": "pool",
+      "shape": [
+        128,
+        6,
+        6
+      ],
+      "tower": 0,
+      "inputs": [
+        "conv5a"
+      ],
+      "consumers": [
+        "pool3a_neuron"
+      ],
+      "neuronPlacement": "then pool3a_neuron",
+      "parameterCount": 0,
+      "parameters": {
+        "channels": "128",
+        "gpu": "0",
+        "neuron": "\u0022relu\u0022",
+        "outputsX": "0",
+        "pool": "\u0022max\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "sizeX": "3",
+        "start": "0",
+        "stride": "2"
+      },
+      "kernel": 3,
+      "stride": 2,
+      "start": 0,
+      "statistics": {
+        "min": -7.588607,
+        "max": 14.889764,
+        "mean": 2.6377087257310956,
+        "standardDeviation": 3.3511266872883962,
+        "count": 4608
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 6310020,
+        "count": 4608,
+        "sha256": "54bdc0679463130c1ecbbc955689c9a69da9217bd11a6cf27e666395068b53e8"
+      }
+    },
+    {
+      "name": "pool3b",
+      "type": "pool",
+      "shape": [
+        128,
+        6,
+        6
+      ],
+      "tower": 1,
+      "inputs": [
+        "conv5b"
+      ],
+      "consumers": [
+        "pool3b_neuron"
+      ],
+      "neuronPlacement": "then pool3b_neuron",
+      "parameterCount": 0,
+      "parameters": {
+        "channels": "128",
+        "gpu": "1",
+        "neuron": "\u0022relu\u0022",
+        "outputsX": "0",
+        "pool": "\u0022max\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "sizeX": "3",
+        "start": "0",
+        "stride": "2"
+      },
+      "kernel": 3,
+      "stride": 2,
+      "start": 0,
+      "statistics": {
+        "min": -6.665562,
+        "max": 12.184619,
+        "mean": 2.159002432366833,
+        "standardDeviation": 3.1708329648347697,
+        "count": 4608
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 6328452,
+        "count": 4608,
+        "sha256": "5f1f2a99db87efc78b92ca5a1f8cd7869e81ed32fb3f67e52687242934b1466b"
+      }
+    },
+    {
+      "name": "fc2048a",
+      "type": "fc",
+      "shape": [
+        2048,
+        1,
+        1
+      ],
+      "tower": 0,
+      "inputs": [
+        "pool3a_neuron",
+        "pool3b_neuron"
+      ],
+      "consumers": [
+        "fc2048a_neuron"
+      ],
+      "neuronPlacement": "then fc2048a_neuron",
+      "parameterCount": 18876416,
+      "parameters": {
+        "epsB": "0.02",
+        "epsW": "[1.0000000000000001E-05, 1.0000000000000001E-05]",
+        "gpu": "0",
+        "initB": "1",
+        "initBFunc": "\u0022\u0022",
+        "initW": "[0.01, 0.01]",
+        "initWFunc": "\u0022\u0022",
+        "momB": "0.90000000000000002",
+        "momW": "[0.90000000000000002, 0.90000000000000002]",
+        "neuron": "\u0022relu\u0022",
+        "outputs": "2048",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "schedB": "\u0022default\u0022",
+        "schedW": "\u0022default\u0022",
+        "superEps": "0",
+        "superMom": "0",
+        "wball": "[0, 0]",
+        "wc": "[0.00050000000000000001, 0.00050000000000000001]",
+        "weightSource": "[\u0022\u0022, \u0022\u0022]"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": -10.262284,
+        "max": 12.289803,
+        "mean": 1.0605066368952976,
+        "standardDeviation": 3.6425485758321554,
+        "count": 2048
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 6346884,
+        "count": 2048,
+        "sha256": "6f8cacdb598e040d52eafd619b1c48ff4b0551dd15718d771afa493b6c93ac70"
+      }
+    },
+    {
+      "name": "fc2048b",
+      "type": "fc",
+      "shape": [
+        2048,
+        1,
+        1
+      ],
+      "tower": 1,
+      "inputs": [
+        "pool3a_neuron",
+        "pool3b_neuron"
+      ],
+      "consumers": [
+        "fc2048b_neuron"
+      ],
+      "neuronPlacement": "then fc2048b_neuron",
+      "parameterCount": 18876416,
+      "parameters": {
+        "epsB": "0.02",
+        "epsW": "[1.0000000000000001E-05, 1.0000000000000001E-05]",
+        "gpu": "1",
+        "initB": "1",
+        "initBFunc": "\u0022\u0022",
+        "initW": "[0.01, 0.01]",
+        "initWFunc": "\u0022\u0022",
+        "momB": "0.90000000000000002",
+        "momW": "[0.90000000000000002, 0.90000000000000002]",
+        "neuron": "\u0022relu\u0022",
+        "outputs": "2048",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "schedB": "\u0022default\u0022",
+        "schedW": "\u0022default\u0022",
+        "superEps": "0",
+        "superMom": "0",
+        "wball": "[0, 0]",
+        "wc": "[0.00050000000000000001, 0.00050000000000000001]",
+        "weightSource": "[\u0022\u0022, \u0022\u0022]"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": -10.072236,
+        "max": 15.470323,
+        "mean": 0.9625072245908086,
+        "standardDeviation": 3.7348907160712077,
+        "count": 2048
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 6355076,
+        "count": 2048,
+        "sha256": "e06197d3257f3b2b1afdc5537d2941917dccd915f184e5d4afca982ab1c55aad"
+      }
+    },
+    {
+      "name": "hs1a",
+      "type": "hs",
+      "shape": [
+        2048,
+        1,
+        1
+      ],
+      "tower": 0,
+      "inputs": [
+        "fc2048a_neuron"
+      ],
+      "consumers": [
+        "fc2048ba",
+        "fc2048bb"
+      ],
+      "neuronPlacement": null,
+      "parameterCount": 0,
+      "parameters": {
+        "enable": "true",
+        "gpu": "0",
+        "keep": "0.5",
+        "neuron": "\u0022\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 6.1449013,
+        "mean": 1.0222125470281753,
+        "standardDeviation": 1.2438320589824359,
+        "count": 2048
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 6363268,
+        "count": 2048,
+        "sha256": "9a71cac45765f2059d5a2af60584486aeba85ecc80c81fde6b6a3821b0bb3c08"
+      }
+    },
+    {
+      "name": "hs1b",
+      "type": "hs",
+      "shape": [
+        2048,
+        1,
+        1
+      ],
+      "tower": 1,
+      "inputs": [
+        "fc2048b_neuron"
+      ],
+      "consumers": [
+        "fc2048ba",
+        "fc2048bb"
+      ],
+      "neuronPlacement": null,
+      "parameterCount": 0,
+      "parameters": {
+        "enable": "true",
+        "gpu": "1",
+        "keep": "0.5",
+        "neuron": "\u0022\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 7.7351613,
+        "mean": 1.0111448613351968,
+        "standardDeviation": 1.2486444988254073,
+        "count": 2048
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 6371460,
+        "count": 2048,
+        "sha256": "ba30664a493bde7be088f275758f55d2fd99d4e44ab9670a66c294990e315f5a"
+      }
+    },
+    {
+      "name": "fc2048ba",
+      "type": "fc",
+      "shape": [
+        2048,
+        1,
+        1
+      ],
+      "tower": 0,
+      "inputs": [
+        "hs1a",
+        "hs1b"
+      ],
+      "consumers": [
+        "fc2048ba_neuron"
+      ],
+      "neuronPlacement": "then fc2048ba_neuron",
+      "parameterCount": 8390656,
+      "parameters": {
+        "epsB": "0.02",
+        "epsW": "[1.0000000000000001E-05, 1.0000000000000001E-05]",
+        "gpu": "0",
+        "initB": "1",
+        "initBFunc": "\u0022\u0022",
+        "initW": "[0.01, 0.01]",
+        "initWFunc": "\u0022\u0022",
+        "momB": "0.90000000000000002",
+        "momW": "[0.90000000000000002, 0.90000000000000002]",
+        "neuron": "\u0022relu\u0022",
+        "outputs": "2048",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "schedB": "\u0022default\u0022",
+        "schedW": "\u0022default\u0022",
+        "superEps": "0",
+        "superMom": "0",
+        "wball": "[0, 0]",
+        "wc": "[0.00050000000000000001, 0.00050000000000000001]",
+        "weightSource": "[\u0022\u0022, \u0022\u0022]"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": -2.1892824,
+        "max": 4.5380783,
+        "mean": 1.0372048891167651,
+        "standardDeviation": 1.027145430698785,
+        "count": 2048
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 6379652,
+        "count": 2048,
+        "sha256": "5193e30ed6fb60d3f15239f79bc3b974e2ff877b766d233119a86d3ee1696bb5"
+      }
+    },
+    {
+      "name": "fc2048bb",
+      "type": "fc",
+      "shape": [
+        2048,
+        1,
+        1
+      ],
+      "tower": 1,
+      "inputs": [
+        "hs1b",
+        "hs1a"
+      ],
+      "consumers": [
+        "fc2048bb_neuron"
+      ],
+      "neuronPlacement": "then fc2048bb_neuron",
+      "parameterCount": 8390656,
+      "parameters": {
+        "epsB": "0.02",
+        "epsW": "[1.0000000000000001E-05, 1.0000000000000001E-05]",
+        "gpu": "1",
+        "initB": "1",
+        "initBFunc": "\u0022\u0022",
+        "initW": "[0.01, 0.01]",
+        "initWFunc": "\u0022\u0022",
+        "momB": "0.90000000000000002",
+        "momW": "[0.90000000000000002, 0.90000000000000002]",
+        "neuron": "\u0022relu\u0022",
+        "outputs": "2048",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "schedB": "\u0022default\u0022",
+        "schedW": "\u0022default\u0022",
+        "superEps": "0",
+        "superMom": "0",
+        "wball": "[0, 0]",
+        "wc": "[0.00050000000000000001, 0.00050000000000000001]",
+        "weightSource": "[\u0022\u0022, \u0022\u0022]"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": -2.062823,
+        "max": 4.0784883,
+        "mean": 1.0294179138390973,
+        "standardDeviation": 0.9724221444551943,
+        "count": 2048
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 6387844,
+        "count": 2048,
+        "sha256": "7eda5d822ffb9c29a800e1aecaf1c935ad4670b58a8b4d1fbfbc40b87f565ea6"
+      }
+    },
+    {
+      "name": "hs2a",
+      "type": "hs",
+      "shape": [
+        2048,
+        1,
+        1
+      ],
+      "tower": 0,
+      "inputs": [
+        "fc2048ba_neuron"
+      ],
+      "consumers": [
+        "fc1000"
+      ],
+      "neuronPlacement": null,
+      "parameterCount": 0,
+      "parameters": {
+        "enable": "true",
+        "gpu": "0",
+        "keep": "0.5",
+        "neuron": "\u0022\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 2.2690392,
+        "mean": 0.5592233736283561,
+        "standardDeviation": 0.4489997421017808,
+        "count": 2048
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 6396036,
+        "count": 2048,
+        "sha256": "dd8d57ae9ce1e9465d287d7dce2b2f9ee708b69879d30b3a275013e0c88d526a"
+      }
+    },
+    {
+      "name": "hs2b",
+      "type": "hs",
+      "shape": [
+        2048,
+        1,
+        1
+      ],
+      "tower": 1,
+      "inputs": [
+        "fc2048bb_neuron"
+      ],
+      "consumers": [
+        "fc1000"
+      ],
+      "neuronPlacement": null,
+      "parameterCount": 0,
+      "parameters": {
+        "enable": "true",
+        "gpu": "1",
+        "keep": "0.5",
+        "neuron": "\u0022\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 2.0392442,
+        "mean": 0.5511428140143835,
+        "standardDeviation": 0.4263802608311216,
+        "count": 2048
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 6404228,
+        "count": 2048,
+        "sha256": "01cad37f5571ed3d332b01535d534ff08cd02e895a1548ffdb76435f188da9fe"
+      }
+    },
+    {
+      "name": "fc1000",
+      "type": "fc",
+      "shape": [
+        1000,
+        1,
+        1
+      ],
+      "tower": 0,
+      "inputs": [
+        "hs2a",
+        "hs2b"
+      ],
+      "consumers": [
+        "probs"
+      ],
+      "neuronPlacement": null,
+      "parameterCount": 4097000,
+      "parameters": {
+        "epsB": "0.02",
+        "epsW": "[1.0000000000000001E-05, 1.0000000000000001E-05]",
+        "gpu": "0",
+        "initB": "0",
+        "initBFunc": "\u0022\u0022",
+        "initW": "[0.01, 0.01]",
+        "initWFunc": "\u0022\u0022",
+        "momB": "0.90000000000000002",
+        "momW": "[0.90000000000000002, 0.90000000000000002]",
+        "neuron": "\u0022\u0022",
+        "outputs": "1000",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "schedB": "\u0022default\u0022",
+        "schedW": "\u0022default\u0022",
+        "superEps": "0",
+        "superMom": "0",
+        "wball": "[0, 0]",
+        "wc": "[0.00050000000000000001, 0.00050000000000000001]",
+        "weightSource": "[\u0022\u0022, \u0022\u0022]"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": -2.0338407,
+        "max": 1.5491174,
+        "mean": -0.01293543168157339,
+        "standardDeviation": 0.4470333003966054,
+        "count": 1000
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 6412420,
+        "count": 1000,
+        "sha256": "88e6547f5767b6420a107f59dbd6f6dd3708548f398823fadd538436b0f7452b"
+      }
+    },
+    {
+      "name": "probs",
+      "type": "softmax",
+      "shape": [
+        1000,
+        1,
+        1
+      ],
+      "tower": 0,
+      "inputs": [
+        "fc1000"
+      ],
+      "consumers": [
+        "logprob"
+      ],
+      "neuronPlacement": null,
+      "parameterCount": 0,
+      "parameters": {
+        "gpu": "0",
+        "neuron": "\u0022\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0.00011992424,
+        "max": 0.0043148524,
+        "mean": 0.0009999999205901986,
+        "standardDeviation": 0.00047649638778731563,
+        "count": 1000
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 6416420,
+        "count": 1000,
+        "sha256": "70033ba0f7d168a44551258b88953bc0d40add77fbd452a56446b8b94aa7e841"
+      }
+    },
+    {
+      "name": "logprob",
+      "type": "cost.logreg",
+      "shape": [
+        0,
+        1,
+        1
+      ],
+      "tower": 0,
+      "inputs": [
+        "labels",
+        "probs"
+      ],
+      "consumers": [],
+      "neuronPlacement": null,
+      "parameterCount": 0,
+      "parameters": {
+        "coeff": "1",
+        "gpu": "0",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022",
+        "topk": "5"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 0,
+        "mean": 0,
+        "standardDeviation": 0,
+        "count": 0
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 6420420,
+        "count": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "pool1a_neuron",
+      "type": "neuron",
+      "shape": [
+        48,
+        27,
+        27
+      ],
+      "tower": 0,
+      "inputs": [
+        "pool1a"
+      ],
+      "consumers": [
+        "conv2a"
+      ],
+      "neuronPlacement": "relu after pool1a",
+      "parameterCount": 0,
+      "parameters": {
+        "gpu": "0",
+        "neuron": "\u0022relu\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 35.750443,
+        "mean": 6.889111741254538,
+        "standardDeviation": 6.608165725714131,
+        "count": 34992
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 6420420,
+        "count": 34992,
+        "sha256": "787a0aded9151d7484d7356570440cae54d98bffdfadafd93963c2b8a44b720d"
+      }
+    },
+    {
+      "name": "pool1b_neuron",
+      "type": "neuron",
+      "shape": [
+        48,
+        27,
+        27
+      ],
+      "tower": 1,
+      "inputs": [
+        "pool1b"
+      ],
+      "consumers": [
+        "conv2b"
+      ],
+      "neuronPlacement": "relu after pool1b",
+      "parameterCount": 0,
+      "parameters": {
+        "gpu": "1",
+        "neuron": "\u0022relu\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 37.28754,
+        "mean": 6.6766506646876085,
+        "standardDeviation": 6.382600344215492,
+        "count": 34992
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 6560388,
+        "count": 34992,
+        "sha256": "9b98f756911ec4cc25a79fb961e630613054e97a13746b0e5e9d0005d806fefb"
+      }
+    },
+    {
+      "name": "conv2a_neuron",
+      "type": "neuron",
+      "shape": [
+        128,
+        27,
+        27
+      ],
+      "tower": 0,
+      "inputs": [
+        "conv2a"
+      ],
+      "consumers": [
+        "rnorm2a"
+      ],
+      "neuronPlacement": "relu after conv2a",
+      "parameterCount": 0,
+      "parameters": {
+        "gpu": "0",
+        "neuron": "\u0022relu\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 13.090599,
+        "mean": 1.7646151852611305,
+        "standardDeviation": 2.1063956584135797,
+        "count": 93312
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 6700356,
+        "count": 93312,
+        "sha256": "9844c951c2f71f77fd92e21d8bbd82bf7b60ae79d1aeeda6d126c372511eae59"
+      }
+    },
+    {
+      "name": "conv2b_neuron",
+      "type": "neuron",
+      "shape": [
+        128,
+        27,
+        27
+      ],
+      "tower": 1,
+      "inputs": [
+        "conv2b"
+      ],
+      "consumers": [
+        "rnorm2b"
+      ],
+      "neuronPlacement": "relu after conv2b",
+      "parameterCount": 0,
+      "parameters": {
+        "gpu": "1",
+        "neuron": "\u0022relu\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 12.353167,
+        "mean": 1.665116223982511,
+        "standardDeviation": 1.9497372927692669,
+        "count": 93312
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 7073604,
+        "count": 93312,
+        "sha256": "cee8fa17ad46d6e891d1d959daf7d6c16199ba0395f7b1e4c28974e14ca952c2"
+      }
+    },
+    {
+      "name": "conv3a_neuron",
+      "type": "neuron",
+      "shape": [
+        192,
+        13,
+        13
+      ],
+      "tower": 0,
+      "inputs": [
+        "conv3a"
+      ],
+      "consumers": [
+        "conv4a"
+      ],
+      "neuronPlacement": "relu after conv3a",
+      "parameterCount": 0,
+      "parameters": {
+        "gpu": "0",
+        "neuron": "\u0022relu\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 10.822029,
+        "mean": 1.1268083075864752,
+        "standardDeviation": 1.802440333056816,
+        "count": 32448
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 7446852,
+        "count": 32448,
+        "sha256": "26343e9b7a0cfc65471f88c461a62d128d1efb477952793dbf0d482faa912d88"
+      }
+    },
+    {
+      "name": "conv3b_neuron",
+      "type": "neuron",
+      "shape": [
+        192,
+        13,
+        13
+      ],
+      "tower": 1,
+      "inputs": [
+        "conv3b"
+      ],
+      "consumers": [
+        "conv4b"
+      ],
+      "neuronPlacement": "relu after conv3b",
+      "parameterCount": 0,
+      "parameters": {
+        "gpu": "1",
+        "neuron": "\u0022relu\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 10.771403,
+        "mean": 1.326212884396378,
+        "standardDeviation": 1.89179842823728,
+        "count": 32448
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 7576644,
+        "count": 32448,
+        "sha256": "107b4a36df0be151b839eaf5f85d2fba97c15e1bc9110bb5a60917682c762843"
+      }
+    },
+    {
+      "name": "conv4a_neuron",
+      "type": "neuron",
+      "shape": [
+        192,
+        13,
+        13
+      ],
+      "tower": 0,
+      "inputs": [
+        "conv4a"
+      ],
+      "consumers": [
+        "conv5a"
+      ],
+      "neuronPlacement": "relu after conv4a",
+      "parameterCount": 0,
+      "parameters": {
+        "gpu": "0",
+        "neuron": "\u0022relu\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 10.642205,
+        "mean": 1.724020944785187,
+        "standardDeviation": 1.9297656836619035,
+        "count": 32448
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 7706436,
+        "count": 32448,
+        "sha256": "469a47c8135a0f7f8b3f15f5c5802ebeb9a2572c859bdfc4ab1005417ddf63d2"
+      }
+    },
+    {
+      "name": "conv4b_neuron",
+      "type": "neuron",
+      "shape": [
+        192,
+        13,
+        13
+      ],
+      "tower": 1,
+      "inputs": [
+        "conv4b"
+      ],
+      "consumers": [
+        "conv5b"
+      ],
+      "neuronPlacement": "relu after conv4b",
+      "parameterCount": 0,
+      "parameters": {
+        "gpu": "1",
+        "neuron": "\u0022relu\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 12.356436,
+        "mean": 1.8066275445762765,
+        "standardDeviation": 2.1552140307569054,
+        "count": 32448
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 7836228,
+        "count": 32448,
+        "sha256": "4370d9de4cc5f4156ba4746b9498ace03372c9ae1890bb8773f2528d383cc19e"
+      }
+    },
+    {
+      "name": "pool3a_neuron",
+      "type": "neuron",
+      "shape": [
+        128,
+        6,
+        6
+      ],
+      "tower": 0,
+      "inputs": [
+        "pool3a"
+      ],
+      "consumers": [
+        "fc2048a",
+        "fc2048b"
+      ],
+      "neuronPlacement": "relu after pool3a",
+      "parameterCount": 0,
+      "parameters": {
+        "gpu": "0",
+        "neuron": "\u0022relu\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 14.889764,
+        "mean": 3.0521460208757265,
+        "standardDeviation": 2.724576762833389,
+        "count": 4608
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 7966020,
+        "count": 4608,
+        "sha256": "330e816554275d09428b4612427d625bac08d75b3652c98a49b18485634e441a"
+      }
+    },
+    {
+      "name": "pool3b_neuron",
+      "type": "neuron",
+      "shape": [
+        128,
+        6,
+        6
+      ],
+      "tower": 1,
+      "inputs": [
+        "pool3b"
+      ],
+      "consumers": [
+        "fc2048a",
+        "fc2048b"
+      ],
+      "neuronPlacement": "relu after pool3b",
+      "parameterCount": 0,
+      "parameters": {
+        "gpu": "1",
+        "neuron": "\u0022relu\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 12.184619,
+        "mean": 2.640520306485188,
+        "standardDeviation": 2.495410901387867,
+        "count": 4608
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 7984452,
+        "count": 4608,
+        "sha256": "ff264faadaf0e6d2393fc258d5f42a0c20ad43295134890c4aa2077d41eee3de"
+      }
+    },
+    {
+      "name": "fc2048a_neuron",
+      "type": "neuron",
+      "shape": [
+        2048,
+        1,
+        1
+      ],
+      "tower": 0,
+      "inputs": [
+        "fc2048a"
+      ],
+      "consumers": [
+        "hs1a"
+      ],
+      "neuronPlacement": "relu after fc2048a",
+      "parameterCount": 0,
+      "parameters": {
+        "gpu": "0",
+        "neuron": "\u0022relu\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 12.289803,
+        "mean": 2.0444250940563506,
+        "standardDeviation": 2.4876641179648717,
+        "count": 2048
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 8002884,
+        "count": 2048,
+        "sha256": "6fb2c85aef133e0e3cccf4a59a5ef61ace7e1edc473ab3f2bbb764c20047f1f2"
+      }
+    },
+    {
+      "name": "fc2048b_neuron",
+      "type": "neuron",
+      "shape": [
+        2048,
+        1,
+        1
+      ],
+      "tower": 1,
+      "inputs": [
+        "fc2048b"
+      ],
+      "consumers": [
+        "hs1b"
+      ],
+      "neuronPlacement": "relu after fc2048b",
+      "parameterCount": 0,
+      "parameters": {
+        "gpu": "1",
+        "neuron": "\u0022relu\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 15.470323,
+        "mean": 2.0222897226703935,
+        "standardDeviation": 2.4972889976508146,
+        "count": 2048
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 8011076,
+        "count": 2048,
+        "sha256": "fca5c07723bf7aef156831023de9e547d1acc087354ce2c1248fdbcb87308dc8"
+      }
+    },
+    {
+      "name": "fc2048ba_neuron",
+      "type": "neuron",
+      "shape": [
+        2048,
+        1,
+        1
+      ],
+      "tower": 0,
+      "inputs": [
+        "fc2048ba"
+      ],
+      "consumers": [
+        "hs2a"
+      ],
+      "neuronPlacement": "relu after fc2048ba",
+      "parameterCount": 0,
+      "parameters": {
+        "gpu": "0",
+        "neuron": "\u0022relu\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 4.5380783,
+        "mean": 1.1184467472567121,
+        "standardDeviation": 0.8979994842035616,
+        "count": 2048
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 8019268,
+        "count": 2048,
+        "sha256": "371d019dc1d29a25b2983811f6ee521a2d24d819e212ba7d7473549a3341b16e"
+      }
+    },
+    {
+      "name": "fc2048bb_neuron",
+      "type": "neuron",
+      "shape": [
+        2048,
+        1,
+        1
+      ],
+      "tower": 1,
+      "inputs": [
+        "fc2048bb"
+      ],
+      "consumers": [
+        "hs2b"
+      ],
+      "neuronPlacement": "relu after fc2048bb",
+      "parameterCount": 0,
+      "parameters": {
+        "gpu": "1",
+        "neuron": "\u0022relu\u0022",
+        "quantB": "\u0022default\u0022",
+        "quantF": "\u0022default\u0022"
+      },
+      "kernel": 1,
+      "stride": 1,
+      "start": 0,
+      "statistics": {
+        "min": 0,
+        "max": 4.0784883,
+        "mean": 1.102285628028767,
+        "standardDeviation": 0.8527605216622433,
+        "count": 2048
+      },
+      "activations": {
+        "file": "activations.bin",
+        "offset": 8027460,
+        "count": 2048,
+        "sha256": "7859136059f91fa3e30d7bfb7fb641b1778c84d037c2c4f61afaa22bac9e5644"
+      }
+    }
+  ],
+  "conv1Filters": {
+    "file": "activations.bin",
+    "offset": 8035652,
+    "count": 34848,
+    "sha256": "20dade1aea9d7b4089902f928df5a9ce385c92dca50b5604b63581040cedefb6"
+  },
+  "top5": [
+    {
+      "index": 907,
+      "probability": 0.0043148524
+    },
+    {
+      "index": 376,
+      "probability": 0.003725252
+    },
+    {
+      "index": 898,
+      "probability": 0.003387849
+    },
+    {
+      "index": 674,
+      "probability": 0.0032941839
+    },
+    {
+      "index": 939,
+      "probability": 0.0032848178
+    }
+  ],
+  "cost": [
+    7.313058853149414,
+    1,
+    1
+  ],
+  "extensions": [
+    "Run index can append immutable step manifests",
+    "Optional curves, gradientStatistics and filter blobs in a later schema version"
+  ]
+}

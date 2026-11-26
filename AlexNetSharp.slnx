@@ -1,8 +1,13 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/AlexNetSharp.Core/AlexNetSharp.Core.csproj" />
+    <Project Path="src/AlexNetSharp.Replay/AlexNetSharp.Replay.csproj" />
+    <Project Path="src/AlexNetSharp.Web/AlexNetSharp.Web.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/AlexNetSharp.Tests/AlexNetSharp.Tests.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/AlexNetSharp.Snapshot/AlexNetSharp.Snapshot.csproj" />
   </Folder>
 </Solution>
